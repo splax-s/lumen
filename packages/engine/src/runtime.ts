@@ -287,7 +287,12 @@ export class LessonRuntime {
     const steps = this.lesson.steps.map((step, i) => {
       const memory = this.memory[i]!;
       const live = i === this.index && !this.finished ? this.now() - this.enteredAt : 0;
-      return { type: step.type, wrong: memory.wrong, hintLevel: memory.hintLevel, ms: memory.ms + live };
+      return {
+        type: step.type,
+        wrong: memory.wrong,
+        hintLevel: memory.hintLevel,
+        ms: memory.ms + live,
+      };
     });
     return {
       id: this.id,
@@ -324,7 +329,8 @@ export class LessonRuntime {
   private activeStage(): ThenStage | Extract<Step, { type: 'hook' | 'poke' | 'zoom' }> | null {
     const step = this.step;
     if (step.type === 'hook' || step.type === 'poke' || step.type === 'zoom') return step;
-    if (step.type === 'challenge' && step.then && this.challengeStage() === 'then') return step.then;
+    if (step.type === 'challenge' && step.then && this.challengeStage() === 'then')
+      return step.then;
     return null;
   }
 
@@ -337,7 +343,10 @@ export class LessonRuntime {
       memory.hintLevel = (memory.hintLevel + 1) as StepMemory['hintLevel'];
       if (hint.highlight !== undefined) memory.highlight = hint.highlight;
       if (hint.demo !== undefined) memory.demo = hint.demo;
-      this.lumi = { mood: 'thinking', text: { play: hint.play, explain: hint.explain, deep: hint.deep } };
+      this.lumi = {
+        mood: 'thinking',
+        text: { play: hint.play, explain: hint.explain, deep: hint.deep },
+      };
     } else {
       memory.hintLevel = 4;
       memory.solved = true;
@@ -411,7 +420,9 @@ export class LessonRuntime {
     const reactions = this.activeStage()?.reactions;
     if (!reactions) return false;
     const shown = resolveText(text, this.depth);
-    return Object.values(reactions).some((line) => resolveText(lineText(line), this.depth) === shown);
+    return Object.values(reactions).some(
+      (line) => resolveText(lineText(line), this.depth) === shown,
+    );
   }
 
   private changed(): void {

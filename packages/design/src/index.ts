@@ -5,3 +5,4 @@ export { LumiStrip, type LumiStripProps } from './LumiStrip';
 export { ProgressDots } from './ProgressDots';
 export { SubjectDot, SubjectChip } from './Subject';
 export { Chip } from './Chip';
+export { BottomSheet, type BottomSheetProps } from './BottomSheet';

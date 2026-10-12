@@ -83,7 +83,9 @@ export function emphasise(text: string): { text: string; strong: boolean }[] {
     .split(/(\*[^*]+\*)/)
     .filter(Boolean)
     .map((part) =>
-      part.startsWith('*') && part.endsWith('*') ? { text: part.slice(1, -1), strong: true } : { text: part, strong: false },
+      part.startsWith('*') && part.endsWith('*')
+        ? { text: part.slice(1, -1), strong: true }
+        : { text: part, strong: false },
     );
 }
 
@@ -109,11 +111,19 @@ export function NameItView({ step, state, runtime }: StepProps<NameItStep>) {
               </tbody>
             </table>
           ) : null}
-          {step.formula.note ? <span className={styles.formulaNote}>{step.formula.note}</span> : null}
+          {step.formula.note ? (
+            <span className={styles.formulaNote}>{step.formula.note}</span>
+          ) : null}
         </div>
       ) : null}
       {step.sim ? (
-        <SimCanvas spec={step.sim} bus={runtime.bus} depth={depth} label={step.term} className={styles.demo} />
+        <SimCanvas
+          spec={step.sim}
+          bus={runtime.bus}
+          depth={depth}
+          label={step.term}
+          className={styles.demo}
+        />
       ) : null}
     </div>
   );
@@ -141,7 +151,11 @@ export function ChallengeView({ step, runtime, state, lesson }: StepProps<Challe
             return (
               <li
                 key={item.id}
-                className={[styles.sort, done ? styles.sortDone : '', missed[item.id] && !done ? styles.sortMissed : '']
+                className={[
+                  styles.sort,
+                  done ? styles.sortDone : '',
+                  missed[item.id] && !done ? styles.sortMissed : '',
+                ]
                   .filter(Boolean)
                   .join(' ')}
                 data-item={item.id}
@@ -167,7 +181,8 @@ export function ChallengeView({ step, runtime, state, lesson }: StepProps<Challe
                         onClick={() => {
                           if (done) return;
                           const result = runtime.answerSort(item.id, bin.id);
-                          if (result === 'not_quite') setMissed((current) => ({ ...current, [item.id]: bin.id }));
+                          if (result === 'not_quite')
+                            setMissed((current) => ({ ...current, [item.id]: bin.id }));
                         }}
                       >
                         {label}
@@ -182,7 +197,9 @@ export function ChallengeView({ step, runtime, state, lesson }: StepProps<Challe
       ) : null}
       {showThen && step.then ? (
         <div ref={thenRef} className={styles.then}>
-          {step.then.title && step.sort ? <h2 className={styles.thenTitle}>{resolveText(step.then.title, depth)}</h2> : null}
+          {step.then.title && step.sort ? (
+            <h2 className={styles.thenTitle}>{resolveText(step.then.title, depth)}</h2>
+          ) : null}
           <InteractiveStage
             stage={step.then}
             runtime={runtime}

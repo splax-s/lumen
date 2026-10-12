@@ -42,7 +42,9 @@ describe('lake', () => {
     const free = fish.filter((f) => !f.trapped);
     expect(trapped.length).toBeGreaterThan(0);
     expect(free.length).toBeGreaterThan(0);
-    expect(Math.min(...trapped.map((f) => f.depth))).toBeGreaterThan(Math.max(...free.map((f) => f.depth)));
+    expect(Math.min(...trapped.map((f) => f.depth))).toBeGreaterThan(
+      Math.max(...free.map((f) => f.depth)),
+    );
   });
 
   it('going back to the real world frees every fish', () => {

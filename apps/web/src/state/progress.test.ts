@@ -1,7 +1,9 @@
 import type { AttemptRecord } from '@lumen/engine';
 import { createProgressStore, dayKey, type StorageLike } from './progress';
 
-function memoryStorage(initial: Record<string, string> = {}): StorageLike & { data: Record<string, string> } {
+function memoryStorage(
+  initial: Record<string, string> = {},
+): StorageLike & { data: Record<string, string> } {
   const data = { ...initial };
   return {
     data,
@@ -189,7 +191,10 @@ describe('progress store', () => {
       ['the wrong shape', '{"version":1,"done":"yes"}'],
       ['a future version', '{"version":99,"done":[]}'],
       ['null', 'null'],
-      ['entries of the wrong type', '{"version":1,"depth":"play","done":[{"lessonId":7}],"cards":[]}'],
+      [
+        'entries of the wrong type',
+        '{"version":1,"depth":"play","done":[{"lessonId":7}],"cards":[]}',
+      ],
     ])('starts empty when the stored value is %s', (_name, raw) => {
       const { store } = setup(memoryStorage({ 'lumen.progress': raw }));
       expect(store.get().done).toEqual([]);

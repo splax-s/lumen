@@ -1,7 +1,11 @@
 import { ConditionError, evaluate, parseCondition } from './condition';
 import { EventBus } from './events';
 
-function run(source: string, setup?: (bus: EventBus) => void, state: Record<string, number | string | boolean> = {}) {
+function run(
+  source: string,
+  setup?: (bus: EventBus) => void,
+  state: Record<string, number | string | boolean> = {},
+) {
   const bus = new EventBus();
   setup?.(bus);
   return evaluate(parseCondition(source), { bus, state });
@@ -35,7 +39,9 @@ describe('done_when evaluator', () => {
   });
 
   it('accepts quoted event names in calls', () => {
-    expect(run("count('dropped') >= 1", (b) => b.emit({ type: 'dropped', value: 'ice' }))).toBe(true);
+    expect(run("count('dropped') >= 1", (b) => b.emit({ type: 'dropped', value: 'ice' }))).toBe(
+      true,
+    );
   });
 
   it('checks event occurrence', () => {

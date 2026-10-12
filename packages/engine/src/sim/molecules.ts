@@ -1,4 +1,12 @@
-import { BaseSim, FONT_MONO, TAU, caption, type SimState, type SimValue, type SimView } from './types';
+import {
+  BaseSim,
+  FONT_MONO,
+  TAU,
+  caption,
+  type SimState,
+  type SimValue,
+  type SimView,
+} from './types';
 
 /**
  * Water molecules cooling into ice. As a liquid they sit close together with no pattern.
@@ -14,7 +22,14 @@ const EXPANSION = 0.09;
 const PAD = BOND;
 
 type Site = { x: number; y: number; sub: 0 | 1 };
-type Molecule = { site: Site; liquid: { x: number; y: number }; phase: number; rate: number; angle: number; spin: number };
+type Molecule = {
+  site: Site;
+  liquid: { x: number; y: number };
+  phase: number;
+  rate: number;
+  angle: number;
+  spin: number;
+};
 
 export default class MoleculesSim extends BaseSim {
   private molecules: Molecule[] = [];
@@ -55,7 +70,8 @@ export default class MoleculesSim extends BaseSim {
     this.bonds = [];
     for (let i = 0; i < sites.length; i++) {
       for (let j = i + 1; j < sites.length; j++) {
-        if (Math.hypot(sites[i]!.x - sites[j]!.x, sites[i]!.y - sites[j]!.y) < BOND * 1.05) this.bonds.push([i, j]);
+        if (Math.hypot(sites[i]!.x - sites[j]!.x, sites[i]!.y - sites[j]!.y) < BOND * 1.05)
+          this.bonds.push([i, j]);
       }
     }
 
@@ -98,7 +114,8 @@ export default class MoleculesSim extends BaseSim {
   }
 
   override setParam(key: string, value: SimValue): void {
-    if (key === 'temperature' && typeof value === 'number' && Number.isFinite(value)) this.temperature = value;
+    if (key === 'temperature' && typeof value === 'number' && Number.isFinite(value))
+      this.temperature = value;
   }
 
   step(dt: number): void {
@@ -141,8 +158,13 @@ export default class MoleculesSim extends BaseSim {
 
   describe(): string {
     const t = this.env.t;
-    const vars = { temperature: this.temperature, percent: Math.round(100 + EXPANSION * 100 * this.frozen) };
-    return this.frozen > 0.5 ? t('sim.molecules.describeIce', vars) : t('sim.molecules.describeLiquid', vars);
+    const vars = {
+      temperature: this.temperature,
+      percent: Math.round(100 + EXPANSION * 100 * this.frozen),
+    };
+    return this.frozen > 0.5
+      ? t('sim.molecules.describeIce', vars)
+      : t('sim.molecules.describeLiquid', vars);
   }
 
   render(ctx: CanvasRenderingContext2D, view: SimView): void {
@@ -180,10 +202,17 @@ export default class MoleculesSim extends BaseSim {
     ctx.fillText(readout, cx, cy - boxH / 2 - 12);
 
     const calm = this.env.reducedMotion ? 0.3 : 1;
-    const amplitude = ((1 - f) * (3 + Math.max(0, this.temperature) * 0.22) + f * 0.8) * calm * scale;
+    const amplitude =
+      ((1 - f) * (3 + Math.max(0, this.temperature) * 0.22) + f * 0.8) * calm * scale;
     const positions = this.molecules.map((m) => ({
-      x: cx + (m.liquid.x * (1 - f) + m.site.x * f) * scale + Math.sin(this.time * m.rate + m.phase) * amplitude,
-      y: cy + (m.liquid.y * (1 - f) + m.site.y * f) * scale + Math.cos(this.time * m.rate * 1.3 + m.phase) * amplitude,
+      x:
+        cx +
+        (m.liquid.x * (1 - f) + m.site.x * f) * scale +
+        Math.sin(this.time * m.rate + m.phase) * amplitude,
+      y:
+        cy +
+        (m.liquid.y * (1 - f) + m.site.y * f) * scale +
+        Math.cos(this.time * m.rate * 1.3 + m.phase) * amplitude,
     }));
 
     if (f > 0.3) {

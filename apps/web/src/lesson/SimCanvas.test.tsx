@@ -21,7 +21,9 @@ beforeEach(() => {
   frames = new Map();
   nextFrame = 1;
   cancelled = [];
-  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() => fakeContext() as never);
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
+    () => fakeContext() as never,
+  );
   vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
     frames.set(nextFrame, cb);
     return nextFrame++;
@@ -48,7 +50,14 @@ function runFrames(count: number, start = 0) {
 describe('SimCanvas', () => {
   it('loads the simulation and describes it for screen readers', async () => {
     const bus = new EventBus();
-    render(<SimCanvas spec={{ kind: 'tank', items: ['ice', 'stone'] }} bus={bus} depth="play" label="A water tank" />);
+    render(
+      <SimCanvas
+        spec={{ kind: 'tank', items: ['ice', 'stone'] }}
+        bus={bus}
+        depth="play"
+        label="A water tank"
+      />,
+    );
     const figure = await screen.findByRole('img', { name: /A water tank/ });
     await waitFor(() => expect(figure.getAttribute('aria-label')).toMatch(/ice cube floats/));
   });
@@ -56,7 +65,9 @@ describe('SimCanvas', () => {
   it('forwards parameters to the simulation, including ones sent before it has loaded', async () => {
     const bus = new EventBus();
     const ref = createRef<SimHandle>();
-    render(<SimCanvas ref={ref} spec={{ kind: 'tank' }} bus={bus} depth="play" label="A water tank" />);
+    render(
+      <SimCanvas ref={ref} spec={{ kind: 'tank' }} bus={bus} depth="play" label="A water tank" />,
+    );
     act(() => ref.current!.setParam('drop', 'coin'));
     await waitFor(() => expect(bus.has('dropped', 'coin')).toBe(true));
     act(() => ref.current!.setParam('drop', 'ice'));
@@ -68,7 +79,14 @@ describe('SimCanvas', () => {
     const ref = createRef<SimHandle>();
     const states: Record<string, unknown>[] = [];
     render(
-      <SimCanvas ref={ref} spec={{ kind: 'tank' }} bus={bus} depth="play" label="Tank" onState={(s) => states.push(s)} />,
+      <SimCanvas
+        ref={ref}
+        spec={{ kind: 'tank' }}
+        bus={bus}
+        depth="play"
+        label="Tank"
+        onState={(s) => states.push(s)}
+      />,
     );
     await waitFor(() => expect(states.length).toBeGreaterThan(0));
     expect(states.at(-1)).toMatchObject({ count: 0 });
@@ -79,7 +97,9 @@ describe('SimCanvas', () => {
 
   it('stops its animation loop when removed', async () => {
     const bus = new EventBus();
-    const { unmount } = render(<SimCanvas spec={{ kind: 'tank' }} bus={bus} depth="play" label="Tank" />);
+    const { unmount } = render(
+      <SimCanvas spec={{ kind: 'tank' }} bus={bus} depth="play" label="Tank" />,
+    );
     await waitFor(() => expect(frames.size).toBe(1));
     unmount();
     expect(frames.size).toBe(0);

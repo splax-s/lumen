@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "playwright test",
+    "test": "playwright test --project=desktop --project=phone && playwright test --project=perf --workers=1",
     "shots": "playwright test --config playwright.shots.config.ts",
     "typecheck": "tsc --noEmit -p ."
   },

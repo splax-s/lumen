@@ -37,7 +37,10 @@ describe('tank', () => {
     const { sim, env } = make();
     sim.setParam('drop', 'ice');
     run(sim, 8);
-    expect(env.bus.log().map((e) => `${e.type}:${e.value}`)).toEqual(['dropped:ice', 'settled:ice']);
+    expect(env.bus.log().map((e) => `${e.type}:${e.value}`)).toEqual([
+      'dropped:ice',
+      'settled:ice',
+    ]);
   });
 
   it('starts preset items already at rest without events', () => {
@@ -107,7 +110,10 @@ describe('tank', () => {
   it.each([320, 358, 560, 1200])('keeps all its text inside a %ipx wide canvas', (width) => {
     for (const depth of ['play', 'explain', 'deep'] as const) {
       const sim = new TankSim();
-      sim.init({ items: ['ice', 'stone', 'coin', 'cork'], labels: true }, testEnv({ depth, english: true }));
+      sim.init(
+        { items: ['ice', 'stone', 'coin', 'cork'], labels: true },
+        testEnv({ depth, english: true }),
+      );
       sim.setParam('temperature', -5);
       run(sim, 6);
       expect(() => expectTextFits(sim, width, 260)).not.toThrow();

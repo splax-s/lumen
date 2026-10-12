@@ -11,7 +11,9 @@ export function Chip({
     <button
       type="button"
       aria-pressed={pressed}
-      className={[styles.chip, pressed ? styles.pressed : '', className ?? ''].filter(Boolean).join(' ')}
+      className={[styles.chip, pressed ? styles.pressed : '', className ?? '']
+        .filter(Boolean)
+        .join(' ')}
       {...rest}
     />
   );

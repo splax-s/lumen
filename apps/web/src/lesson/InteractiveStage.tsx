@@ -23,7 +23,8 @@ type Props = {
 function startValues(controls: Control[] | undefined): Record<string, SimValue> {
   const values: Record<string, SimValue> = {};
   for (const control of controls ?? []) {
-    if (control.type === 'slider' || control.type === 'choice') values[control.param] = control.start;
+    if (control.type === 'slider' || control.type === 'choice')
+      values[control.param] = control.start;
   }
   return values;
 }
@@ -123,7 +124,10 @@ export function InteractiveStage({ stage, runtime, state, label }: Props) {
         }
         return (
           <div key={`${control.param}-${String(control.value)}`} className={styles.tray}>
-            <Button variant="secondary" onClick={() => sim.current?.setParam(control.param, control.value)}>
+            <Button
+              variant="secondary"
+              onClick={() => sim.current?.setParam(control.param, control.value)}
+            >
               {resolveText(control.label, depth)}
             </Button>
           </div>

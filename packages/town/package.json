@@ -3,7 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts" },
-  "scripts": { "typecheck": "tsc --noEmit -p .", "test": "vitest run" },
-  "dependencies": { "@lumen/engine": "workspace:*", "@lumen/design": "workspace:*", "@lumen/lessons": "workspace:*", "react": "^18.3.1", "react-dom": "^18.3.1" }
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lumen/engine": "workspace:*",
+    "@lumen/design": "workspace:*",
+    "@lumen/lessons": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
 }

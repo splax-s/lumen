@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DEPTHS, LessonRuntime, resolveText, type Depth, type Lesson, type RuntimeState } from '@lumen/engine';
+import {
+  DEPTHS,
+  LessonRuntime,
+  resolveText,
+  type Depth,
+  type Lesson,
+  type RuntimeState,
+} from '@lumen/engine';
 import { Button, DepthSwitch, LumiStrip, ProgressDots, SubjectChip } from '@lumen/design';
 import { loadLesson, lessonExists, objectForLesson } from '@lumen/lessons';
 import { t } from '../i18n';
@@ -11,34 +18,38 @@ import { InteractiveStage } from './InteractiveStage';
 import { ChallengeView, KeepView, NameItView, PredictView, emphasise } from './steps';
 import styles from './lesson.module.css';
 
-type Loaded = { status: 'loading' } | { status: 'ready'; lesson: Lesson } | { status: 'missing' } | { status: 'error' };
+type Loaded = { key: string; status: 'ready'; lesson: Lesson } | { key: string; status: 'error' };
 
 export default function LessonPage() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const [loaded, setLoaded] = useState<Loaded>({ status: 'loading' });
+  const [result, setResult] = useState<Loaded | null>(null);
   const [attempt, setAttempt] = useState(0);
+  const key = `${id}#${attempt}`;
+  const exists = lessonExists(id);
 
   useEffect(() => {
+    if (!exists) return;
     let cancelled = false;
-    if (!lessonExists(id)) {
-      setLoaded({ status: 'missing' });
-      return;
-    }
-    setLoaded({ status: 'loading' });
     loadLesson(id)
       .then((lesson) => {
-        if (!cancelled) setLoaded({ status: 'ready', lesson });
+        if (!cancelled) setResult({ key, status: 'ready', lesson });
       })
       .catch(() => {
-        if (!cancelled) setLoaded({ status: 'error' });
+        if (!cancelled) setResult({ key, status: 'error' });
       });
     return () => {
       cancelled = true;
     };
-  }, [id, attempt]);
+  }, [id, key, exists]);
 
-  if (loaded.status === 'ready') return <LessonPlayer key={loaded.lesson.id} lesson={loaded.lesson} />;
+  // A result for an earlier lesson or an earlier try is ignored, so the screen shows "loading" again.
+  const current = result !== null && result.key === key ? result : null;
+  const loaded: { status: 'loading' | 'missing' | 'error' } | { status: 'ready'; lesson: Lesson } =
+    !exists ? { status: 'missing' } : (current ?? { status: 'loading' });
+
+  if (loaded.status === 'ready')
+    return <LessonPlayer key={loaded.lesson.id} lesson={loaded.lesson} />;
 
   return (
     <main className={styles.message}>
@@ -71,7 +82,10 @@ function useRuntimeState(runtime: LessonRuntime): RuntimeState {
 function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const navigate = useNavigate();
   const stored = useProgress();
-  const runtime = useMemo(() => new LessonRuntime(lesson, { depth: progress.get().depth }), [lesson]);
+  const runtime = useMemo(
+    () => new LessonRuntime(lesson, { depth: progress.get().depth }),
+    [lesson],
+  );
   const state = useRuntimeState(runtime);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const stageRef = useRef<HTMLElement>(null);
@@ -113,18 +127,34 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     navigate(object ? `/town?lit=${object.id}` : '/town', { replace: true });
   }, [state.finished, runtime, navigate, object]);
 
-  const title =
-    step.type === 'keep' ? t('lesson.keepTitle') : resolveText(step.title, depth);
+  const title = step.type === 'keep' ? t('lesson.keepTitle') : resolveText(step.title, depth);
   const last = state.stepIndex === state.stepCount - 1;
-  const continueLabel = state.ready ? t(last ? 'lesson.finish' : 'lesson.continue') : t(`lesson.waiting.${step.type}`);
-  const depthLabels = { group: t('depth.group'), play: t('depth.play'), explain: t('depth.explain'), deep: t('depth.deep') };
+  const continueLabel = state.ready
+    ? t(last ? 'lesson.finish' : 'lesson.continue')
+    : t(`lesson.waiting.${step.type}`);
+  const depthLabels = {
+    group: t('depth.group'),
+    play: t('depth.play'),
+    explain: t('depth.explain'),
+    deep: t('depth.deep'),
+  };
 
   return (
-    <div className={styles.lesson} style={{ ['--lm-accent' as string]: `var(--lm-${lesson.subject})` }}>
+    <div
+      className={styles.lesson}
+      style={{ ['--lm-accent' as string]: `var(--lm-${lesson.subject})` }}
+    >
       <header className={styles.header}>
         <button type="button" className={styles.backButton} onClick={() => navigate('/town')}>
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-            <path d="M11,3 L5,9 L11,15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M11,3 L5,9 L11,15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <span>{t('lesson.backToTown')}</span>
         </button>
@@ -143,7 +173,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         </div>
         <label className={styles.depthNarrow}>
           <span className="lm-visually-hidden">{t('depth.group')}</span>
-          <select value={depth} onChange={(event) => progress.setDepth(event.target.value as Depth)}>
+          <select
+            value={depth}
+            onChange={(event) => progress.setDepth(event.target.value as Depth)}
+          >
             {DEPTHS.map((d) => (
               <option key={d} value={d}>
                 {depthLabels[d]}
@@ -154,24 +187,44 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
       </header>
 
       {/* The stage scrolls on small screens, so it takes keyboard focus for arrow-key scrolling. */}
-      <main ref={stageRef} className={styles.stage} data-step={step.type} tabIndex={0} aria-label={title}>
+      <main
+        ref={stageRef}
+        className={styles.stage}
+        data-step={step.type}
+        tabIndex={0}
+        aria-label={title}
+      >
         <div className={styles.inner} key={state.stepIndex}>
-          <h1 ref={headingRef} tabIndex={-1} className={step.type === 'name_it' ? styles.statementTitle : styles.title}>
+          <h1
+            ref={headingRef}
+            tabIndex={-1}
+            className={step.type === 'name_it' ? styles.statementTitle : styles.title}
+          >
             {step.type === 'name_it'
               ? emphasise(title).map((part, index) =>
-                  part.strong ? <em key={index}>{part.text}</em> : <span key={index}>{part.text}</span>,
+                  part.strong ? (
+                    <em key={index}>{part.text}</em>
+                  ) : (
+                    <span key={index}>{part.text}</span>
+                  ),
                 )
               : title}
           </h1>
           {step.type === 'hook' || step.type === 'poke' || step.type === 'zoom' ? (
             <InteractiveStage stage={step} runtime={runtime} state={state} label={title} />
           ) : null}
-          {step.type === 'predict' ? <PredictView step={step} runtime={runtime} state={state} lesson={lesson} /> : null}
-          {step.type === 'name_it' ? <NameItView step={step} runtime={runtime} state={state} lesson={lesson} /> : null}
+          {step.type === 'predict' ? (
+            <PredictView step={step} runtime={runtime} state={state} lesson={lesson} />
+          ) : null}
+          {step.type === 'name_it' ? (
+            <NameItView step={step} runtime={runtime} state={state} lesson={lesson} />
+          ) : null}
           {step.type === 'challenge' ? (
             <ChallengeView step={step} runtime={runtime} state={state} lesson={lesson} />
           ) : null}
-          {step.type === 'keep' ? <KeepView step={step} runtime={runtime} state={state} lesson={lesson} /> : null}
+          {step.type === 'keep' ? (
+            <KeepView step={step} runtime={runtime} state={state} lesson={lesson} />
+          ) : null}
         </div>
       </main>
 
@@ -185,11 +238,21 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             onSpeak={canSpeak ? () => narration.speak(lumiText) : undefined}
           >
             {state.stepIndex > 0 ? (
-              <Button variant="secondary" size="lg" className={styles.navBack} onClick={() => runtime.back()}>
+              <Button
+                variant="secondary"
+                size="lg"
+                className={styles.navBack}
+                onClick={() => runtime.back()}
+              >
                 {t('lesson.back')}
               </Button>
             ) : null}
-            <Button size="lg" className={styles.navNext} disabled={!state.ready} onClick={() => runtime.next()}>
+            <Button
+              size="lg"
+              className={styles.navNext}
+              disabled={!state.ready}
+              onClick={() => runtime.next()}
+            >
               {continueLabel}
             </Button>
           </LumiStrip>

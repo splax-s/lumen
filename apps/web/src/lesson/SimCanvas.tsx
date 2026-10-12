@@ -93,8 +93,10 @@ export const SimCanvas = forwardRef<SimHandle, SimCanvasProps>(function SimCanva
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<'loading' | 'ready' | 'failed'>('loading');
 
-  depthRef.current = depth;
-  onStateRef.current = onState;
+  useEffect(() => {
+    depthRef.current = depth;
+    onStateRef.current = onState;
+  }, [depth, onState]);
 
   useImperativeHandle(
     ref,
@@ -140,7 +142,8 @@ export const SimCanvas = forwardRef<SimHandle, SimCanvasProps>(function SimCanva
           reducedMotion,
           t,
         });
-        for (const [key, value] of Object.entries(initialRef.current ?? {})) sim.setParam(key, value);
+        for (const [key, value] of Object.entries(initialRef.current ?? {}))
+          sim.setParam(key, value);
         for (const [key, value] of queueRef.current) sim.setParam(key, value);
         queueRef.current = [];
 
@@ -169,7 +172,8 @@ export const SimCanvas = forwardRef<SimHandle, SimCanvasProps>(function SimCanva
           }
         };
         measure();
-        const resizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null;
+        const resizeObserver =
+          typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null;
         resizeObserver?.observe(wrap);
         window.addEventListener('resize', measure);
 
@@ -180,7 +184,10 @@ export const SimCanvas = forwardRef<SimHandle, SimCanvasProps>(function SimCanva
                 colors = readColors(wrap);
               })
             : null;
-        themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        themeObserver?.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['data-theme'],
+        });
 
         let lastState = '';
         let lastDescription = '';

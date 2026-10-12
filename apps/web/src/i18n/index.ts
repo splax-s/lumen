@@ -17,7 +17,9 @@ export function createTranslator(strings: Tree): Translator {
     }
     if (typeof node !== 'string') return key;
     if (!vars) return node;
-    return node.replace(/\{(\w+)\}/g, (match, name: string) => (name in vars ? String(vars[name]) : match));
+    return node.replace(/\{(\w+)\}/g, (match, name: string) =>
+      name in vars ? String(vars[name]) : match,
+    );
   };
 }
 

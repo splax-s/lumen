@@ -21,8 +21,24 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
     draw: () => (
       <g transform="translate(95,512)">
         <path className="w" d="M4,24 L8,74 L44,74 L48,24 Z" />
-        <rect className="f" x="10" y="18" width="15" height="15" rx="3" transform="rotate(-12 17 25)" />
-        <rect className="f" x="27" y="20" width="14" height="14" rx="3" transform="rotate(10 34 27)" />
+        <rect
+          className="f"
+          x="10"
+          y="18"
+          width="15"
+          height="15"
+          rx="3"
+          transform="rotate(-12 17 25)"
+        />
+        <rect
+          className="f"
+          x="27"
+          y="20"
+          width="14"
+          height="14"
+          rx="3"
+          transform="rotate(10 34 27)"
+        />
         <path className="t" d="M4,24 Q26,28 48,24" />
         <path className="l" d="M0,0 L7,74 L45,74 L52,0" />
       </g>
@@ -48,7 +64,10 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
     colors: ['#F3E7C6', '#FF8A3D'],
     draw: () => (
       <g transform="translate(80,430)">
-        <path className="f" d="M9,0 L17,0 L17,14 C24,18 26,24 26,30 L26,52 L0,52 L0,30 C0,24 2,18 9,14 Z" />
+        <path
+          className="f"
+          d="M9,0 L17,0 L17,14 C24,18 26,24 26,30 L26,52 L0,52 L0,30 C0,24 2,18 9,14 Z"
+        />
         <rect className="o" x="3" y="31" width="20" height="12" />
         <rect className="f2" x="36" y="20" width="34" height="32" rx="2" />
         <rect className="o" x="41" y="28" width="24" height="14" />
@@ -71,7 +90,10 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
     colors: ['#A85AA8'],
     draw: () => (
       <g transform="translate(298,536)">
-        <path className="f" d="M22,0 C24,10 36,18 42,28 C48,40 38,44 22,44 C6,44 -4,40 2,28 C8,18 20,10 22,0 Z" />
+        <path
+          className="f"
+          d="M22,0 C24,10 36,18 42,28 C48,40 38,44 22,44 C6,44 -4,40 2,28 C8,18 20,10 22,0 Z"
+        />
         <path className="t" d="M22,6 C14,18 10,30 14,44 M22,6 C30,18 34,30 30,44" />
       </g>
     ),
@@ -88,7 +110,14 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
           <path key={i} className="t" d={`M${(-8 + (i + 1) * 9.75).toFixed(1)},64 v14`} />
         ))}
         {[0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14].map((i) => (
-          <rect key={i} className="k" x={(-8 + (i + 1) * 9.75 - 2.6).toFixed(1)} y="64" width="5.2" height="8" />
+          <rect
+            key={i}
+            className="k"
+            x={(-8 + (i + 1) * 9.75 - 2.6).toFixed(1)}
+            y="64"
+            width="5.2"
+            height="8"
+          />
         ))}
         <rect className="f" x="0" y="78" width="140" height="44" />
         <rect className="o" x="4" y="122" width="10" height="6" />
@@ -192,14 +221,28 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
         <path className="f3" d="M719,590 C700,572 684,580 680,590 C694,596 708,596 719,590 Z" />
         <path className="f3" d="M721,560 C740,544 756,552 760,562 C746,568 732,566 721,560 Z" />
         {range(16).map((i) => (
-          <ellipse key={i} className="f" cx="720" cy="440" rx="7" ry="15" transform={`rotate(${i * 22.5} 720 470)`} />
+          <ellipse
+            key={i}
+            className="f"
+            cx="720"
+            cy="440"
+            rx="7"
+            ry="15"
+            transform={`rotate(${i * 22.5} 720 470)`}
+          />
         ))}
         <circle className="f2" cx="720" cy="470" r="21" />
         {range(60).map((i) => {
           const r = 2.5 * Math.sqrt(i + 1);
           const a = i * 2.39996;
           return (
-            <circle key={i} className="k seed" cx={(720 + r * Math.cos(a)).toFixed(1)} cy={(470 + r * Math.sin(a)).toFixed(1)} r="1.1" />
+            <circle
+              key={i}
+              className="k seed"
+              cx={(720 + r * Math.cos(a)).toFixed(1)}
+              cy={(470 + r * Math.sin(a)).toFixed(1)}
+              r="1.1"
+            />
           );
         })}
       </g>
@@ -266,7 +309,15 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
         <circle className="k" cx="29" cy="15" r="2" />
         <circle className="k" cx="35" cy="21" r="2" />
         <circle className="k" cx="41" cy="27" r="2" />
-        <rect className="f2" x="54" y="12" width="22" height="22" rx="4" transform="rotate(12 65 23)" />
+        <rect
+          className="f2"
+          x="54"
+          y="12"
+          width="22"
+          height="22"
+          rx="4"
+          transform="rotate(12 65 23)"
+        />
         <circle className="o dot" cx="61" cy="19" r="1.8" />
         <circle className="o dot" cx="70" cy="27" r="1.8" />
       </g>
@@ -275,7 +326,7 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
   swing: {
     colors: ['#F2683C'],
     draw: () => (
-      <g transform="translate(1170,470)">
+      <g transform="translate(1150,470)">
         <path className="l frame" d="M10,170 L40,0 L70,170 M130,170 L160,0 L190,170 M40,0 L160,0" />
         <g className="swingseat">
           <path className="l" d="M90,0 L90,118 M110,0 L110,118" />
@@ -287,18 +338,21 @@ export const OBJECT_ART: Record<string, ObjectArt> = {
   slide: {
     colors: ['#2F80ED', '#FFD23F'],
     draw: () => (
-      <g transform="translate(1374,470)">
+      <g transform="translate(1344,470)">
         <path className="l" d="M2,170 L16,30 M28,170 L42,30" />
         <path className="t" d="M5,140 h26 M8,110 h26 M11,80 h26 M14,50 h26" />
         <rect className="f2" x="12" y="24" width="44" height="9" rx="2" />
-        <path className="f" d="M50,24 C80,24 92,62 110,108 C122,138 140,158 170,158 L172,170 C136,170 114,150 100,114 C84,72 74,36 50,34 Z" />
+        <path
+          className="f"
+          d="M50,24 C80,24 92,62 110,108 C122,138 140,158 170,158 L172,170 C136,170 114,150 100,114 C84,72 74,36 50,34 Z"
+        />
       </g>
     ),
   },
   seesaw: {
     colors: ['#FFB000', '#5B5F66'],
     draw: () => (
-      <g transform="translate(1544,520)">
+      <g transform="translate(1516,520)">
         <path className="f2" d="M50,120 L62,92 L74,120 Z" />
         <g transform="rotate(-12 62 92)">
           <rect className="f" x="12" y="86" width="100" height="8" rx="3" />

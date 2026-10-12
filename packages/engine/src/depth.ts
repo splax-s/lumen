@@ -4,7 +4,8 @@ export const DEPTHS: readonly Depth[] = ['play', 'explain', 'deep'];
 export type Mood = 'happy' | 'thinking' | 'wow' | 'proud';
 export const MOODS: readonly Mood[] = ['happy', 'thinking', 'wow', 'proud'];
 
-export type DepthText = string | { play?: string | undefined; explain?: string | undefined; deep?: string | undefined };
+export type DepthText =
+  string | { play?: string | undefined; explain?: string | undefined; deep?: string | undefined };
 
 /** Selected depth first, then Explain, then Play. */
 export function resolveText(text: DepthText | undefined, depth: Depth): string {

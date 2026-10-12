@@ -1,5 +1,14 @@
 import { TANK_ITEMS, WATER_DENSITY, type TankItem } from './data/items';
-import { BaseSim, TAU, pill, roundRect, type SimColors, type SimState, type SimValue, type SimView } from './types';
+import {
+  BaseSim,
+  TAU,
+  pill,
+  roundRect,
+  type SimColors,
+  type SimState,
+  type SimValue,
+  type SimView,
+} from './types';
 
 /**
  * A water tank. Things dropped in either sink to the floor or float at the depth where the
@@ -27,7 +36,13 @@ type Body = {
   settled: boolean;
 };
 
-export type TankSnapshot = { id: string; floats: boolean; submerged: number; onFloor: boolean; settled: boolean };
+export type TankSnapshot = {
+  id: string;
+  floats: boolean;
+  submerged: number;
+  onFloor: boolean;
+  settled: boolean;
+};
 
 export default class TankSim extends BaseSim {
   private bodies: Body[] = [];
@@ -98,7 +113,9 @@ export default class TankSim extends BaseSim {
       }
       body.age += dt;
       if (!body.settled && body.age > 0.3) {
-        const atRest = floats ? Math.abs(body.v) < 3 && Math.abs(body.yb - rest) < 0.8 : body.yb === FLOOR;
+        const atRest = floats
+          ? Math.abs(body.v) < 3 && Math.abs(body.yb - rest) < 0.8
+          : body.yb === FLOOR;
         if (atRest) {
           body.settled = true;
           this.emit({ type: 'settled', value: body.id });
@@ -128,7 +145,10 @@ export default class TankSim extends BaseSim {
     if (this.bodies.length === 0) return t('sim.tank.describeEmpty');
     const parts = this.bodies.map((body) =>
       body.def.rho < WATER_DENSITY
-        ? t('sim.tank.describeFloats', { item: t(`item.${body.id}`), percent: Math.round(body.def.rho * 100) })
+        ? t('sim.tank.describeFloats', {
+            item: t(`item.${body.id}`),
+            percent: Math.round(body.def.rho * 100),
+          })
         : t('sim.tank.describeSinks', { item: t(`item.${body.id}`) }),
     );
     return t('sim.tank.describe', { list: parts.join(' ') });
@@ -140,7 +160,8 @@ export default class TankSim extends BaseSim {
     const percent = Math.round((body.def.rho / WATER_DENSITY) * 100);
     const depth = this.env.depth();
     if (depth === 'play') return floats ? t('sim.tank.floats') : t('sim.tank.sinks');
-    if (depth === 'explain') return floats ? t('sim.tank.floatsUnder', { percent }) : t('sim.tank.sinks');
+    if (depth === 'explain')
+      return floats ? t('sim.tank.floatsUnder', { percent }) : t('sim.tank.sinks');
     const rho = String(body.def.rho);
     return floats ? t('sim.tank.densityUnder', { rho, percent }) : t('sim.tank.density', { rho });
   }
@@ -169,7 +190,10 @@ export default class TankSim extends BaseSim {
     for (const body of this.bodies) {
       const x = left + (span * (body.slot + 0.5)) / slots;
       const floats = body.def.rho < WATER_DENSITY;
-      const bob = floats && body.settled && !this.env.reducedMotion ? Math.sin(this.time * 2 + body.phase) * 1.2 : 0;
+      const bob =
+        floats && body.settled && !this.env.reducedMotion
+          ? Math.sin(this.time * 2 + body.phase) * 1.2
+          : 0;
       // Depth below the surface is drawn at the item's own scale so the submerged fraction stays true.
       const bottom =
         body.yb >= FLOOR

@@ -10,7 +10,9 @@ function withChange(change: (lesson: Any) => void) {
 }
 
 function messages(result: ReturnType<typeof lessonSchema.safeParse>): string {
-  return result.success ? '' : result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('\n');
+  return result.success
+    ? ''
+    : result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('\n');
 }
 
 describe('lessonSchema', () => {
@@ -74,7 +76,9 @@ describe('lessonSchema', () => {
       l.steps[2].hints[0].play = 'Wrong! Try again.';
     });
     expect(messages(result)).toMatch(/not quite/i);
-    expect(withChange((l) => (l.steps[0].lumi.play = 'That is the wrong way round.')).success).toBe(false);
+    expect(withChange((l) => (l.steps[0].lumi.play = 'That is the wrong way round.')).success).toBe(
+      false,
+    );
   });
 
   it('allows words that merely contain those letters', () => {
@@ -82,7 +86,9 @@ describe('lessonSchema', () => {
   });
 
   it('rejects text with neither a Play nor an Explain form', () => {
-    expect(withChange((l) => (l.steps[0].lumi = { mood: 'wow', deep: 'Only deep.' })).success).toBe(false);
+    expect(withChange((l) => (l.steps[0].lumi = { mood: 'wow', deep: 'Only deep.' })).success).toBe(
+      false,
+    );
   });
 
   it('rejects a sort item filed under an unknown bin', () => {

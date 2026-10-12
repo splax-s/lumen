@@ -1,0 +1,90 @@
+.frame {
+  overflow-x: auto;
+  border: 1px solid var(--lm-line);
+  border-radius: var(--lm-radius-xl);
+  background: var(--lm-white);
+}
+
+.web {
+  display: block;
+  width: 100%;
+  min-width: 900px;
+  height: auto;
+}
+
+.heading {
+  font-family: var(--lm-font-mono);
+  font-weight: 500;
+  font-size: 14px;
+  fill: var(--lm-graphite);
+}
+
+.needs {
+  fill: none;
+  stroke: var(--lm-line-strong);
+  stroke-width: 2;
+}
+
+.thread {
+  fill: none;
+  stroke: var(--lm-ink);
+  stroke-width: 2.5;
+  stroke-dasharray: 2 8;
+  stroke-linecap: round;
+}
+
+.node {
+  cursor: pointer;
+  outline: none;
+}
+
+.node rect {
+  fill: var(--lm-white);
+  stroke: var(--lm-line-strong);
+  stroke-width: 1.5;
+}
+
+.node text {
+  font-family: var(--lm-font-body);
+  font-weight: 700;
+  font-size: 14px;
+  fill: var(--lm-ink);
+}
+
+.node[data-state='done'] rect {
+  fill: var(--lm-ink);
+  stroke: var(--lm-ink);
+}
+
+.node[data-state='done'] text {
+  fill: var(--lm-on-ink);
+}
+
+.node[data-state='next'] rect {
+  stroke: var(--lm-lumi);
+  stroke-width: 3.5;
+  stroke-dasharray: 9 6;
+}
+
+.node[data-state='locked'] rect {
+  fill: var(--lm-mist);
+  stroke-dasharray: 3 5;
+}
+
+.node[data-state='locked'] text {
+  fill: var(--lm-graphite);
+}
+
+.node:hover rect {
+  stroke: var(--lm-ink);
+}
+
+.node:focus-visible rect {
+  stroke: var(--lm-ink);
+  stroke-width: 3.5;
+  stroke-dasharray: none;
+}
+
+.faded {
+  opacity: 0.3;
+}

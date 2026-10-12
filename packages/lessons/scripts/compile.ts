@@ -36,7 +36,12 @@ export type Catalog = {
 export type CompileResult = { errors: string[]; lessons: Lesson[]; catalog: Catalog };
 
 type RawObject = Omit<CatalogObject, 'threads' | 'built' | 'card' | 'concepts' | 'minutes'>;
-type RawCatalog = { places: Record<string, string>; subjects: Record<Subject, string>; threads: CatalogThread[]; objects: RawObject[] };
+type RawCatalog = {
+  places: Record<string, string>;
+  subjects: Record<Subject, string>;
+  threads: CatalogThread[];
+  objects: RawObject[];
+};
 
 function yamlFiles(dir: string): string[] {
   const out: string[] = [];
@@ -72,21 +77,27 @@ export function compile(options: { contentDir: string; catalogPath: string }): C
   const errors: string[] = [];
   const raw = parse(readFileSync(options.catalogPath, 'utf8')) as RawCatalog;
   const objectIds = new Set(raw.objects.map((o) => o.id));
-  const lessonIds = new Set(raw.objects.map((o) => o.lesson).filter((id): id is string => id !== null));
+  const lessonIds = new Set(
+    raw.objects.map((o) => o.lesson).filter((id): id is string => id !== null),
+  );
 
   for (const thread of raw.threads) {
     for (const id of thread.objects) {
-      if (!objectIds.has(id)) errors.push(`catalog.yaml: thread "${thread.id}" names missing object "${id}"`);
+      if (!objectIds.has(id))
+        errors.push(`catalog.yaml: thread "${thread.id}" names missing object "${id}"`);
     }
   }
   for (const object of raw.objects) {
-    if (!SUBJECTS.includes(object.subject)) errors.push(`catalog.yaml: object "${object.id}" has unknown subject`);
-    if (!(object.place in raw.places)) errors.push(`catalog.yaml: object "${object.id}" has unknown place`);
+    if (!SUBJECTS.includes(object.subject))
+      errors.push(`catalog.yaml: object "${object.id}" has unknown subject`);
+    if (!(object.place in raw.places))
+      errors.push(`catalog.yaml: object "${object.id}" has unknown place`);
     if (!raw.threads.some((t) => t.objects.includes(object.id))) {
       errors.push(`catalog.yaml: object "${object.id}" belongs to no thread`);
     }
     for (const need of object.needs) {
-      if (!lessonIds.has(need)) errors.push(`catalog.yaml: object "${object.id}" needs missing lesson "${need}"`);
+      if (!lessonIds.has(need))
+        errors.push(`catalog.yaml: object "${object.id}" needs missing lesson "${need}"`);
     }
   }
 
@@ -102,7 +113,8 @@ export function compile(options: { contentDir: string; catalogPath: string }): C
     }
     const parsed = lessonSchema.safeParse(data);
     if (!parsed.success) {
-      for (const issue of parsed.error.issues) errors.push(`${name}: ${issue.path.join('.')}: ${issue.message}`);
+      for (const issue of parsed.error.issues)
+        errors.push(`${name}: ${issue.path.join('.')}: ${issue.message}`);
       continue;
     }
     const lesson = parsed.data;
@@ -111,13 +123,21 @@ export function compile(options: { contentDir: string; catalogPath: string }): C
       errors.push(`${name}: lesson "${lesson.id}" is not in catalog.yaml`);
       continue;
     }
-    if (lessons.some((l) => l.id === lesson.id)) errors.push(`${name}: duplicate lesson id "${lesson.id}"`);
+    if (lessons.some((l) => l.id === lesson.id))
+      errors.push(`${name}: duplicate lesson id "${lesson.id}"`);
     const threads = raw.threads.filter((t) => t.objects.includes(object.id)).map((t) => t.id);
     const expect = (field: string, ok: boolean, wanted: unknown) => {
-      if (!ok) errors.push(`${name}: ${field} disagrees with catalog.yaml (expected ${JSON.stringify(wanted)})`);
+      if (!ok)
+        errors.push(
+          `${name}: ${field} disagrees with catalog.yaml (expected ${JSON.stringify(wanted)})`,
+        );
     };
     expect('subject', lesson.subject === object.subject, object.subject);
-    expect('object', lesson.object === `${object.place}/${object.id}`, `${object.place}/${object.id}`);
+    expect(
+      'object',
+      lesson.object === `${object.place}/${object.id}`,
+      `${object.place}/${object.id}`,
+    );
     expect('number', lesson.number === object.number, object.number);
     expect('title', lesson.title === object.question, object.question);
     expect('needs', sameSet(lesson.needs, object.needs), object.needs);

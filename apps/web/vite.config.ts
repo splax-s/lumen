@@ -3,7 +3,10 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [react()],
-  server: { port: 5173, proxy: { '/api': { target: 'http://127.0.0.1:8000', rewrite: (p) => p.replace(/^\/api/, '') } } },
+  server: {
+    port: 5173,
+    proxy: { '/api': { target: 'http://127.0.0.1:8000', rewrite: (p) => p.replace(/^\/api/, '') } },
+  },
   preview: { port: 4173 },
   build: { target: 'es2020', sourcemap: false, cssCodeSplit: true },
   test: {

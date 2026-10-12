@@ -17,7 +17,8 @@ export function DepthSwitch({ value, onChange, labels, compact = false }: DepthS
     const index = DEPTHS.indexOf(depth);
     let next: number;
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % DEPTHS.length;
-    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index + DEPTHS.length - 1) % DEPTHS.length;
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp')
+      next = (index + DEPTHS.length - 1) % DEPTHS.length;
     else if (event.key === 'Home') next = 0;
     else if (event.key === 'End') next = DEPTHS.length - 1;
     else return;
@@ -28,7 +29,11 @@ export function DepthSwitch({ value, onChange, labels, compact = false }: DepthS
   };
 
   return (
-    <div role="radiogroup" aria-label={labels.group} className={compact ? `${styles.track} ${styles.compact}` : styles.track}>
+    <div
+      role="radiogroup"
+      aria-label={labels.group}
+      className={compact ? `${styles.track} ${styles.compact}` : styles.track}
+    >
       {DEPTHS.map((depth) => (
         <button
           key={depth}

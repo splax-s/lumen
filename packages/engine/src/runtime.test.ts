@@ -17,7 +17,8 @@ function start(depth: 'play' | 'explain' | 'deep' = 'play') {
     goTo(type: string) {
       for (let guard = 0; guard < 20 && runtime.getState().step.type !== type; guard++) {
         const s = runtime.getState();
-        if (s.step.type === 'poke') for (const v of ['coin', 'cork', 'ice']) runtime.bus.emit({ type: 'dropped', value: v });
+        if (s.step.type === 'poke')
+          for (const v of ['coin', 'cork', 'ice']) runtime.bus.emit({ type: 'dropped', value: v });
         if (s.step.type === 'predict') runtime.answerPredict('bigger');
         if (s.step.type === 'zoom') runtime.bus.emit({ type: 'froze' });
         if (s.step.type === 'challenge') {

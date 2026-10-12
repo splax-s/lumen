@@ -3,12 +3,26 @@ import { chromium } from '@playwright/test';
 
 const [outDir, width = '1280', height = '800', depth = 'play'] = process.argv.slice(2);
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: +width, height: +height }, deviceScaleFactor: 1 });
+const page = await browser.newPage({
+  viewport: { width: +width, height: +height },
+  deviceScaleFactor: 1,
+});
 const errors = [];
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
 page.on('pageerror', (e) => errors.push(String(e)));
 await page.addInitScript((d) => {
-  localStorage.setItem('lumen.progress', JSON.stringify({ version: 1, depth: d, narrate: false, done: [], cards: [], streak: { current: 0, longest: 0, lastDay: null, restDaysLeft: 2 }, pendingAttempts: [] }));
+  localStorage.setItem(
+    'lumen.progress',
+    JSON.stringify({
+      version: 1,
+      depth: d,
+      narrate: false,
+      done: [],
+      cards: [],
+      streak: { current: 0, longest: 0, lastDay: null, restDaysLeft: 2 },
+      pendingAttempts: [],
+    }),
+  );
 }, depth);
 await page.goto('http://localhost:4173/lesson/chem.ice-floats');
 const tag = `${width}-${depth}`;
@@ -16,7 +30,11 @@ const shot = (name) => page.screenshot({ path: `${outDir}/${tag}-${name}.png` })
 const next = async () => {
   const b = page.locator('footer button').last();
   await b.waitFor();
-  await page.waitForFunction(() => !document.querySelector('footer button:last-of-type')?.disabled, null, { timeout: 15000 });
+  await page.waitForFunction(
+    () => !document.querySelector('footer button:last-of-type')?.disabled,
+    null,
+    { timeout: 15000 },
+  );
   await b.click();
   await page.waitForTimeout(400);
 };
@@ -49,8 +67,19 @@ await next();
 await shot('5-name');
 await next();
 await shot('6-challenge');
-for (const [item, bin] of [['log', 'Floats'], ['stone', 'Sinks'], ['iceberg', 'Sinks'], ['iceberg', 'Floats'], ['bolt', 'Sinks'], ['oil', 'Floats'], ['honey', 'Sinks']]) {
-  await page.locator(`[data-item=${item}]`).getByRole('button', { name: new RegExp(bin) }).click();
+for (const [item, bin] of [
+  ['log', 'Floats'],
+  ['stone', 'Sinks'],
+  ['iceberg', 'Sinks'],
+  ['iceberg', 'Floats'],
+  ['bolt', 'Sinks'],
+  ['oil', 'Floats'],
+  ['honey', 'Sinks'],
+]) {
+  await page
+    .locator(`[data-item=${item}]`)
+    .getByRole('button', { name: new RegExp(bin) })
+    .click();
 }
 await page.waitForTimeout(3500);
 await shot('6-challenge-lake');
@@ -59,5 +88,11 @@ await page.waitForTimeout(6000);
 await shot('6-challenge-sank');
 await next();
 await shot('7-keep');
-console.log(JSON.stringify({ tag, errors, overflow: await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth) }));
+console.log(
+  JSON.stringify({
+    tag,
+    errors,
+    overflow: await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
+  }),
+);
 await browser.close();

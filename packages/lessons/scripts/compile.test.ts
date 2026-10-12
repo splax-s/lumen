@@ -33,8 +33,15 @@ describe('lesson compiler', () => {
     expect(result.errors).toEqual([]);
     expect(result.lessons.map((l) => l.id)).toEqual(['chem.ice-floats']);
     const glass = result.catalog.objects.find((o) => o.id === 'glass')!;
-    expect(glass).toMatchObject({ built: true, card: 'Ice floats because freezing water spreads out.', threads: ['particles'] });
-    expect(result.catalog.objects.find((o) => o.id === 'kettle')).toMatchObject({ built: false, card: null });
+    expect(glass).toMatchObject({
+      built: true,
+      card: 'Ice floats because freezing water spreads out.',
+      threads: ['particles'],
+    });
+    expect(result.catalog.objects.find((o) => o.id === 'kettle')).toMatchObject({
+      built: false,
+      card: null,
+    });
   });
 
   it('names the file when a done_when does not parse', () => {
@@ -83,13 +90,19 @@ describe('lesson compiler', () => {
     mkdirSync(join(dir, 'content'), { recursive: true });
     writeFileSync(join(dir, 'content', 'bad.yaml'), 'id: [unclosed');
     writeFileSync(join(dir, 'catalog.yaml'), CATALOG);
-    const result = compile({ contentDir: join(dir, 'content'), catalogPath: join(dir, 'catalog.yaml') });
+    const result = compile({
+      contentDir: join(dir, 'content'),
+      catalogPath: join(dir, 'catalog.yaml'),
+    });
     expect(result.errors.join('\n')).toMatch(/bad\.yaml/);
   });
 
   it('the real catalog and lessons compile cleanly', () => {
     const root = join(__dirname, '..');
-    const result = compile({ contentDir: join(root, 'content'), catalogPath: join(root, 'catalog.yaml') });
+    const result = compile({
+      contentDir: join(root, 'content'),
+      catalogPath: join(root, 'catalog.yaml'),
+    });
     expect(result.errors).toEqual([]);
     expect(result.catalog.objects).toHaveLength(21);
     const raw = parse(readFileSync(join(root, 'catalog.yaml'), 'utf8')) as Any;

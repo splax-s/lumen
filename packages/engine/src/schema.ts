@@ -9,7 +9,15 @@ import { ConditionError, parseCondition } from './condition';
 export const SUBJECTS = ['maths', 'physics', 'chemistry', 'biology', 'music'] as const;
 export type Subject = (typeof SUBJECTS)[number];
 
-export const STEP_ORDER = ['hook', 'poke', 'predict', 'zoom', 'name_it', 'challenge', 'keep'] as const;
+export const STEP_ORDER = [
+  'hook',
+  'poke',
+  'predict',
+  'zoom',
+  'name_it',
+  'challenge',
+  'keep',
+] as const;
 export type StepType = (typeof STEP_ORDER)[number];
 
 const MAX_TITLE_WORDS = 12;
@@ -26,7 +34,10 @@ const needsPlayOrExplain = (value: { play?: string | undefined; explain?: string
   value.play !== undefined || value.explain !== undefined;
 const playOrExplainMessage = { message: 'Text needs at least a Play or an Explain form' };
 
-const depthObjectSchema = z.object(depthFields).strict().refine(needsPlayOrExplain, playOrExplainMessage);
+const depthObjectSchema = z
+  .object(depthFields)
+  .strict()
+  .refine(needsPlayOrExplain, playOrExplainMessage);
 
 /** A learner-facing string, written once or once per depth. */
 export const depthTextSchema = z.union([z.string().min(1), depthObjectSchema]);
@@ -100,7 +111,9 @@ const toggleSideSchema = z
   .object({ value: paramValueSchema, label: screenTextSchema, lumi: lumiLineSchema.optional() })
   .strict();
 
-const toggleSchema = z.object({ param: z.string().min(1), off: toggleSideSchema, on: toggleSideSchema }).strict();
+const toggleSchema = z
+  .object({ param: z.string().min(1), off: toggleSideSchema, on: toggleSideSchema })
+  .strict();
 
 const controlSchema = z.union([sliderSchema, choiceControlSchema, buttonControlSchema]);
 
@@ -136,9 +149,13 @@ const hookSchema = z
   .object({ type: z.literal('hook'), ...interactiveFields, done_when: doneWhenSchema.optional() })
   .strict();
 
-const pokeSchema = z.object({ type: z.literal('poke'), ...interactiveFields, done_when: doneWhenSchema }).strict();
+const pokeSchema = z
+  .object({ type: z.literal('poke'), ...interactiveFields, done_when: doneWhenSchema })
+  .strict();
 
-const zoomSchema = z.object({ type: z.literal('zoom'), ...interactiveFields, done_when: doneWhenSchema }).strict();
+const zoomSchema = z
+  .object({ type: z.literal('zoom'), ...interactiveFields, done_when: doneWhenSchema })
+  .strict();
 
 const hintSchema = z
   .object({ ...depthFields, highlight: z.string().optional(), demo: simSpecSchema.optional() })
@@ -151,7 +168,11 @@ const predictSchema = z
     title: screenTextSchema,
     lumi: lumiLineSchema,
     choices: z
-      .array(z.object({ id: z.string().min(1), label: screenTextSchema, art: z.string().min(1) }).strict())
+      .array(
+        z
+          .object({ id: z.string().min(1), label: screenTextSchema, art: z.string().min(1) })
+          .strict(),
+      )
       .length(3),
     answer: z.string().min(1),
     /** Nudge, clue, then demo. */
@@ -164,10 +185,18 @@ const predictSchema = z
   .superRefine((step, ctx) => {
     const ids = step.choices.map((c) => c.id);
     if (new Set(ids).size !== ids.length) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Choice ids must be unique', path: ['choices'] });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Choice ids must be unique',
+        path: ['choices'],
+      });
     }
     if (!ids.includes(step.answer)) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'answer must be one of the choices', path: ['answer'] });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'answer must be one of the choices',
+        path: ['answer'],
+      });
     }
     step.hints.forEach((hint, index) => {
       if (hint.highlight !== undefined && !ids.includes(hint.highlight)) {
@@ -229,7 +258,11 @@ const sortSchema = z
     const bins = sort.bins.map((b) => b.id);
     sort.items.forEach((item, index) => {
       if (!bins.includes(item.bin)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'bin must be one of the bins', path: ['items', index, 'bin'] });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'bin must be one of the bins',
+          path: ['items', index, 'bin'],
+        });
       }
     });
   });
@@ -272,7 +305,15 @@ const keepSchema = z
     type: z.literal('keep'),
     lumi: lumiLineSchema,
     where_else: z
-      .array(z.object({ title: z.string().min(1), text: depthTextSchema, lesson: z.string().optional() }).strict())
+      .array(
+        z
+          .object({
+            title: z.string().min(1),
+            text: depthTextSchema,
+            lesson: z.string().optional(),
+          })
+          .strict(),
+      )
       .min(1)
       .max(4),
   })
@@ -323,12 +364,20 @@ export const lessonSchema = z
     blurb: z.string().min(1),
     minutes: z.number().int().min(1).max(15).default(5),
     /** The accuracy reference the tutor must stay consistent with. */
-    facts: z.array(z.object({ text: z.string().min(1), source: z.string().min(1) }).strict()).min(1),
+    facts: z
+      .array(z.object({ text: z.string().min(1), source: z.string().min(1) }).strict())
+      .min(1),
     /** Scripted answers Lumi can give with no model call. */
-    questions: z.array(z.object({ ask: depthTextSchema, answer: depthTextSchema }).strict()).default([]),
+    questions: z
+      .array(z.object({ ask: depthTextSchema, answer: depthTextSchema }).strict())
+      .default([]),
     /** Wrong predict choices mapped to the misunderstanding behind them. */
     misconceptions: z
-      .array(z.object({ choice: z.string(), text: depthTextSchema, lesson: z.string().optional() }).strict())
+      .array(
+        z
+          .object({ choice: z.string(), text: depthTextSchema, lesson: z.string().optional() })
+          .strict(),
+      )
       .default([]),
     tags: z.array(z.string()).default([]),
     steps: z.array(stepSchema).length(STEP_ORDER.length),
@@ -346,7 +395,11 @@ export const lessonSchema = z
     const hits: (string | number)[][] = [];
     findWrong(lesson, [], hits);
     for (const path of hits) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Lumi says "not quite", never "wrong"', path });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Lumi says "not quite", never "wrong"',
+        path,
+      });
     }
   });
 

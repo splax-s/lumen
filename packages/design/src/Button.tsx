@@ -13,7 +13,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   { variant = 'primary', size = 'md', block = false, className, type = 'button', ...rest },
   ref,
 ) {
-  const classes = [styles.button, styles[variant], styles[size], block ? styles.block : '', className ?? '']
+  const classes = [
+    styles.button,
+    styles[variant],
+    styles[size],
+    block ? styles.block : '',
+    className ?? '',
+  ]
     .filter(Boolean)
     .join(' ');
   return <button ref={ref} type={type} className={classes} {...rest} />;

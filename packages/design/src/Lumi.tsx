@@ -25,7 +25,13 @@ function Face({ mood }: { mood: Mood }) {
         <>
           <ellipse className={styles.eye} cx="35" cy="45" rx="3" ry="4.4" fill={INK} />
           <ellipse className={styles.eye} cx="51" cy="45" rx="3" ry="4.4" fill={INK} />
-          <path d="M36,64 L45,62" fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round" />
+          <path
+            d="M36,64 L45,62"
+            fill="none"
+            stroke={INK}
+            strokeWidth="2.4"
+            strokeLinecap="round"
+          />
         </>
       );
     case 'wow':
@@ -56,7 +62,13 @@ function Face({ mood }: { mood: Mood }) {
         <>
           <ellipse className={styles.eye} cx="32" cy="49" rx="3.2" ry="4.6" fill={INK} />
           <ellipse className={styles.eye} cx="48" cy="49" rx="3.2" ry="4.6" fill={INK} />
-          <path d="M34,61 Q40,67 46,61" fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round" />
+          <path
+            d="M34,61 Q40,67 46,61"
+            fill="none"
+            stroke={INK}
+            strokeWidth="2.4"
+            strokeLinecap="round"
+          />
         </>
       );
   }
@@ -90,7 +102,13 @@ export function Lumi({ mood, size = 76, title, decorative = false, still = false
       {...a11y}
     >
       <circle cx="40" cy="52" r="38" fill="#FFC21A" opacity={bulb.halo} />
-      <path d="M40,24 C40,15 44,9 49,7" fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round" />
+      <path
+        d="M40,24 C40,15 44,9 49,7"
+        fill="none"
+        stroke={INK}
+        strokeWidth="2.4"
+        strokeLinecap="round"
+      />
       <circle cx="50" cy="7" r={bulb.r} fill={bulb.fill} stroke={INK} strokeWidth="2" />
       <path
         d="M40,24 C60,24 70,39 68,57 C66,75 54,82 40,82 C26,82 14,75 12,57 C10,39 20,24 40,24 Z"

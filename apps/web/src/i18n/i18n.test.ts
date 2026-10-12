@@ -1,7 +1,11 @@
 import { createTranslator } from './index';
 
 describe('translator', () => {
-  const t = createTranslator({ hello: 'Hello', step: 'Step {current} of {total}', nested: { deep: 'Deep value' } });
+  const t = createTranslator({
+    hello: 'Hello',
+    step: 'Step {current} of {total}',
+    nested: { deep: 'Deep value' },
+  });
 
   it('looks up flat and nested keys', () => {
     expect(t('hello')).toBe('Hello');

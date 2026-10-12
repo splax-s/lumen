@@ -14,6 +14,12 @@
   --lm-ink: #16161d;
   --lm-on-ink: #ffffff;
   --lm-sketch: #b7b7c2; /* unlit town objects, drawn as pencil lines */
+  /* A surface that stays dark in both themes, for the one inverted card */
+  --lm-night: #16161d;
+  --lm-on-night: #ffffff;
+  --lm-on-night-soft: #d6d6de;
+  --lm-night-line: #55555f;
+  --lm-art-ink: #16161d; /* dark details inside coloured illustrations */
 
   /* Accents, used small */
   --lm-lumi: #ffc21a;
@@ -45,7 +51,8 @@
   --lm-room-b: #eaf8f3;
 
   /* Type */
-  --lm-font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', sans-serif;
+  --lm-font-display:
+    'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', sans-serif;
   --lm-font-body: 'Atkinson Hyperlegible', Verdana, 'Segoe UI', sans-serif;
   --lm-font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
 
@@ -70,6 +77,8 @@
   --lm-ink: #f2f2f5;
   --lm-on-ink: #121217;
   --lm-sketch: #5a5a68;
+  --lm-night: #24242e;
+  --lm-night-line: #6a6a78;
   --lm-lumi: #ffc21a;
   --lm-lumi-tint: #3a2f0d;
   --lm-on-lumi: #16161d;

@@ -1,0 +1,377 @@
+/* The frame scrolls sideways on small screens; the scene is never squashed below 1040 px wide. */
+.frame {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: var(--lm-radius-xl);
+  background: var(--lm-sim-sky);
+  box-shadow: var(--lm-shadow-float);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.town {
+  display: block;
+  width: 100%;
+  min-width: 1040px;
+  height: auto;
+  --sketch: var(--lm-sketch);
+}
+
+/* Scenery */
+.town :global(.sky) {
+  fill: var(--lm-sim-sky);
+}
+
+.town :global(.ground) {
+  fill: var(--lm-sim-ground);
+}
+
+.town :global(.cloud) {
+  fill: var(--lm-white);
+  stroke: var(--lm-line-strong);
+  stroke-width: 1.5;
+}
+
+.town :global(.scene) {
+  fill: none;
+  stroke: var(--lm-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.town :global(.scene.thin) {
+  stroke-width: 1.3;
+}
+
+.town :global(.scene.paper) {
+  fill: var(--lm-white);
+}
+
+.town :global(.scene.window) {
+  fill: var(--lm-sim-sky);
+}
+
+.town :global(.wall) {
+  fill: var(--lm-white);
+  stroke: var(--lm-ink);
+  stroke-width: 2.5;
+}
+
+.town :global(.room) {
+  fill: var(--lm-mist);
+}
+
+.town :global(.roomA) {
+  fill: var(--lm-room-a);
+}
+
+.town :global(.roomB) {
+  fill: var(--lm-room-b);
+}
+
+.town :global(.solid) {
+  fill: var(--lm-ink);
+}
+
+.town :global(.soft) {
+  fill: var(--lm-graphite);
+}
+
+.town :global(.rug) {
+  fill: var(--lm-line);
+}
+
+.town :global(.place) {
+  font-family: var(--lm-font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--lm-graphite);
+}
+
+/* Objects: a pencil sketch until the lesson is finished, then real colours. */
+.object {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.4s;
+  --line: var(--sketch);
+}
+
+.object[data-state='done'] {
+  --line: var(--lm-ink);
+}
+
+.hit {
+  fill: transparent;
+}
+
+.art :global(.f),
+.art :global(.f2),
+.art :global(.f3),
+.art :global(.o) {
+  fill: var(--lm-white);
+  stroke: var(--line);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition: fill 1.2s;
+}
+
+.art :global(.l) {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.art :global(.l.frame) {
+  stroke-width: 3;
+}
+
+.art :global(.t) {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.art :global(.t.dashes) {
+  stroke-dasharray: 3 5;
+}
+
+.art :global(.k) {
+  fill: var(--line);
+}
+
+.art :global(.w) {
+  fill: transparent;
+  transition: fill 1.2s;
+}
+
+.art :global(.seed) {
+  opacity: 0.5;
+}
+
+.object[data-state='done'] .art :global(.f) {
+  fill: var(--c);
+}
+
+.object[data-state='done'] .art :global(.f2) {
+  fill: var(--c2);
+}
+
+.object[data-state='done'] .art :global(.f3) {
+  fill: var(--c3);
+}
+
+.object[data-state='done'] .art :global(.w) {
+  fill: var(--lm-sim-water);
+  opacity: 0.75;
+}
+
+.object[data-state='done'] .art :global(.k) {
+  fill: var(--lm-art-ink);
+}
+
+.object[data-state='done'] .art :global(.seed) {
+  opacity: 1;
+}
+
+.object[data-state='locked'] .art,
+.object[data-state='soon'] .art {
+  opacity: 0.75;
+}
+
+.object:hover .art :global(.f),
+.object:hover .art :global(.f2),
+.object:hover .art :global(.f3),
+.object:hover .art :global(.o),
+.object:hover .art :global(.l) {
+  stroke-width: 2.6;
+}
+
+/* Rings: yellow dashes for "next", a solid ring for keyboard focus. */
+.ring {
+  fill: none;
+  stroke: var(--lm-lumi);
+  stroke-width: 4;
+  stroke-dasharray: 10 8;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.object[data-state='next'] .ring {
+  opacity: 1;
+  animation: spin 6s linear infinite;
+}
+
+.object:focus-visible .ring {
+  opacity: 1;
+  stroke: var(--lm-ink);
+  stroke-dasharray: none;
+  stroke-width: 3;
+  animation: none;
+}
+
+@keyframes spin {
+  to {
+    stroke-dashoffset: -180;
+  }
+}
+
+.badge {
+  opacity: 0;
+  transition: opacity 0.6s 0.8s;
+  pointer-events: none;
+}
+
+.badge circle {
+  stroke: var(--lm-white);
+  stroke-width: 2;
+}
+
+.object[data-state='done'] .badge {
+  opacity: 1;
+}
+
+.tagBox {
+  fill: var(--lm-ink);
+}
+
+.tagText {
+  font-family: var(--lm-font-display);
+  font-weight: 800;
+  font-size: 14px;
+  fill: var(--lm-on-ink);
+}
+
+/* Threads */
+.dimmed .object:not(.linked) {
+  opacity: 0.22;
+}
+
+.thread {
+  fill: none;
+  stroke: var(--lm-ink);
+  stroke-width: 3;
+  stroke-dasharray: 2 9;
+  stroke-linecap: round;
+  animation: march 1.4s linear infinite;
+  pointer-events: none;
+}
+
+.threadDot {
+  fill: var(--lm-lumi);
+  stroke: var(--lm-ink);
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+@keyframes march {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+/* Lit objects come alive. */
+.art :global(.steam path) {
+  opacity: 0;
+}
+
+.object[data-state='done'] .art :global(.steam path) {
+  animation: rise 2.4s ease-in-out infinite;
+}
+
+.object[data-state='done'] .art :global(.steam .late) {
+  animation-delay: 0.8s;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-14px);
+    opacity: 0;
+  }
+}
+
+.object[data-state='done'] .art :global(.swingseat) {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: swing 2.8s ease-in-out infinite;
+}
+
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(12deg);
+  }
+  50% {
+    transform: rotate(-12deg);
+  }
+}
+
+.object[data-state='done'] .art :global(.hover) {
+  animation: hover 1.8s ease-in-out infinite;
+}
+
+@keyframes hover {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.object[data-state='done'] .art :global(.sway) {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: sway 3.6s ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+.justLit .art {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pop 0.9s ease-out 1;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .object,
+  .object *,
+  .thread,
+  .ring {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .object[data-state='done'] .art :global(.steam path) {
+    opacity: 0.8;
+  }
+}

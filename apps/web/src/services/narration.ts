@@ -25,7 +25,8 @@ export type Narration = {
 export function createNarration(deps: NarrationDeps): Narration {
   let playing: { stop(): void } | null = null;
   const canSpeak = deps.synth !== undefined && deps.Utterance !== undefined;
-  const hasRecordings = deps.playAudio !== undefined && Object.keys(deps.recordings ?? {}).length > 0;
+  const hasRecordings =
+    deps.playAudio !== undefined && Object.keys(deps.recordings ?? {}).length > 0;
 
   const stop = () => {
     try {
@@ -77,7 +78,10 @@ const hasWindow = typeof window !== 'undefined';
 
 /** The app's narration service. Recordings are registered here as they are produced. */
 export const narration: Narration = createNarration({
-  synth: hasWindow && 'speechSynthesis' in window ? (window.speechSynthesis as unknown as SynthLike) : undefined,
+  synth:
+    hasWindow && 'speechSynthesis' in window
+      ? (window.speechSynthesis as unknown as SynthLike)
+      : undefined,
   Utterance:
     hasWindow && 'SpeechSynthesisUtterance' in window
       ? (window.SpeechSynthesisUtterance as unknown as UtteranceLike)

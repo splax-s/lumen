@@ -13,7 +13,10 @@ const byNumber = (a: CatalogObject, b: CatalogObject) => (a.number ?? 999) - (b.
 /**
  * @param done finished lesson ids, oldest first (the last one is the most recent)
  */
-export function objectStates(objects: CatalogObject[], done: readonly string[]): Record<string, ObjectState> {
+export function objectStates(
+  objects: CatalogObject[],
+  done: readonly string[],
+): Record<string, ObjectState> {
   const finished = new Set(done);
   const states: Record<string, ObjectState> = {};
   const open: CatalogObject[] = [];
@@ -46,7 +49,11 @@ export function objectStates(objects: CatalogObject[], done: readonly string[]):
 }
 
 /** The unfinished prerequisite that keeps an object locked, if any. */
-export function lockedBy(object: CatalogObject, done: readonly string[], all: CatalogObject[]): CatalogObject | null {
+export function lockedBy(
+  object: CatalogObject,
+  done: readonly string[],
+  all: CatalogObject[],
+): CatalogObject | null {
   const missing = object.needs.find((need) => !done.includes(need));
   if (missing === undefined) return null;
   return all.find((o) => o.lesson === missing) ?? null;

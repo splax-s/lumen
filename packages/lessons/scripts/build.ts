@@ -7,7 +7,10 @@ import { compile } from './compile';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const out = join(root, 'dist');
-const result = compile({ contentDir: join(root, 'content'), catalogPath: join(root, 'catalog.yaml') });
+const result = compile({
+  contentDir: join(root, 'content'),
+  catalogPath: join(root, 'catalog.yaml'),
+});
 
 if (result.errors.length > 0) {
   console.error(`Lesson build failed with ${result.errors.length} problem(s):\n`);
@@ -23,4 +26,6 @@ for (const lesson of result.lessons) {
 writeFileSync(join(out, 'catalog.json'), JSON.stringify(result.catalog, null, 2));
 // One file with everything, for the API's lesson sync and the tutor's fact sheets.
 writeFileSync(join(out, 'lessons.json'), JSON.stringify(result.lessons));
-console.log(`Built ${result.lessons.length} lesson(s), ${result.catalog.objects.length} town objects.`);
+console.log(
+  `Built ${result.lessons.length} lesson(s), ${result.catalog.objects.length} town objects.`,
+);

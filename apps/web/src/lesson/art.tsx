@@ -6,7 +6,12 @@ import type { ReactNode } from 'react';
  */
 
 const INK = 'var(--lm-ink)';
-const stroke = { stroke: INK, strokeWidth: 2, strokeLinejoin: 'round', strokeLinecap: 'round' } as const;
+const stroke = {
+  stroke: INK,
+  strokeWidth: 2,
+  strokeLinejoin: 'round',
+  strokeLinecap: 'round',
+} as const;
 
 function bottle(width: number, cracked: boolean): ReactNode {
   const cx = 60;
@@ -19,7 +24,9 @@ function bottle(width: number, cracked: boolean): ReactNode {
         fill="#E3F5FF"
         {...stroke}
       />
-      {cracked ? <path d={`M${cx + w / 2 - 4},70 l-8,8 l6,4 l-8,10`} fill="none" {...stroke} /> : null}
+      {cracked ? (
+        <path d={`M${cx + w / 2 - 4},70 l-8,8 l6,4 l-8,10`} fill="none" {...stroke} />
+      ) : null}
       <path d={`M${cx - w / 2 + 6},60 l6,-4`} fill="none" {...stroke} />
     </svg>
   );
@@ -60,7 +67,12 @@ const ICONS: Record<string, () => ReactNode> = {
         {...stroke}
       />
       <path d="M20,12 V5" fill="none" {...stroke} />
-      <path d="M21,8 C25,3 30,5 30,6 C27,9 24,9 21,8 Z" fill="#5AA62D" stroke={INK} strokeWidth="1.5" />
+      <path
+        d="M21,8 C25,3 30,5 30,6 C27,9 24,9 21,8 Z"
+        fill="#5AA62D"
+        stroke={INK}
+        strokeWidth="1.5"
+      />
     </>
   ),
   log: () => (
@@ -72,7 +84,13 @@ const ICONS: Record<string, () => ReactNode> = {
   stone: () => <path d="M6,30 Q6,12 18,11 Q34,10 34,30 Z" fill="#8E9196" {...stroke} />,
   iceberg: () => (
     <>
-      <path d="M8,24 L12,36 L28,36 L32,24" fill="#BFE3F7" stroke={INK} strokeWidth="1.6" strokeLinejoin="round" />
+      <path
+        d="M8,24 L12,36 L28,36 L32,24"
+        fill="#BFE3F7"
+        stroke={INK}
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
       <path d="M8,24 L16,8 L22,14 L30,24 Z" fill="#E3F5FF" {...stroke} />
       <path d="M4,24 H36" fill="none" {...stroke} />
     </>
@@ -107,7 +125,13 @@ export function ItemIcon({ id, size = 40 }: { id: string | undefined; size?: num
   const draw = id ? ICONS[id] : undefined;
   if (!draw) return null;
   return (
-    <svg viewBox="0 0 40 40" width={size} height={size} aria-hidden="true" style={{ flex: '0 0 auto' }}>
+    <svg
+      viewBox="0 0 40 40"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      style={{ flex: '0 0 auto' }}
+    >
       {draw()}
     </svg>
   );

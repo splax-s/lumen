@@ -105,8 +105,19 @@ describe('Button', () => {
 describe('LumiStrip', () => {
   it('announces what Lumi says politely and offers read-aloud when available', async () => {
     let spoken = 0;
-    render(<LumiStrip mood="wow" text="Frozen!" name="Lumi" speakLabel="Read aloud" onSpeak={() => spoken++} />);
-    expect(screen.getByText('Frozen!').closest('[aria-live]')).toHaveAttribute('aria-live', 'polite');
+    render(
+      <LumiStrip
+        mood="wow"
+        text="Frozen!"
+        name="Lumi"
+        speakLabel="Read aloud"
+        onSpeak={() => spoken++}
+      />,
+    );
+    expect(screen.getByText('Frozen!').closest('[aria-live]')).toHaveAttribute(
+      'aria-live',
+      'polite',
+    );
     await userEvent.click(screen.getByRole('button', { name: 'Read aloud' }));
     expect(spoken).toBe(1);
   });

@@ -90,7 +90,97 @@
     }
   },
   "town": {
-    "placeholder": "The town arrives in the next phase.",
-    "startIce": "Play the ice lesson"
+    "title": "Your town",
+    "titleNamed": "{name}’s town",
+    "label": "Your town: a house with a rooftop, a music room and a kitchen, a garden and a playground",
+    "webLabel": "Concept web: every lesson by subject, with what to do first",
+    "viewTown": "Town",
+    "viewWeb": "Concept web",
+    "viewGroup": "View",
+    "streak": "{count}-day streak",
+    "streakNone": "No streak yet",
+    "progress": "{subject} {done}/{total}",
+    "progressLabel": "{subject}: {done} of {total} lessons",
+    "startHere": "Start here",
+    "nextUp": "Next up",
+    "assigned": "Assigned",
+    "state": {
+      "done": "lit up",
+      "next": "next up",
+      "available": "ready to play",
+      "locked": "locked",
+      "soon": "coming soon"
+    },
+    "describe": "{name}: {question} {state}.",
+    "play": "Play: {name}",
+    "sheet": {
+      "close": "Close",
+      "place": "{subject} · {place}",
+      "thread": "Thread: {name} · {count} more",
+      "minutes": "About {minutes} minutes",
+      "lit": "Lit up",
+      "opensAfter": "Opens after: {lesson}",
+      "soon": "Coming soon",
+      "soonLesson": "This lesson is on its way",
+      "start": "Start lesson",
+      "again": "Play again",
+      "offline": "Available offline",
+      "family": "Included in the Family plan",
+      "seePlans": "See plans"
+    },
+    "threads": {
+      "title": "Threads",
+      "hint": "The same idea shows up in different places. Pick one to see where.",
+      "places": "{count} places"
+    },
+    "cards": {
+      "title": "Your cards · {count}",
+      "titleEmpty": "Your cards",
+      "empty": "Finish a lesson to earn your first card."
+    },
+    "daily": {
+      "eyebrow": "Daily one-minute challenge",
+      "meta": "{subject} · 60 seconds",
+      "right": "That's it!",
+      "notQuite": "Not quite. Have another go.",
+      "done": "Done for today. Come back tomorrow for another.",
+      "loading": "Finding today's challenge…"
+    },
+    "settings": {
+      "title": "Settings",
+      "narrate": "Read Lumi aloud at Play depth",
+      "reset": "Reset progress",
+      "resetConfirm": "Reset all progress on this device?",
+      "resetYes": "Yes, reset",
+      "resetNo": "Keep my progress",
+      "theme": "Dark mode"
+    },
+    "lumi": {
+      "welcome": {
+        "play": "Hi, I'm Lumi! This whole town is full of secrets. Tap the glass of ice water in the kitchen to start.",
+        "explain": "Hi, I'm Lumi. Every object in this town hides a science idea. Start with the glass of ice water in the kitchen.",
+        "deep": "I'm Lumi. Each object here is a lesson, and the threads show how ideas connect across subjects. Begin with the ice water in the kitchen."
+      },
+      "next": {
+        "play": "You lit up the {last}! Look, it has colour now. The {next} is next. Want to find out: {question}",
+        "explain": "The {last} is lit up. Next in line is the {next}: {question}",
+        "deep": "{last} done. Next: the {next}. {question}"
+      },
+      "soon": {
+        "play": "You lit up the {last}! More of the town is on its way. Tap anything to see what is inside.",
+        "explain": "The {last} is lit up. More lessons are on their way. Tap any object to see what it holds.",
+        "deep": "{last} done. The remaining lessons are in production. Each object shows its question and threads."
+      },
+      "allDone": {
+        "play": "You lit up the whole town! Tap anything to play it again.",
+        "explain": "Every object is lit. Play any lesson again at a deeper level.",
+        "deep": "All twenty lessons complete. Replay any at Deep for the formulas."
+      },
+      "thread": {
+        "play": "See the dotted path? The same idea lives in all of these.",
+        "explain": "This thread joins lessons that share one idea: {name}.",
+        "deep": "Thread: {name}. The linked lessons reuse the same concept in different subjects."
+      }
+    }
   }
 }

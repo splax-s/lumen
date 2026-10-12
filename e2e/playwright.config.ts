@@ -17,14 +17,34 @@ export default defineConfig({
     reducedMotion: 'no-preference',
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } } },
+    {
+      // Frame-rate measurements. Run on their own: `playwright test --project=perf --workers=1`.
+      name: 'perf',
+      testMatch: /perf\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 390, height: 844 },
+        hasTouch: true,
+        isMobile: true,
+      },
+    },
+    {
+      name: 'desktop',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
+    },
     {
       name: 'phone',
-      use: { ...devices['Desktop Chrome'], viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 390, height: 844 },
+        hasTouch: true,
+        isMobile: true,
+      },
     },
   ],
   webServer: {
-    command: 'pnpm --filter @lumen/lessons build && pnpm --filter @lumen/web build && pnpm --filter @lumen/web preview',
+    command:
+      'pnpm --filter @lumen/lessons build && pnpm --filter @lumen/web build && pnpm --filter @lumen/web preview',
     cwd: '..',
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,

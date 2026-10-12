@@ -1,7 +1,10 @@
 import { expect, seed, test, type Depth } from '../fixtures';
 import { IceLesson } from './ice';
 
-const TEXT: Record<Depth, { hook: RegExp; iceLabel: RegExp; frozen: RegExp; sortDetail: boolean; formula: boolean }> = {
+const TEXT: Record<
+  Depth,
+  { hook: RegExp; iceLabel: RegExp; frozen: RegExp; sortDetail: boolean; formula: boolean }
+> = {
   play: {
     hook: /Ice is hard like a stone/,
     iceLabel: /most of it is hiding underwater/,
@@ -35,7 +38,10 @@ for (const depth of ['play', 'explain', 'deep'] as const) {
     // 1. Hook: ice floats next to a sunken stone, with the simulation already running.
     await lesson.expectStep(1);
     await expect(lesson.lumi).toHaveText(expected.hook);
-    await expect(lesson.sim('tank')).toHaveAttribute('aria-label', /ice cube floats with 92% of it under water/);
+    await expect(lesson.sim('tank')).toHaveAttribute(
+      'aria-label',
+      /ice cube floats with 92% of it under water/,
+    );
     await expect(lesson.sim('tank')).toHaveAttribute('aria-label', /stone has sunk to the bottom/);
     await lesson.continue();
 
@@ -44,8 +50,14 @@ for (const depth of ['play', 'explain', 'deep'] as const) {
     await expect(lesson.heading('Sink or float?')).toBeVisible();
     await expect(lesson.continueButton).toBeDisabled();
     await lesson.drop('Coin', 'Cork', 'Apple');
-    await expect(lesson.sim('tank')).toHaveAttribute('aria-label', /apple floats with 80% of it under water/);
-    await expect(lesson.sim('tank')).toHaveAttribute('aria-label', /cork floats with 24% of it under water/);
+    await expect(lesson.sim('tank')).toHaveAttribute(
+      'aria-label',
+      /apple floats with 80% of it under water/,
+    );
+    await expect(lesson.sim('tank')).toHaveAttribute(
+      'aria-label',
+      /cork floats with 24% of it under water/,
+    );
     await expect(lesson.sim('tank')).toHaveAttribute('aria-label', /coin has sunk/);
     await expect(lesson.continueButton, 'three items without ice is not enough').toBeDisabled();
     await lesson.drop('Ice cube');
@@ -70,7 +82,10 @@ for (const depth of ['play', 'explain', 'deep'] as const) {
     await expect(lesson.continueButton, 'cooling above zero does not freeze').toBeDisabled();
     await lesson.setTemperature(-10);
     await expect(page.getByRole('status').or(page.locator('output'))).toContainText('−10 °C');
-    await expect(lesson.sim('molecules')).toHaveAttribute('aria-label', /six-sided rings.*Space taken: 109%/);
+    await expect(lesson.sim('molecules')).toHaveAttribute(
+      'aria-label',
+      /six-sided rings.*Space taken: 109%/,
+    );
     await expect(lesson.lumi).toHaveText(expected.frozen);
     await lesson.continue();
 
@@ -80,7 +95,9 @@ for (const depth of ['play', 'explain', 'deep'] as const) {
     await expect(page.locator('h1 em')).toHaveText('dense');
     if (expected.formula) {
       await expect(page.getByText('density ρ = mass m ÷ volume V')).toBeVisible();
-      await expect(page.getByRole('row', { name: /Liquid water \(4 °C\).*1\.00 g\/cm³/ })).toBeVisible();
+      await expect(
+        page.getByRole('row', { name: /Liquid water \(4 °C\).*1\.00 g\/cm³/ }),
+      ).toBeVisible();
       await expect(page.getByRole('row', { name: /Ice \(0 °C\).*0\.92 g\/cm³/ })).toBeVisible();
     } else {
       await expect(page.getByText('density ρ = mass m ÷ volume V')).toHaveCount(0);
@@ -95,11 +112,18 @@ for (const depth of ['play', 'explain', 'deep'] as const) {
     await expect(lesson.lumi).toHaveText(/Not quite/);
     await lesson.sortAll();
     await expect(lesson.continueButton).toBeDisabled();
-    await expect(lesson.sim('lake')).toHaveAttribute('aria-label', /thin lid of ice on top\. 6 of 6 fish/);
+    await expect(lesson.sim('lake')).toHaveAttribute(
+      'aria-label',
+      /thin lid of ice on top\. 6 of 6 fish/,
+    );
     await page.getByRole('button', { name: 'What if ice sank?' }).click();
-    await expect(lesson.sim('lake')).toHaveAttribute('aria-label', /piles up from the bottom\. 0 of 6 fish/, {
-      timeout: 20_000,
-    });
+    await expect(lesson.sim('lake')).toHaveAttribute(
+      'aria-label',
+      /piles up from the bottom\. 0 of 6 fish/,
+      {
+        timeout: 20_000,
+      },
+    );
     await page.getByRole('button', { name: 'Back to the real world' }).click();
     await expect(lesson.sim('lake')).toHaveAttribute('aria-label', /6 of 6 fish/);
     await lesson.continue();
@@ -107,19 +131,27 @@ for (const depth of ['play', 'explain', 'deep'] as const) {
     // 7. Keep: the card and where else.
     await lesson.expectStep(7);
     await expect(page.getByText('Ice floats because freezing water spreads out.')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Where else does this show up?' })).toBeVisible();
-    for (const place of ['The kettle', 'Icebergs', 'Burst pipes']) await expect(page.getByText(place, { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Where else does this show up?' }),
+    ).toBeVisible();
+    for (const place of ['The kettle', 'Icebergs', 'Burst pipes'])
+      await expect(page.getByText(place, { exact: true })).toBeVisible();
     await expect(lesson.continueButton).toHaveText('Light up the town');
     await lesson.continue();
 
-    await expect(page).toHaveURL(/\/town\?lit=glass/);
-    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('lumen.progress') ?? '{}'));
+    await expect(page).toHaveURL(/\/town/);
+    await expect(page.locator('[data-object="glass"]')).toHaveAttribute('data-state', 'done');
+    const stored = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('lumen.progress') ?? '{}'),
+    );
     expect(stored.done.map((d: { lessonId: string }) => d.lessonId)).toEqual(['chem.ice-floats']);
     expect(stored.cards).toHaveLength(1);
   });
 }
 
-test('the hint ladder gives a nudge, a clue, a demo, and only then the answer', async ({ page }) => {
+test('the hint ladder gives a nudge, a clue, a demo, and only then the answer', async ({
+  page,
+}) => {
   await seed(page);
   const lesson = new IceLesson(page);
   await lesson.open();
@@ -147,7 +179,10 @@ test('the hint ladder gives a nudge, a clue, a demo, and only then the answer', 
   await expect(page.getByText(/wrong/i)).toHaveCount(0);
 });
 
-test('switching depth in the middle of a step keeps what the learner did', async ({ page, isMobile }) => {
+test('switching depth in the middle of a step keeps what the learner did', async ({
+  page,
+  isMobile,
+}) => {
   await seed(page);
   const lesson = new IceLesson(page);
   await lesson.open();
@@ -226,7 +261,9 @@ test('the whole lesson can be played with the keyboard alone', async ({ page, is
   await expect(page).toHaveURL(/\/town/);
 });
 
-test('going back keeps earlier steps passable and Continue never skips a step', async ({ page }) => {
+test('going back keeps earlier steps passable and Continue never skips a step', async ({
+  page,
+}) => {
   await seed(page);
   const lesson = new IceLesson(page);
   await lesson.open();

@@ -1,4 +1,12 @@
-import { BaseSim, FONT_BODY, FONT_MONO, TAU, type SimState, type SimValue, type SimView } from './types';
+import {
+  BaseSim,
+  FONT_BODY,
+  FONT_MONO,
+  TAU,
+  type SimState,
+  type SimValue,
+  type SimView,
+} from './types';
 
 /**
  * A lake in winter, cut through the middle. In the real world ice floats, so it forms a lid

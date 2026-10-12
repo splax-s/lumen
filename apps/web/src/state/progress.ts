@@ -5,7 +5,12 @@ import { DEPTHS, type AttemptRecord, type Depth } from '@lumen/engine';
  * storage at all (private browsing), and it is synced to the API when someone is signed in.
  */
 
-export type Streak = { current: number; longest: number; lastDay: string | null; restDaysLeft: number };
+export type Streak = {
+  current: number;
+  longest: number;
+  lastDay: string | null;
+  restDaysLeft: number;
+};
 
 export type Progress = {
   version: 1;
@@ -57,7 +62,12 @@ export function emptyProgress(): Progress {
 export function nextStreak(streak: Streak, today: string): Streak {
   if (streak.lastDay === today) return streak;
   if (streak.lastDay === null || streak.current === 0) {
-    return { current: 1, longest: Math.max(streak.longest, 1), lastDay: today, restDaysLeft: REST_DAYS };
+    return {
+      current: 1,
+      longest: Math.max(streak.longest, 1),
+      lastDay: today,
+      restDaysLeft: REST_DAYS,
+    };
   }
   const missed = daysBetween(streak.lastDay, today) - 1;
   if (missed < 0) return streak; // the clock went backwards; leave the streak alone
@@ -185,10 +195,15 @@ export function createProgressStore(options: {
       const queued = state.pendingAttempts.some((a) => a.id === attempt.id);
       commit({
         ...state,
-        done: [...state.done.filter((d) => d.lessonId !== attempt.lessonId), { lessonId: attempt.lessonId, at }],
+        done: [
+          ...state.done.filter((d) => d.lessonId !== attempt.lessonId),
+          { lessonId: attempt.lessonId, at },
+        ],
         cards: firstTime ? [...state.cards, { lessonId: attempt.lessonId, at }] : state.cards,
         streak: nextStreak(state.streak, dayKey(at)),
-        pendingAttempts: queued ? state.pendingAttempts : [...state.pendingAttempts, attempt].slice(-MAX_PENDING),
+        pendingAttempts: queued
+          ? state.pendingAttempts
+          : [...state.pendingAttempts, attempt].slice(-MAX_PENDING),
       });
     },
     markSent(attemptIds) {

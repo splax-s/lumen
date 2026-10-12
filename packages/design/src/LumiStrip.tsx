@@ -17,7 +17,15 @@ export type LumiStripProps = {
 };
 
 /** Lumi on the left, a speech bubble with read-aloud, and actions on the right. */
-export function LumiStrip({ mood, text, name, speakLabel, onSpeak, children, size = 'md' }: LumiStripProps) {
+export function LumiStrip({
+  mood,
+  text,
+  name,
+  speakLabel,
+  onSpeak,
+  children,
+  size = 'md',
+}: LumiStripProps) {
   return (
     <div className={size === 'sm' ? `${styles.strip} ${styles.small}` : styles.strip}>
       <div className={styles.speaker}>
@@ -27,7 +35,12 @@ export function LumiStrip({ mood, text, name, speakLabel, onSpeak, children, siz
             <b className={styles.name}>{name}</b> <span data-testid="lumi-text">{text}</span>
           </p>
           {onSpeak ? (
-            <button type="button" className={styles.speak} aria-label={speakLabel} onClick={onSpeak}>
+            <button
+              type="button"
+              className={styles.speak}
+              aria-label={speakLabel}
+              onClick={onSpeak}
+            >
               <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
                 <path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor" />
                 <path

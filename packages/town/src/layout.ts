@@ -3,7 +3,7 @@ export const TOWN_WIDTH = 1680;
 export const TOWN_HEIGHT = 700;
 export const GROUND_Y = 640;
 
-export const ANCHORS: Record<string, { x: number; y: number; r?: number }> = {
+export const ANCHORS: Record<string, { x: number; y: number; r?: number; tag?: 'above' }> = {
   // Rooftop
   telescope: { x: 150, y: 118 },
   dish: { x: 502, y: 116 },
@@ -13,7 +13,7 @@ export const ANCHORS: Record<string, { x: number; y: number; r?: number }> = {
   djembe: { x: 410, y: 346 },
   'record-player': { x: 524, y: 338 },
   // Kitchen
-  'baking-soda': { x: 115, y: 456, r: 44 },
+  'baking-soda': { x: 115, y: 456, r: 44, tag: 'above' },
   glass: { x: 121, y: 548, r: 44 },
   scale: { x: 215, y: 556, r: 44 },
   onion: { x: 320, y: 558, r: 44 },
@@ -26,14 +26,14 @@ export const ANCHORS: Record<string, { x: number; y: number; r?: number }> = {
   beetles: { x: 1004, y: 612, r: 44 },
   dice: { x: 1096, y: 580 },
   // Playground
-  swing: { x: 1270, y: 556, r: 64 },
-  slide: { x: 1456, y: 556, r: 62 },
-  seesaw: { x: 1606, y: 600, r: 52 },
+  swing: { x: 1250, y: 556, r: 64 },
+  slide: { x: 1426, y: 556, r: 62 },
+  seesaw: { x: 1578, y: 600, r: 52 },
   // Sky
   moon: { x: 1500, y: 100 },
 };
 
-export function anchorOf(id: string): { x: number; y: number; r: number } {
+export function anchorOf(id: string): { x: number; y: number; r: number; tag: 'above' | 'below' } {
   const anchor = ANCHORS[id] ?? { x: TOWN_WIDTH / 2, y: TOWN_HEIGHT / 2 };
-  return { x: anchor.x, y: anchor.y, r: anchor.r ?? 54 };
+  return { x: anchor.x, y: anchor.y, r: anchor.r ?? 54, tag: anchor.tag ?? 'below' };
 }

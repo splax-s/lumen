@@ -10,7 +10,10 @@ export function lessonFixture(): Record<string, unknown> {
     needs: [],
     concepts: ['density', 'states-of-matter'],
     card: 'Ice floats because freezing water spreads out.',
-    summary: { play: 'Frozen water takes more room.', deep: 'Ice Ih is less dense than liquid water.' },
+    summary: {
+      play: 'Frozen water takes more room.',
+      deep: 'Ice Ih is less dense than liquid water.',
+    },
     blurb: 'Drop things into water, then zoom in on freezing molecules.',
     facts: [{ text: 'Ice density about 0.92 g/cm3 at 0 C', source: 'CRC Handbook' }],
     steps: [
@@ -18,7 +21,11 @@ export function lessonFixture(): Record<string, unknown> {
         type: 'hook',
         title: 'Why does ice float?',
         sim: { kind: 'tank', items: ['ice', 'stone'] },
-        lumi: { mood: 'wow', play: 'Ice is hard like a stone.', deep: 'Water is a rare exception.' },
+        lumi: {
+          mood: 'wow',
+          play: 'Ice is hard like a stone.',
+          deep: 'Water is a rare exception.',
+        },
       },
       {
         type: 'poke',
@@ -58,7 +65,16 @@ export function lessonFixture(): Record<string, unknown> {
         title: 'Zoom in. Way in.',
         sim: { kind: 'molecules' },
         controls: [
-          { type: 'slider', param: 'temperature', label: 'Temperature', min: -10, max: 20, step: 1, start: 20, unit: '°C' },
+          {
+            type: 'slider',
+            param: 'temperature',
+            label: 'Temperature',
+            min: -10,
+            max: 20,
+            step: 1,
+            start: 20,
+            unit: '°C',
+          },
         ],
         lumi: { play: 'Slide the temperature down.' },
         done_when: "event('froze')",
@@ -92,14 +108,24 @@ export function lessonFixture(): Record<string, unknown> {
           toggle: {
             param: 'mode',
             off: { value: 'real', label: 'Back to the real world', lumi: { play: 'Phew.' } },
-            on: { value: 'sank', label: 'What if ice sank?', lumi: { mood: 'wow', play: 'Oh no!' } },
+            on: {
+              value: 'sank',
+              label: 'What if ice sank?',
+              lumi: { mood: 'wow', play: 'Oh no!' },
+            },
           },
         },
       },
       {
         type: 'keep',
         lumi: { mood: 'proud', play: 'You did it!' },
-        where_else: [{ title: 'The kettle', text: 'Steam is the same tiny pieces.', lesson: 'chem.kettle-boil' }],
+        where_else: [
+          {
+            title: 'The kettle',
+            text: 'Steam is the same tiny pieces.',
+            lesson: 'chem.kettle-boil',
+          },
+        ],
       },
     ],
   };

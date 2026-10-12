@@ -26,10 +26,14 @@ export function english(key: string, vars?: Record<string, string | number>): st
   let node: string | Tree | undefined = en as Tree;
   for (const part of key.split('.')) node = typeof node === 'object' ? node[part] : undefined;
   if (typeof node !== 'string') return key;
-  return node.replace(/\{(\w+)\}/g, (match, name: string) => (vars && name in vars ? String(vars[name]) : match));
+  return node.replace(/\{(\w+)\}/g, (match, name: string) =>
+    vars && name in vars ? String(vars[name]) : match,
+  );
 }
 
-export function testEnv(options: { depth?: Depth; seed?: number; reducedMotion?: boolean; english?: boolean } = {}): SimEnv & {
+export function testEnv(
+  options: { depth?: Depth; seed?: number; reducedMotion?: boolean; english?: boolean } = {},
+): SimEnv & {
   texts: string[];
 } {
   const texts: string[] = [];
@@ -46,7 +50,10 @@ export function testEnv(options: { depth?: Depth; seed?: number; reducedMotion?:
 /** A stand-in for a 2D canvas context that accepts every call and records drawn text. */
 export type DrawnText = { text: string; x: number; y: number; align: string; width: number };
 
-export function fakeContext(drawn: string[] = [], placed: DrawnText[] = []): CanvasRenderingContext2D {
+export function fakeContext(
+  drawn: string[] = [],
+  placed: DrawnText[] = [],
+): CanvasRenderingContext2D {
   const target: Record<string, unknown> = { textAlign: 'start' };
   return new Proxy(target, {
     get(obj, prop: string) {
@@ -93,11 +100,16 @@ export function rendersEverywhere(sim: Simulation): string[] {
 }
 
 /** Every piece of text drawn at this size, with the left and right edge it would occupy. */
-export function textExtents(sim: Simulation, width: number, height: number): { text: string; left: number; right: number }[] {
+export function textExtents(
+  sim: Simulation,
+  width: number,
+  height: number,
+): { text: string; left: number; right: number }[] {
   const placed: DrawnText[] = [];
   sim.render(fakeContext([], placed), view(width, height, 1));
   return placed.map((p) => {
-    const left = p.align === 'center' ? p.x - p.width / 2 : p.align === 'right' ? p.x - p.width : p.x;
+    const left =
+      p.align === 'center' ? p.x - p.width / 2 : p.align === 'right' ? p.x - p.width : p.x;
     return { text: p.text, left, right: left + p.width };
   });
 }
@@ -106,7 +118,9 @@ export function textExtents(sim: Simulation, width: number, height: number): { t
 export function expectTextFits(sim: Simulation, width: number, height: number): void {
   for (const extent of textExtents(sim, width, height)) {
     if (extent.left < 0 || extent.right > width) {
-      throw new Error(`"${extent.text}" spans ${extent.left}..${extent.right} on a ${width}px canvas`);
+      throw new Error(
+        `"${extent.text}" spans ${extent.left}..${extent.right} on a ${width}px canvas`,
+      );
     }
   }
 }

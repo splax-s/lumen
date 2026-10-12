@@ -65,7 +65,8 @@ export class IceLesson {
   }
 
   async drop(...items: string[]): Promise<void> {
-    for (const item of items) await this.page.getByRole('button', { name: item, exact: true }).click();
+    for (const item of items)
+      await this.page.getByRole('button', { name: item, exact: true }).click();
   }
 
   choice(id: 'smaller' | 'same' | 'bigger'): Locator {
@@ -77,7 +78,9 @@ export class IceLesson {
   }
 
   sortButton(item: string, bin: 'Floats' | 'Sinks'): Locator {
-    return this.page.locator(`[data-item="${item}"]`).getByRole('button', { name: new RegExp(`: ${bin}$`) });
+    return this.page
+      .locator(`[data-item="${item}"]`)
+      .getByRole('button', { name: new RegExp(`: ${bin}$`) });
   }
 
   async sortAll(): Promise<void> {
@@ -93,7 +96,9 @@ export class IceLesson {
   }
 
   /** Plays from the hook up to (not past) the named step, taking the shortest correct path. */
-  async playTo(step: 'poke' | 'predict' | 'zoom' | 'name_it' | 'challenge' | 'keep'): Promise<void> {
+  async playTo(
+    step: 'poke' | 'predict' | 'zoom' | 'name_it' | 'challenge' | 'keep',
+  ): Promise<void> {
     const order = ['poke', 'predict', 'zoom', 'name_it', 'challenge', 'keep'];
     const target = order.indexOf(step);
     await this.continue();
