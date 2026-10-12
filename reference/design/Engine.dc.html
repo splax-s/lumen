@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumen engine and architecture</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; height: 1240px; box-sizing: border-box; padding: 56px; background: #FFFFFF; color: #1D1A3A; font-family: 'Atkinson Hyperlegible', Verdana, sans-serif; display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+    <h1 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 48px; letter-spacing: -0.03em; margin: 0">Engine &amp; architecture</h1>
+    <p style="margin: 0; max-width: 620px; font-size: 16px; color: #3A3660">One reusable simulation engine, with lessons written as scripts on top. New lessons need a script, not new code, which is how the catalogue grows to hundreds of lessons.</p>
+  </div>
+
+  <div style="display: flex; gap: 28px">
+    <div style="flex: 1.25; display: flex; flex-direction: column; gap: 10px">
+      <div style="border: 1px solid #E6E6EC; border-radius: 16px; padding: 14px 18px; background: #F6F6F8">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em">Web app · browser</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px">
+          <span style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 6px 10px; font-weight: 700">React + TypeScript (Vite)</span>
+          <span style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 6px 10px; font-weight: 700">Town map: SVG</span>
+          <span style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 6px 10px; font-weight: 700">PWA, works offline</span>
+        </div>
+      </div>
+      <div style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5A5680">↓ loads lesson scripts</div>
+      <div style="border: 1px solid #E6E6EC; border-radius: 16px; padding: 14px 18px; background: #F6F6F8">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em">Lesson engine · the core</span>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px">
+          <div style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 8px 10px"><b>Simulation kit</b><div style="font-size: 14px">Particles, springs, fluids, waves, populations, optics. Canvas 2D, PixiJS (WebGL) for heavy scenes</div></div>
+          <div style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 8px 10px"><b>Script runtime</b><div style="font-size: 14px">Reads a lesson file, runs its steps, checks the win conditions</div></div>
+          <div style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 8px 10px"><b>Interaction kit</b><div style="font-size: 14px">Slide, drag, predict, sort, build, draw, tap to explore</div></div>
+          <div style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 8px 10px"><b>Event bus</b><div style="font-size: 14px">Sims emit events like froze, sank, collided or died</div></div>
+          <div style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 8px 10px"><b>Audio</b><div style="font-size: 14px">Tone.js on Web Audio, sampled instruments for music</div></div>
+          <div style="background: #FFFFFF; border: 1px solid #E6E6EC; border-radius: 10px; padding: 8px 10px"><b>Voice</b><div style="font-size: 14px">Pre-recorded narration, with browser speech as fallback</div></div>
+        </div>
+      </div>
+      <div style="text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5A5680">↓ events and progress · HTTPS ↓</div>
+      <div style="display: flex; gap: 10px">
+        <div style="flex: 1; border: 1px solid #E6E6EC; border-radius: 16px; padding: 14px 18px; background: #F6F6F8">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em">API</span>
+          <div style="font-weight: 700; margin-top: 6px">Python FastAPI</div>
+          <div style="font-size: 14px">Accounts, progress, mastery model, parent and teacher reports</div>
+        </div>
+        <div style="flex: 1; border: 1px solid #E6E6EC; border-radius: 16px; padding: 14px 18px; background: #FFF6DA">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em">Lumi service</span>
+          <div style="font-weight: 700; margin-top: 6px">Claude via API</div>
+          <div style="font-size: 14px">Sees sim events plus learner state. Safety and accuracy filter on every reply. Science-only scope</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px">
+        <div style="flex: 1; border: 1px solid #E6E6EC; border-radius: 16px; padding: 12px 18px; background: #F6F6F8"><b>Postgres</b><div style="font-size: 14px">Users, progress, concept graph</div></div>
+        <div style="flex: 1; border: 1px solid #E6E6EC; border-radius: 16px; padding: 12px 18px; background: #F6F6F8"><b>Redis</b><div style="font-size: 14px">Sessions, rate limits</div></div>
+        <div style="flex: 1; border: 1px solid #E6E6EC; border-radius: 16px; padding: 12px 18px; background: #F6F6F8"><b>Object storage + CDN</b><div style="font-size: 14px">Art, audio, lesson files</div></div>
+      </div>
+      <div style="border: 3px dashed #1D1A3A; border-radius: 20px; padding: 12px 18px; font-size: 15px"><b>Hosting:</b> [CLOUD PROVIDER + REGION]. Keep learner data in-country where NDPR requires it. Containers on Kubernetes once traffic justifies it; a single managed VM plus managed Postgres at launch.</div>
+    </div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+      <div style="border: 1px solid #E6E6EC; border-radius: 16px; overflow: hidden">
+        <div style="padding: 10px 16px; background: #1D1A3A; color: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 13px">lessons/chem/ice-floats.yaml</div>
+        <pre style="margin: 0; padding: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.55; white-space: pre-wrap; background: #F5F7FF">id: chem.ice-floats
+place: kitchen/glass
+threads: [particles]
+needs: []
+steps:
+  - type: hook
+    sim: tank { items: [ice, stone] }
+    lumi:
+      play: "Ice is hard like a stone. Why doesn't it sink?"
+      deep: "Most solids are denser than their liquid..."
+  - type: poke
+    sim: tank { tray: [coin, cork, ice, apple] }
+    done_when: dropped >= 3 and dropped has ice
+  - type: predict
+    choices: [smaller, same, bigger]
+    answer: bigger
+    hints: [nudge, clue, demo]
+  - type: zoom
+    sim: molecules { control: temperature }
+    done_when: event == froze
+  - type: name_it
+    term: density
+  - type: challenge
+    sort: [log, stone, iceberg, bolt, oil, honey]
+  - type: keep
+    card: "Ice floats because freezing water spreads out."</pre>
+      </div>
+      <div style="border: 1px solid #E6E6EC; border-radius: 16px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px">
+        <b style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px">How Lumi reacts in real time</b>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px">
+          <span style="border: 1px solid #E6E6EC; border-radius: 10px; padding: 4px 8px; background: #F6F6F8">Sim emits died</span><span>→</span>
+          <span style="border: 1px solid #E6E6EC; border-radius: 10px; padding: 4px 8px; background: #F6F6F8">Runtime adds step + learner state</span><span>→</span>
+          <span style="border: 1px solid #E6E6EC; border-radius: 10px; padding: 4px 8px; background: #FFF6DA">Lumi picks hint level</span><span>→</span>
+          <span style="border: 1px solid #E6E6EC; border-radius: 10px; padding: 4px 8px">Safety check</span><span>→</span>
+          <span style="border: 1px solid #E6E6EC; border-radius: 10px; padding: 4px 8px; background: #FFC21A">Bubble</span>
+        </div>
+        <p style="margin: 0; font-size: 14px; color: #3A3660">Scripted lines cover most moments with no AI call at all. The model is used for free questions, misconception diagnosis and new challenge variants, which keeps cost and risk down.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="border: 1px solid #E6E6EC; border-radius: 16px; overflow: hidden">
+    <table style="width: 100%; border-collapse: collapse; font-size: 15px">
+      <thead><tr style="background: #1D1A3A; color: #FFFFFF; text-align: left"><th style="padding: 10px 14px">Decision</th><th style="padding: 10px 14px">Choice</th><th style="padding: 10px 14px">Why</th><th style="padding: 10px 14px">Revisit when</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom: 1.5px solid #E1E3F2"><td style="padding: 9px 14px; font-weight: 700">Rendering</td><td style="padding: 9px 14px">Canvas 2D + SVG, PixiJS for heavy scenes</td><td style="padding: 9px 14px">Runs on cheap Android phones and school PCs</td><td style="padding: 9px 14px">A lesson truly needs 3D (Three.js)</td></tr>
+        <tr style="border-bottom: 1.5px solid #E1E3F2"><td style="padding: 9px 14px; font-weight: 700">Physics</td><td style="padding: 9px 14px">Small custom solvers per sim</td><td style="padding: 9px 14px">Simple, exact, tunable for teaching</td><td style="padding: 9px 14px">Rigid-body stacking lessons (Rapier)</td></tr>
+        <tr style="border-bottom: 1.5px solid #E1E3F2"><td style="padding: 9px 14px; font-weight: 700">Lessons</td><td style="padding: 9px 14px">YAML scripts in Git</td><td style="padding: 9px 14px">Teachers can write them; reviewed like code</td><td style="padding: 9px 14px">More than 3 non-technical authors: build an editor</td></tr>
+        <tr style="border-bottom: 1.5px solid #E1E3F2"><td style="padding: 9px 14px; font-weight: 700">Back end</td><td style="padding: 9px 14px">FastAPI + Postgres</td><td style="padding: 9px 14px">Fits the mastery model and analytics work</td><td style="padding: 9px 14px">Never, likely</td></tr>
+        <tr><td style="padding: 9px 14px; font-weight: 700">Tutor</td><td style="padding: 9px 14px">Claude API behind a safety layer</td><td style="padding: 9px 14px">Strong reasoning and tone control</td><td style="padding: 9px 14px">Costs per learner exceed [TARGET]</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

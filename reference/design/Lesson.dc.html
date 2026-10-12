@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lumen lesson screen</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: #F6F6F8; color: #16161D; font-family: 'Atkinson Hyperlegible', Verdana, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 40px; border-bottom: 1px solid #E6E6EC; background: #FFFFFF">
+    <button type="button" style="font-family: inherit; font-weight: 700; font-size: 16px; padding: 10px 18px; background: #FFFFFF; border: 1px solid #D6D6DE; border-radius: 999px">Back to town</button>
+    <div style="display: flex; align-items: center; gap: 14px">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 4px 10px; background: #E1F5EF; color: #0B6B53; border-radius: 999px">Chemistry</span>
+      <div aria-label="Step 4 of 7" style="display: flex; gap: 6px">
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #16161D; display: block"></i>
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #16161D; display: block"></i>
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #16161D; display: block"></i>
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #FFC21A; display: block"></i>
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #E6E6EC; display: block"></i>
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #E6E6EC; display: block"></i>
+        <i style="width: 36px; height: 10px; border-radius: 10px; background: #E6E6EC; display: block"></i>
+      </div>
+    </div>
+    <div role="group" aria-label="Depth" style="display: inline-flex; border: 1px solid #D6D6DE; border-radius: 999px; overflow: hidden">
+      <button type="button" style="border: 0; padding: 7px 14px; background: #FFFFFF; font-weight: 700; font-family: inherit">Play</button>
+      <button type="button" style="border: 0; padding: 7px 14px; background: #1D1A3A; color: #FFFFFF; font-weight: 700; font-family: inherit">Explain</button>
+      <button type="button" style="border: 0; padding: 7px 14px; background: #FFFFFF; font-weight: 700; font-family: inherit">Deep</button>
+    </div>
+  </header>
+
+  <main style="flex: 1; min-height: 0; padding: 28px 40px; display: flex; flex-direction: column; gap: 20px">
+    <h1 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 54px; letter-spacing: -0.03em; margin: 0">Zoom in. Way in.</h1>
+    <div style="display: flex; gap: 24px; flex: 1; min-height: 0">
+      <div style="flex: 1; background: #FFFFFF; border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between"><b style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px">Liquid water · 20 °C</b><span style="font-family: 'IBM Plex Mono', monospace">Space taken: 100%</span></div>
+        <svg viewBox="0 0 560 330" role="img" aria-label="Water molecules tumbling close together without a pattern" style="width: 100%; height: auto; flex: 1">
+          <rect x="70" y="20" width="420" height="290" rx="10" fill="#E6F6FF" stroke="#1D1A3A" stroke-width="3"></rect>
+          <g stroke="#1D1A3A" stroke-width="2">
+            <circle cx="140" cy="70" r="6" fill="#FFFFFF"></circle><circle cx="158" cy="62" r="6" fill="#FFFFFF"></circle><circle cx="148" cy="80" r="12" fill="#E5484D"></circle>
+            <circle cx="210" cy="120" r="6" fill="#FFFFFF"></circle><circle cx="200" cy="140" r="6" fill="#FFFFFF"></circle><circle cx="218" cy="138" r="12" fill="#E5484D"></circle>
+            <circle cx="290" cy="64" r="6" fill="#FFFFFF"></circle><circle cx="310" cy="72" r="6" fill="#FFFFFF"></circle><circle cx="296" cy="84" r="12" fill="#E5484D"></circle>
+            <circle cx="380" cy="90" r="6" fill="#FFFFFF"></circle><circle cx="372" cy="110" r="6" fill="#FFFFFF"></circle><circle cx="390" cy="108" r="12" fill="#E5484D"></circle>
+            <circle cx="440" cy="60" r="6" fill="#FFFFFF"></circle><circle cx="458" cy="72" r="6" fill="#FFFFFF"></circle><circle cx="442" cy="80" r="12" fill="#E5484D"></circle>
+            <circle cx="120" cy="180" r="6" fill="#FFFFFF"></circle><circle cx="104" cy="194" r="6" fill="#FFFFFF"></circle><circle cx="124" cy="200" r="12" fill="#E5484D"></circle>
+            <circle cx="280" cy="170" r="6" fill="#FFFFFF"></circle><circle cx="268" cy="188" r="6" fill="#FFFFFF"></circle><circle cx="288" cy="190" r="12" fill="#E5484D"></circle>
+            <circle cx="350" cy="190" r="6" fill="#FFFFFF"></circle><circle cx="368" cy="182" r="6" fill="#FFFFFF"></circle><circle cx="356" cy="170" r="12" fill="#E5484D"></circle>
+            <circle cx="430" cy="160" r="6" fill="#FFFFFF"></circle><circle cx="446" cy="174" r="6" fill="#FFFFFF"></circle><circle cx="438" cy="182" r="12" fill="#E5484D"></circle>
+            <circle cx="180" cy="236" r="6" fill="#FFFFFF"></circle><circle cx="198" cy="244" r="6" fill="#FFFFFF"></circle><circle cx="184" cy="256" r="12" fill="#E5484D"></circle>
+            <circle cx="250" cy="260" r="6" fill="#FFFFFF"></circle><circle cx="240" cy="280" r="6" fill="#FFFFFF"></circle><circle cx="258" cy="280" r="12" fill="#E5484D"></circle>
+            <circle cx="330" cy="262" r="6" fill="#FFFFFF"></circle><circle cx="350" cy="266" r="6" fill="#FFFFFF"></circle><circle cx="338" cy="248" r="12" fill="#E5484D"></circle>
+            <circle cx="420" cy="250" r="6" fill="#FFFFFF"></circle><circle cx="404" cy="266" r="6" fill="#FFFFFF"></circle><circle cx="424" cy="270" r="12" fill="#E5484D"></circle>
+          </g>
+        </svg>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between"><b style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px">Ice · −4 °C</b><span style="font-family: 'IBM Plex Mono', monospace; background: #FFC21A; padding: 0 8px; border-radius: 6px">Space taken: 109%</span></div>
+        <svg viewBox="0 0 560 330" role="img" aria-label="Water molecules locked into six-sided rings with gaps in the middle, joined by dashed hydrogen bonds" style="width: 100%; height: auto; flex: 1">
+          <rect x="52" y="20" width="456" height="290" rx="10" fill="#E6F6FF" stroke="#1D1A3A" stroke-width="3"></rect>
+          <g transform="translate(-72 -36) scale(1.05)">
+          <path d="M352,230 L300,260 L248,230 L248,170 L300,140 L352,170 Z M352,170 L404,140 L456,170 L456,230 L404,260 L352,230 M404,260 L404,320 L352,350 L300,320 L300,260" fill="none" stroke="#1D1A3A" stroke-width="2" stroke-dasharray="4 5"></path>
+          <g stroke="#1D1A3A" stroke-width="2">
+            <circle cx="344" cy="246" r="6" fill="#FFFFFF"></circle><circle cx="360" cy="246" r="6" fill="#FFFFFF"></circle><circle cx="352" cy="230" r="12" fill="#E5484D"></circle>
+            <circle cx="292" cy="276" r="6" fill="#FFFFFF"></circle><circle cx="308" cy="276" r="6" fill="#FFFFFF"></circle><circle cx="300" cy="260" r="12" fill="#E5484D"></circle>
+            <circle cx="240" cy="246" r="6" fill="#FFFFFF"></circle><circle cx="256" cy="246" r="6" fill="#FFFFFF"></circle><circle cx="248" cy="230" r="12" fill="#E5484D"></circle>
+            <circle cx="240" cy="154" r="6" fill="#FFFFFF"></circle><circle cx="256" cy="154" r="6" fill="#FFFFFF"></circle><circle cx="248" cy="170" r="12" fill="#E5484D"></circle>
+            <circle cx="292" cy="124" r="6" fill="#FFFFFF"></circle><circle cx="308" cy="124" r="6" fill="#FFFFFF"></circle><circle cx="300" cy="140" r="12" fill="#E5484D"></circle>
+            <circle cx="344" cy="154" r="6" fill="#FFFFFF"></circle><circle cx="360" cy="154" r="6" fill="#FFFFFF"></circle><circle cx="352" cy="170" r="12" fill="#E5484D"></circle>
+            <circle cx="396" cy="124" r="6" fill="#FFFFFF"></circle><circle cx="412" cy="124" r="6" fill="#FFFFFF"></circle><circle cx="404" cy="140" r="12" fill="#E5484D"></circle>
+            <circle cx="448" cy="154" r="6" fill="#FFFFFF"></circle><circle cx="464" cy="154" r="6" fill="#FFFFFF"></circle><circle cx="456" cy="170" r="12" fill="#E5484D"></circle>
+            <circle cx="448" cy="246" r="6" fill="#FFFFFF"></circle><circle cx="464" cy="246" r="6" fill="#FFFFFF"></circle><circle cx="456" cy="230" r="12" fill="#E5484D"></circle>
+            <circle cx="396" cy="276" r="6" fill="#FFFFFF"></circle><circle cx="412" cy="276" r="6" fill="#FFFFFF"></circle><circle cx="404" cy="260" r="12" fill="#E5484D"></circle>
+            <circle cx="396" cy="336" r="6" fill="#FFFFFF"></circle><circle cx="412" cy="336" r="6" fill="#FFFFFF"></circle><circle cx="404" cy="320" r="12" fill="#E5484D"></circle>
+            <circle cx="344" cy="366" r="6" fill="#FFFFFF"></circle><circle cx="360" cy="366" r="6" fill="#FFFFFF"></circle><circle cx="352" cy="350" r="12" fill="#E5484D"></circle>
+            <circle cx="292" cy="336" r="6" fill="#FFFFFF"></circle><circle cx="308" cy="336" r="6" fill="#FFFFFF"></circle><circle cx="300" cy="320" r="12" fill="#E5484D"></circle>
+          </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px; background: #FFFFFF; border-radius: 999px; padding: 12px 24px">
+      <label for="temp" style="font-weight: 700; font-size: 18px">Temperature</label>
+      <input id="temp" type="range" min="-10" max="20" value="-4" style="flex: 1; accent-color: #17C69B; height: 28px">
+      <output for="temp" style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; min-width: 80px">−4 °C</output>
+    </div>
+  </main>
+
+  <footer style="display: flex; align-items: flex-end; gap: 16px; padding: 16px 40px 24px; border-top: 1px solid #E6E6EC; background: #FFFFFF">
+    <svg viewBox="0 0 80 90" width="76" height="86" role="img" aria-label="Lumi amazed">
+      <path d="M40,24 C40,15 44,9 49,7" fill="none" stroke="#1D1A3A" stroke-width="2.6" stroke-linecap="round"></path><circle cx="50" cy="7" r="7" fill="#FFF3B0" stroke="#1D1A3A" stroke-width="2.2"></circle>
+      <path d="M40,24 C60,24 70,39 68,57 C66,75 54,82 40,82 C26,82 14,75 12,57 C10,39 20,24 40,24 Z" fill="#FFC21A" stroke="#1D1A3A" stroke-width="2.6"></path>
+      <circle cx="32" cy="49" r="5" fill="#FFFFFF" stroke="#1D1A3A" stroke-width="1.8"></circle><circle cx="48" cy="49" r="5" fill="#FFFFFF" stroke="#1D1A3A" stroke-width="1.8"></circle><circle cx="32" cy="49" r="2.4" fill="#1D1A3A"></circle><circle cx="48" cy="49" r="2.4" fill="#1D1A3A"></circle><ellipse cx="40" cy="65" rx="4" ry="5" fill="#1D1A3A"></ellipse>
+    </svg>
+    <div style="flex: 1; background: #F6F6F8; border-radius: 18px; padding: 14px 18px; font-size: 19px"><b style="font-family: 'Bricolage Grotesque', sans-serif">Lumi</b> Frozen! Each molecule locks onto its neighbours in six-sided rings. The rings leave gaps, so ice takes more room.</div>
+    <div style="display: flex; gap: 10px">
+      <button type="button" style="font-family: inherit; font-weight: 700; font-size: 18px; padding: 16px 24px; background: #FFFFFF; border: 1px solid #D6D6DE; border-radius: 999px">Back</button>
+      <button type="button" style="font-family: inherit; font-weight: 700; font-size: 18px; padding: 16px 30px; background: #16161D; color: #FFFFFF; border: 0; border-radius: 999px">Continue</button>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<title>Lumen Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: a monochrome instrument. Index rail | live stage | field notes. Color appears only inside a simulation, as data. */
+:root{
+  --paper:#f7f7f5; --ink:#0d0d0f; --ink-2:#4a4b50; --muted:#8d8e92; --rule:#d6d6d3; --wash:#ececea;
+  --math:#2d5bff; --phys:#ea4f1c; --chem:#0b9a71; --bio:#b08400; --music:#d42a6b;
+  --cur:var(--math);
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0c0c0d; --ink:#f1f1ee; --ink-2:#b1b1ad; --muted:#74757a; --rule:#2b2b2e; --wash:#161618;
+  --math:#6d8dff; --phys:#ff7a45; --chem:#2fd3a0; --bio:#e6b422; --music:#ff5c95; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0c0c0d; --ink:#f1f1ee; --ink-2:#b1b1ad; --muted:#74757a; --rule:#2b2b2e; --wash:#161618;
+  --math:#6d8dff; --phys:#ff7a45; --chem:#2fd3a0; --bio:#e6b422; --music:#ff5c95; color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cur);outline-offset:2px}
+
+.app{height:100%;display:grid;grid-template-columns:232px minmax(0,1fr) 320px;grid-template-rows:auto minmax(0,1fr);gap:0 24px;padding:0 16px 16px;box-sizing:border-box}
+
+/* top bar */
+.top{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;border-bottom:1px solid var(--ink);margin-bottom:16px}
+.brand{display:flex;align-items:baseline;gap:12px}
+.brand b{font-family:var(--f-display);font-stretch:125%;font-weight:800;font-size:1.35rem;letter-spacing:-.01em}
+.brand .mark{width:14px;height:14px;border-radius:50%;background:conic-gradient(var(--ink) 0 50%,transparent 0);border:1.5px solid var(--ink);align-self:center}
+.tag{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.actions{display:flex;gap:8px}
+.btn{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;background:transparent;border:1px solid var(--ink);padding:7px 12px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:var(--cur);border-color:var(--cur);color:var(--paper)}
+.btn kbd{font-family:inherit;opacity:.55}
+
+/* rail */
+.rail{overflow:auto;min-height:0;padding-right:4px}
+.group{padding-block:4px 14px}
+.group h2{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-weight:500;font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;margin:0 0 6px;color:var(--ink-2)}
+.group h2 i{width:8px;height:8px;display:inline-block}
+.item{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:8px;text-align:left;background:none;border:0;border-left:2px solid transparent;padding:4px 8px;cursor:pointer;font-family:var(--f-body);font-size:.98rem}
+.item:hover{border-left-color:var(--rule)}
+.item.on{border-left-color:var(--cur);font-weight:500}
+.item small{font-family:var(--f-mono);font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.item[disabled]{cursor:default;color:var(--muted)}
+.item[disabled]:hover{border-left-color:transparent}
+.later h2{color:var(--muted)}
+
+/* stage */
+.stage{display:flex;flex-direction:column;min-width:0;min-height:0}
+.stage-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:10px}
+.stage-head h1{font-family:var(--f-display);font-stretch:112%;font-weight:700;font-size:clamp(1.2rem,2.1vw,1.85rem);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.015em}
+.subj{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;display:flex;align-items:center;gap:8px;white-space:nowrap;color:var(--ink-2)}
+.subj i{width:10px;height:10px;background:var(--cur);display:inline-block}
+.frame{position:relative;flex:1;min-height:0;border:1px solid var(--ink);background:var(--paper)}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+.hint{position:absolute;left:12px;top:10px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);pointer-events:none}
+.readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);border-top:0}
+.readout div{padding:8px 12px;border-left:1px solid var(--rule);min-width:0}
+.readout div:first-child{border-left:0}
+.readout dt{font-family:var(--f-mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.readout dd{margin:0;font-family:var(--f-mono);font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* notes */
+.notes{overflow:auto;min-height:0;display:flex;flex-direction:column;gap:18px}
+.notes .lede{font-size:1.12rem;line-height:1.45;margin:0}
+.notes h3{font-family:var(--f-mono);font-weight:500;font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;margin:0 0 6px;color:var(--ink-2)}
+.notes ul{margin:0;padding-left:1.1em}
+.notes li{margin-bottom:4px}
+.notes p{margin:0}
+.fact{border-top:1px solid var(--ink);padding-top:8px;font-family:var(--f-mono);font-size:.8rem;line-height:1.55}
+.fact span{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+.controls{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--ink);padding-top:14px}
+.ctl label{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em}
+.ctl output{font-variant-numeric:tabular-nums;color:var(--ink)}
+.ctl input{width:100%;accent-color:var(--cur);margin:6px 0 0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-mono);font-size:.68rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;display:inline-block;border-radius:50%}
+
+/* focus mode */
+.app.focus{grid-template-columns:minmax(0,1fr)}
+.app.focus .rail,.app.focus .notes{display:none}
+
+@media (max-width:1080px){
+  .app{grid-template-columns:200px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;height:auto;min-height:100%}
+  .stage{height:70vh}
+  .notes{grid-column:2;padding-block:20px;overflow:visible}
+  .rail{grid-row:2/4}
+}
+@media (max-width:720px){
+  .app{grid-template-columns:minmax(0,1fr);gap:0}
+  .rail{grid-row:auto;display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--rule)}
+  .group{flex:0 0 auto;padding:0}
+  .later{display:none}
+  .item[disabled]{display:none}
+  .stage{height:64vh}
+  .notes{grid-column:1}
+  .readout{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .readout div:nth-child(3){border-left:0}
+  .readout div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .tag{display:none}
+  .btn kbd{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app" id="app">
+  <header class="top">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><b>Lumen</b><span class="tag">Simulation lab · prototype</span></div>
+    <div class="actions">
+      <button class="btn primary" id="bPlay" type="button">Pause <kbd>Space</kbd></button>
+      <button class="btn" id="bReset" type="button">Reset <kbd>R</kbd></button>
+      <button class="btn" id="bFocus" type="button">Focus <kbd>F</kbd></button>
+    </div>
+  </header>
+
+  <nav class="rail" id="rail" aria-label="Simulation library"></nav>
+
+  <main class="stage">
+    <div class="stage-head">
+      <h1 id="sTitle">Loading</h1>
+      <span class="subj"><i></i><span id="sSubj"></span></span>
+    </div>
+    <div class="frame"><canvas id="cv" aria-label="Simulation canvas"></canvas><div class="hint" id="hint"></div></div>
+    <dl class="readout" id="readout"></dl>
+  </main>
+
+  <aside class="notes" id="notes" aria-label="Field notes">
+    <div id="nBody"></div>
+    <div class="controls" id="ctrls"></div>
+  </aside>
+</div>
+
+<script>
+(()=>{
+const TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(TAU*v)};
+const app=document.getElementById('app'), cv=document.getElementById('cv'), g=cv.getContext('2d');
+let W=600,H=400;
+
+const SUBJ={
+  math:{name:'Mathematics',c:'--math'}, phys:{name:'Physics',c:'--phys'},
+  chem:{name:'Chemistry',c:'--chem'}, bio:{name:'Biology',c:'--bio'}, music:{name:'Music',c:'--music'}
+};
+const LIB=[
+  {s:'math',items:[['fourier','Fourier epicycles'],[0,'Mandelbrot dive'],[0,'Prime spirals'],[0,'Möbius & topology']]},
+  {s:'phys',items:[['pendulum','Double pendulum'],[0,'Kepler orbits'],[0,'Wave interference'],[0,'Optics bench']]},
+  {s:'chem',items:[['kinetics','Reaction kinetics'],[0,'Titration curve'],[0,'Crystal lattices'],[0,'Electron orbitals']]},
+  {s:'bio',items:[['selection','Natural selection'],[0,"Darwin's finches"],[0,'Mitosis'],[0,'Predator and prey']]},
+  {s:'music',items:[['bach','Bach · Prelude in C'],[0,'Harmonic series'],[0,'Counterpoint'],[0,'Rhythm cycles']]},
+];
+const LATER=['Art museum walk','History in maps','Night sky','Human anatomy'];
+
+/* ---------- MATHEMATICS: Fourier epicycles ---------- */
+const fourier={
+  subj:'math',title:'A square wave, built from spinning circles',
+  hint:'Drag “Terms” to add circles',
+  notes:`<p class="lede">Any repeating shape can be built by stacking circles that spin at whole-number speeds. The tip of the last circle traces the wave.</p>
+  <div><h3>Try this</h3><ul><li>Set 1 term. One circle draws a pure sine wave.</li><li>Raise to 40. The corners sharpen, yet a small spike at each jump never disappears. That spike is the Gibbs phenomenon, about 9% of the jump.</li></ul></div>
+  <p class="fact"><span>Series</span>f(t) = 4/π · Σ sin(nt) / n, for n = 1, 3, 5 …</p>`,
+  controls:[{id:'n',label:'Terms',min:1,max:40,step:1,value:5},{id:'speed',label:'Speed',min:.1,max:3,step:.1,value:1,unit:'×'}],
+  init(){this.t=0;this.wave=[]},
+  step(dt,p){
+    this.t+=dt*p.speed*1.3;
+    let v=0;for(let k=0;k<p.n;k++){const n=2*k+1;v+=4/(n*Math.PI)*Math.sin(n*this.t)}
+    this.wave.unshift(v); if(this.wave.length>900)this.wave.pop();
+  },
+  draw(C,p){
+    const R=Math.min(W*.16,H*.27), cx=Math.max(R*1.4,W*.22), cy=H/2, x0=cx+R*1.55;
+    g.strokeStyle=C.rule;g.lineWidth=1;g.beginPath();g.moveTo(x0,cy);g.lineTo(W-16,cy);g.stroke();
+    g.setLineDash([2,4]);g.beginPath();g.moveTo(x0,cy-R);g.lineTo(W-16,cy-R);g.moveTo(x0,cy+R);g.lineTo(W-16,cy+R);g.stroke();g.setLineDash([]);
+    let x=cx,y=cy;
+    for(let k=0;k<p.n;k++){
+      const n=2*k+1,r=R*4/(n*Math.PI),nx=x+r*Math.cos(n*this.t),ny=y+r*Math.sin(n*this.t);
+      g.strokeStyle=C.rule;g.beginPath();g.arc(x,y,r,0,TAU);g.stroke();
+      g.strokeStyle=C.ink;g.beginPath();g.moveTo(x,y);g.lineTo(nx,ny);g.stroke();
+      x=nx;y=ny;
+    }
+    g.strokeStyle=C.muted;g.setLineDash([3,3]);g.beginPath();g.moveTo(x,y);g.lineTo(x0,y);g.stroke();g.setLineDash([]);
+    g.strokeStyle=C.cur;g.lineWidth=2;g.beginPath();
+    for(let i=0;i<this.wave.length;i++){const px=x0+i*1.6;if(px>W-16)break;const py=cy+this.wave[i]*R;i?g.lineTo(px,py):g.moveTo(px,py)}
+    g.stroke();
+    g.fillStyle=C.cur;g.beginPath();g.arc(x,y,4,0,TAU);g.fill();g.beginPath();g.arc(x0,y,4,0,TAU);g.fill();
+    label(C,'+1',x0+4,cy-R-6);label(C,'−1',x0+4,cy+R+14);
+  },
+  readout(p){return[['Circles',p.n],['Fastest circle',(2*p.n-1)+'×'],['Overshoot','≈ 9%'],['Speed',p.speed.toFixed(1)+'×']]}
+};
+
+/* ---------- PHYSICS: double pendulum ---------- */
+const pendulum={
+  subj:'phys',title:'Two pendulums, a thousandth of a radian apart',
+  hint:'Tap the stage for a new release',
+  notes:`<p class="lede">Hang one pendulum from another and the motion becomes chaotic. Two copies released almost identically soon move nothing alike.</p>
+  <div><h3>Try this</h3><ul><li>Watch the grey twin. It starts 0.001 rad from the black one and stays glued to it for a few seconds before they split.</li><li>Raise gravity. Everything speeds up and the split comes sooner.</li><li>Add friction. The chaos fades as energy drains away.</li></ul></div>
+  <p class="fact"><span>Setup</span>Two 1 m arms, two 1 kg bobs, solved with Runge–Kutta (RK4) at 240 steps per second.</p>`,
+  controls:[{id:'g',label:'Gravity',min:1,max:25,step:.1,value:9.8,unit:' m/s²'},{id:'c',label:'Friction',min:0,max:.5,step:.01,value:0}],
+  init(){const a=Math.PI*(.55+Math.random()*.3),b=Math.PI*(.65+Math.random()*.35);this.s=[a,b,0,0];this.s2=[a+.001,b,0,0];this.trail=[];this.t=0},
+  d(s,G,c){const[a1,a2,w1,w2]=s,d=a1-a2,den=3-Math.cos(2*d);
+    return[w1,w2,
+      (-G*3*Math.sin(a1)-G*Math.sin(a1-2*a2)-2*Math.sin(d)*(w2*w2+w1*w1*Math.cos(d)))/den-c*w1,
+      (2*Math.sin(d)*(w1*w1*2+G*2*Math.cos(a1)+w2*w2*Math.cos(d)))/den-c*w2]},
+  rk(s,h,G,c){const k1=this.d(s,G,c),a=s.map((v,i)=>v+k1[i]*h/2),k2=this.d(a,G,c),b=s.map((v,i)=>v+k2[i]*h/2),k3=this.d(b,G,c),e=s.map((v,i)=>v+k3[i]*h),k4=this.d(e,G,c);
+    return s.map((v,i)=>v+h/6*(k1[i]+2*k2[i]+2*k3[i]+k4[i]))},
+  step(dt,p){const n=8,h=dt/n;for(let i=0;i<n;i++){this.s=this.rk(this.s,h,p.g,p.c);this.s2=this.rk(this.s2,h,p.g,p.c)}
+    this.t+=dt;const[a1,a2]=this.s;this.trail.push([Math.sin(a1)+Math.sin(a2),Math.cos(a1)+Math.cos(a2)]);if(this.trail.length>700)this.trail.shift()},
+  draw(C){
+    const L=Math.min(W*.2,H*.22),px=W/2,py=H/2;
+    const tr=this.trail;g.lineWidth=1.5;g.strokeStyle=C.cur;
+    for(let i=1;i<tr.length;i++){g.globalAlpha=i/tr.length;g.beginPath();g.moveTo(px+tr[i-1][0]*L,py+tr[i-1][1]*L);g.lineTo(px+tr[i][0]*L,py+tr[i][1]*L);g.stroke()}
+    g.globalAlpha=1;
+    const arm=(s,col,bob2)=>{const[a1,a2]=s,x1=px+L*Math.sin(a1),y1=py+L*Math.cos(a1),x2=x1+L*Math.sin(a2),y2=y1+L*Math.cos(a2);
+      g.strokeStyle=col;g.lineWidth=2;g.beginPath();g.moveTo(px,py);g.lineTo(x1,y1);g.lineTo(x2,y2);g.stroke();
+      g.fillStyle=col;g.beginPath();g.arc(x1,y1,7,0,TAU);g.fill();g.fillStyle=bob2;g.beginPath();g.arc(x2,y2,8,0,TAU);g.fill()};
+    arm(this.s2,C.muted,C.muted);arm(this.s,C.ink,C.cur);
+    g.fillStyle=C.ink;g.fillRect(px-5,py-5,10,10);
+  },
+  readout(p){let d=Math.abs(this.s[1]-this.s2[1])%TAU;if(d>Math.PI)d=TAU-d;
+    return[['Time',this.t.toFixed(1)+' s'],['Twins differ by',(d*180/Math.PI).toFixed(d<.01?3:1)+'°'],['Gravity',p.g.toFixed(1)+' m/s²'],['Friction',p.c.toFixed(2)]]},
+  click(){this.init()}
+};
+
+/* ---------- CHEMISTRY: reaction kinetics ---------- */
+const kinetics={
+  subj:'chem',title:'A + B → AB: why heat speeds up reactions',
+  hint:'Heat it up, or lower the barrier',
+  notes:`<p class="lede">Molecules react only when they collide hard enough. Raise the temperature and more collisions clear the energy barrier.</p>
+  <div><h3>Try this</h3><ul><li>Start at 300 K with a 40 kJ/mol barrier. Product forms slowly.</li><li>Push to 900 K. Product appears quickly, and some of it starts breaking apart again. The counts settle into an equilibrium.</li><li>Drop the barrier to 5. Nearly every A–B collision now reacts, which is what a catalyst does.</li></ul></div>
+  <div class="legend"><span><i style="border:1.5px solid var(--ink)"></i>A</span><span><i style="background:var(--ink)"></i>B</span><span><i style="background:var(--chem)"></i>AB product</span></div>
+  <p class="fact"><span>Rule</span>Rate ∝ e<sup>−Ea / RT</sup> (Arrhenius). Molecular speeds scale with √T.</p>`,
+  controls:[{id:'T',label:'Temperature',min:150,max:1200,step:10,value:300,unit:' K'},{id:'ea',label:'Energy barrier',min:5,max:80,step:1,value:40,unit:' kJ/mol'}],
+  init(){this.m=[];const BH=H-84;for(let i=0;i<150;i++)this.m.push({x:10+Math.random()*(W-20),y:10+Math.random()*(BH-20),vx:gauss()*30,vy:gauss()*30,t:i%2?'B':'A'});this.hist=[];this.acc=0;this.time=0},
+  step(dt,p){
+    const BH=H-84,m=this.m,s0=40*Math.sqrt(p.T/300);
+    let v2=0;for(const a of m)v2+=a.vx*a.vx+a.vy*a.vy;v2/=m.length;
+    const f=Math.sqrt(clamp(1+dt*2*(s0*s0/(v2||1)-1),.5,2));
+    for(const a of m){a.vx*=f;a.vy*=f;a.x+=a.vx*dt;a.y+=a.vy*dt;const r=a.t==='C'?6.5:5;
+      if(a.x<r){a.x=r;a.vx=Math.abs(a.vx)}if(a.x>W-r){a.x=W-r;a.vx=-Math.abs(a.vx)}
+      if(a.y<r){a.y=r;a.vy=Math.abs(a.vy)}if(a.y>BH-r){a.y=BH-r;a.vy=-Math.abs(a.vy)}}
+    const thr=p.ea*120;
+    for(let i=0;i<m.length;i++){const a=m[i];if(a.dead)continue;
+      for(let j=i+1;j<m.length;j++){const b=m[j];if(b.dead)continue;
+        const dx=b.x-a.x,dy=b.y-a.y,rr=(a.t==='C'?6.5:5)+(b.t==='C'?6.5:5),d2=dx*dx+dy*dy;
+        if(d2>=rr*rr||d2===0)continue;
+        const rvx=b.vx-a.vx,rvy=b.vy-a.vy;
+        if(((a.t==='A'&&b.t==='B')||(a.t==='B'&&b.t==='A'))&&rvx*rvx+rvy*rvy>thr){
+          a.t='C';a.x=(a.x+b.x)/2;a.y=(a.y+b.y)/2;a.vx=(a.vx+b.vx)/2;a.vy=(a.vy+b.vy)/2;b.dead=1;a.flash=1;continue}
+        const d=Math.sqrt(d2),nx=dx/d,ny=dy/d,vn=rvx*nx+rvy*ny;
+        if(vn<0){a.vx+=vn*nx;a.vy+=vn*ny;b.vx-=vn*nx;b.vy-=vn*ny}
+        const ov=(rr-d)/2;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov}}
+    this.m=m.filter(a=>!a.dead);
+    const pd=dt*2*Math.exp(-p.ea*90/p.T),add=[];
+    for(const a of this.m){if(a.flash)a.flash=Math.max(0,a.flash-dt*2);
+      if(a.t==='C'&&Math.random()<pd){const ang=Math.random()*TAU,c=Math.cos(ang),s=Math.sin(ang);a.t='A';a.x-=c*5;a.y-=s*5;a.vx-=c*s0;a.vy-=s*s0;
+        add.push({x:a.x+c*10,y:a.y+s*10,vx:a.vx+2*c*s0,vy:a.vy+2*s*s0,t:'B'})}}
+    this.m.push(...add);
+    this.time+=dt;this.acc+=dt;if(this.acc>.25){this.acc=0;const c=this.count();this.hist.push(c);if(this.hist.length>240)this.hist.shift()}
+  },
+  count(){let a=0,b=0,c=0;for(const x of this.m)x.t==='A'?a++:x.t==='B'?b++:c++;return{a,b,c}},
+  draw(C){
+    const BH=H-84;
+    for(const a of this.m){g.beginPath();
+      if(a.t==='A'){g.arc(a.x,a.y,4.2,0,TAU);g.strokeStyle=C.ink;g.lineWidth=1.5;g.stroke()}
+      else if(a.t==='B'){g.arc(a.x,a.y,5,0,TAU);g.fillStyle=C.ink;g.fill()}
+      else{g.arc(a.x,a.y,6.5+(a.flash||0)*6,0,TAU);g.fillStyle=C.cur;g.fill()}}
+    chart(C,0,BH,W,84,this.hist,[{k:'c',col:C.cur,name:'AB'},{k:'a',col:C.ink,name:'A'}],75);
+  },
+  readout(p){const c=this.count();return[['Temperature',p.T+' K'],['A left',c.a],['Product AB',c.c],['Converted',Math.round(100*c.c/75)+'%']]}
+};
+
+/* ---------- BIOLOGY: natural selection ---------- */
+const selection={
+  subj:'bio',title:'Natural selection, one meal at a time',
+  hint:'Color shows speed: blue slow, red fast',
+  notes:`<p class="lede">Each creature carries two genes: speed and sight. Fast creatures reach food first but burn more energy. Offspring copy their parent with small random changes.</p>
+  <div><h3>Try this</h3><ul><li>Leave it running for a minute. Watch the speed line on the chart drift toward a balance between catching food and wasting energy.</li><li>Cut the food supply. Costly genes are punished harder and the population crashes, then recovers.</li><li>Set mutation to zero. Without variation, nothing can evolve.</li></ul></div>
+  <div class="legend"><span><i style="background:var(--bio)"></i>Mean speed</span><span><i style="background:var(--ink)"></i>Mean sight</span></div>
+  <p class="fact"><span>Darwin's three conditions</span>Variation · Inheritance · Unequal survival. Remove any one and evolution stops.</p>`,
+  controls:[{id:'food',label:'Food per second',min:4,max:60,step:1,value:22},{id:'mut',label:'Mutation',min:0,max:.3,step:.01,value:.08,pct:1}],
+  init(){const BH=H-90;this.a=[];for(let i=0;i<30;i++)this.a.push(this.mk(Math.random()*W,Math.random()*BH,40,50));
+    this.f=[];for(let i=0;i<120;i++)this.f.push({x:Math.random()*W,y:Math.random()*BH});this.hist=[];this.acc=0;this.fa=0;this.time=0;this.births=0},
+  mk(x,y,spd,sense){return{x,y,spd,sense,e:1.5,ang:Math.random()*TAU}},
+  step(dt,p){
+    const BH=H-90;this.fa+=p.food*dt;while(this.fa>=1){this.fa--;if(this.f.length<400)this.f.push({x:Math.random()*W,y:Math.random()*BH})}
+    const born=[];
+    for(const c of this.a){
+      let best=null,bd=c.sense*c.sense;
+      for(const f of this.f){if(f.gone)continue;const dx=f.x-c.x,dy=f.y-c.y,d=dx*dx+dy*dy;if(d<bd){bd=d;best=f}}
+      if(best){c.ang=Math.atan2(best.y-c.y,best.x-c.x);if(bd<25){best.gone=1;c.e+=1}}else c.ang+=gauss()*2.5*dt;
+      c.x=(c.x+Math.cos(c.ang)*c.spd*dt+W)%W;c.y=(c.y+Math.sin(c.ang)*c.spd*dt+BH)%BH;
+      c.e-=dt*(.15+(c.spd/60)**2*.5+c.sense/200*.3);
+      if(c.e>2.6&&this.a.length+born.length<350){c.e/=2;born.push({...this.mk(c.x,c.y,clamp(c.spd*(1+gauss()*p.mut),5,200),clamp(c.sense*(1+gauss()*p.mut),5,200)),e:c.e});this.births++}
+    }
+    this.f=this.f.filter(f=>!f.gone);this.a=this.a.filter(c=>c.e>0).concat(born);
+    if(!this.a.length)this.init();
+    this.time+=dt;this.acc+=dt;if(this.acc>.5){this.acc=0;const s=this.stats();this.hist.push(s);if(this.hist.length>300)this.hist.shift()}
+  },
+  stats(){let s=0,v=0;for(const c of this.a){s+=c.spd;v+=c.sense}const n=this.a.length||1;return{n:this.a.length,spd:s/n,sense:v/n}},
+  draw(C){
+    const BH=H-90;g.fillStyle=C.muted;for(const f of this.f){g.fillRect(f.x-1.5,f.y-1.5,3,3)}
+    for(const c of this.a){const h=220-clamp((c.spd-20)/100,0,1)*220;g.fillStyle=`hsl(${h} 75% 52%)`;g.beginPath();g.arc(c.x,c.y,4,0,TAU);g.fill()}
+    chart(C,0,BH,W,90,this.hist,[{k:'spd',col:C.cur,name:'speed'},{k:'sense',col:C.ink,name:'sight'}],120);
+  },
+  readout(p){const s=this.stats();return[['Population',s.n],['Mean speed',s.spd.toFixed(1)+' px/s'],['Mean sight',s.sense.toFixed(1)+' px'],['Births',this.births]]}
+};
+
+/* ---------- MUSIC: Bach, Prelude in C major, BWV 846 ---------- */
+const BARS=[
+ ['C4 E4 G4 C5 E5','C'],['C4 D4 A4 D5 F5','Dm7/C'],['B3 D4 G4 D5 F5','G7/B'],['C4 E4 G4 C5 E5','C'],
+ ['C4 E4 A4 E5 A5','Am/C'],['C4 D4 F#4 A4 D5','D7/C'],['B3 D4 G4 D5 G5','G/B'],['B3 C4 E4 G4 C5','Cmaj7/B'],
+ ['A3 C4 E4 G4 C5','Am7'],['D3 A3 D4 F#4 C5','D7'],['G3 B3 D4 G4 B4','G'],['G3 Bb3 E4 G4 C#5','C♯dim7/G'],
+ ['F3 A3 D4 A4 D5','Dm/F'],['F3 Ab3 D4 F4 B4','Bdim7/F'],['E3 G3 C4 G4 C5','C/E'],['E3 F3 A3 C4 F4','Fmaj7/E'],
+ ['D3 F3 A3 C4 F4','Dm7'],['G2 D3 G3 B3 F4','G7'],['C3 E3 G3 C4 E4','C']];
+const midi=s=>{const m=s.match(/^([A-G])(#|b)?(\d)$/),base={C:0,D:2,E:4,F:5,G:7,A:9,B:11}[m[1]];return 12*(+m[3]+1)+base+(m[2]==='#'?1:m[2]==='b'?-1:0)};
+const EVENTS=[];BARS.forEach(([ch],b)=>{const n=ch.split(' ').map(midi);
+  for(const half of[0,8]){const t0=b*16+half;EVENTS.push({m:n[0],s:t0,d:8},{m:n[1],s:t0+1,d:7});[2,3,4,2,3,4].forEach((k,i)=>EVENTS.push({m:n[k],s:t0+2+i,d:1}))}});
+EVENTS.sort((a,b)=>a.s-b.s);
+const TOTAL=BARS.length*16;
+let ac=null,master=null;
+function ensureAudio(){if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return;ac=new A();const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3200;master=ac.createGain();master.gain.value=.55;master.connect(lp);lp.connect(ac.destination)}if(ac.state==='suspended')ac.resume()}
+const live=[];
+function voice(m,t,dur){const f=440*Math.pow(2,(m-69)/12),o=ac.createOscillator(),o2=ac.createOscillator(),e=ac.createGain(),e2=ac.createGain();
+  o.type='triangle';o.frequency.value=f;o2.type='sine';o2.frequency.value=f*2;e2.gain.value=.18;
+  const pk=m<55?.2:.15;e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(pk,t+.006);e.gain.exponentialRampToValueAtTime(pk*.35,t+Math.max(.08,dur));
+  e.gain.exponentialRampToValueAtTime(.0001,t+dur+.35);o.connect(e);o2.connect(e2);e2.connect(e);e.connect(master);
+  o.start(t);o2.start(t);o.stop(t+dur+.4);o2.stop(t+dur+.4);live.push({o,o2,e,end:t+dur+.4})}
+function silence(){if(!ac)return;const now=ac.currentTime;for(const v of live){try{v.e.gain.cancelScheduledValues(now);v.e.gain.setValueAtTime(v.e.gain.value,now);v.e.gain.linearRampToValueAtTime(0,now+.05);v.o.stop(now+.06);v.o2.stop(now+.06)}catch(_){}}live.length=0}
+
+const bach={
+  subj:'music',title:'Bach, Prelude in C major: one harmony per bar',
+  hint:'Press Play to hear it. Sound starts after your tap.',
+  notes:`<p class="lede">Johann Sebastian Bach, Prelude No. 1 in C major, BWV 846, from <i>The Well-Tempered Clavier</i> (1722). Every bar is a single chord, broken into the same eight-note figure and played twice.</p>
+  <div><h3>Try this</h3><ul><li>Slow it to 40 bpm and watch the shape repeat while the chord underneath changes.</li><li>Listen at bar 12. The C♯ diminished chord is the first real tension in the piece. Bar 13 releases it.</li><li>Follow the colors. Each pitch class has its own hue, so a chord change is a color change.</li></ul></div>
+  <p class="fact"><span>Shown here</span>Bars 1–19 of 35, then the piece loops. The lowest two notes of each half bar are held, as in the score.</p>`,
+  controls:[{id:'bpm',label:'Tempo',min:30,max:120,step:1,value:66,unit:' bpm'}],
+  init(){silence();this.pos=0;this.next=0;this.t0=null;this.sx=null},
+  step(dt,p){
+    const sx=60/p.bpm/4;
+    if(!ac){this.pos+=dt/sx;}else{
+      if(this.t0===null||this.sx!==sx){this.t0=ac.currentTime;this.p0=this.pos;this.sx=sx}
+      this.pos=this.p0+(ac.currentTime-this.t0)/sx;
+      const ahead=this.pos+.25/sx;
+      while(this.next<EVENTS.length&&EVENTS[this.next].s<ahead){const ev=EVENTS[this.next++];if(ev.s+ev.d>this.pos-.5)voice(ev.m,this.t0+(ev.s-this.p0)*sx,ev.d*sx*.95)}
+      for(let i=live.length-1;i>=0;i--)if(live[i].end<ac.currentTime)live.splice(i,1);
+    }
+    if(this.pos>=TOTAL+6){this.pos=0;this.next=0;this.t0=ac?ac.currentTime:null;this.p0=0}
+  },
+  pause(){silence();this.t0=null;this.next=EVENTS.findIndex(e=>e.s>=this.pos);if(this.next<0)this.next=EVENTS.length},
+  draw(C){
+    const lo=41,hi=82,top=24,kw=46,rh=(H-top-8)/(hi-lo+1),pps=Math.max(12,W/56),ph=kw+(W-kw)*.26,pos=this.pos;
+    const black=[1,3,6,8,10],yOf=m=>top+(hi-m)*rh;
+    g.strokeStyle=C.rule;g.lineWidth=1;g.font='500 10px "IBM Plex Mono", monospace';g.fillStyle=C.muted;
+    for(let b=0;b<=BARS.length;b++){const x=ph+(b*16-pos)*pps;if(x<kw||x>W)continue;g.beginPath();g.moveTo(x,top);g.lineTo(x,H-8);g.stroke();if(b<BARS.length)g.fillText(String(b+1),x+4,14)}
+    const on=new Set();
+    for(const e of EVENTS){const x=ph+(e.s-pos)*pps,w=e.d*pps-2;if(x>W||x+w<kw)continue;
+      const act=pos>=e.s&&pos<e.s+e.d;if(act)on.add(e.m);
+      g.globalAlpha=act?1:(e.s+e.d<=pos?.22:.5);g.fillStyle=`hsl(${(e.m%12)*30} 72% ${act?55:50}%)`;
+      g.fillRect(Math.max(kw,x),yOf(e.m)-rh*.42,Math.min(w,x+w-kw),rh*.84)}
+    g.globalAlpha=1;g.fillStyle=C.paper;g.fillRect(0,0,kw,H);
+    for(let m=lo;m<=hi;m++){const y=yOf(m)-rh/2,bk=black.includes(m%12);
+      g.fillStyle=on.has(m)?`hsl(${(m%12)*30} 72% 55%)`:(bk?C.ink:C.paper);g.fillRect(bk?0:0,y,bk?kw*.62:kw-2,rh);
+      if(!bk){g.strokeStyle=C.rule;g.strokeRect(.5,y+.5,kw-2.5,rh-1)}
+      if(m%12===0){g.fillStyle=C.muted;g.fillText('C'+(m/12-1),kw-24,y+rh-2)}}
+    g.strokeStyle=C.ink;g.lineWidth=1.5;g.beginPath();g.moveTo(ph,top-6);g.lineTo(ph,H-8);g.stroke();
+    this.on=on.size;
+  },
+  readout(p){const b=clamp(Math.floor(this.pos/16),0,BARS.length-1);return[['Bar',(b+1)+' / 19'],['Chord',BARS[b][1]],['Tempo',p.bpm+' bpm'],['Notes sounding',this.on||0]]}
+};
+
+/* ---------- shared drawing ---------- */
+function label(C,t,x,y){g.font='500 10px "IBM Plex Mono", monospace';g.fillStyle=C.muted;g.fillText(t,x,y)}
+function chart(C,x,y,w,h,hist,series,maxHint){
+  g.fillStyle=C.wash;g.fillRect(x,y,w,h);g.strokeStyle=C.ink;g.lineWidth=1;g.beginPath();g.moveTo(x,y+.5);g.lineTo(x+w,y+.5);g.stroke();
+  if(hist.length<2){label(C,'collecting data…',x+12,y+20);return}
+  let mx=maxHint;for(const s of series)for(const d of hist)mx=Math.max(mx,d[s.k]);
+  const n=hist.length,cap=Math.max(n,240),sx=(w-24)/(cap-1),pad=14;
+  series.forEach((s,i)=>{g.strokeStyle=s.col;g.lineWidth=2;g.beginPath();
+    hist.forEach((d,j)=>{const px=x+12+j*sx,py=y+h-pad/2-(d[s.k]/mx)*(h-pad*1.6);j?g.lineTo(px,py):g.moveTo(px,py)});g.stroke();
+    const last=hist[n-1][s.k],px=x+12+(n-1)*sx,py=y+h-pad/2-(last/mx)*(h-pad*1.6);g.fillStyle=s.col;g.beginPath();g.arc(px,py,3,0,TAU);g.fill();
+    g.font='500 10px "IBM Plex Mono", monospace';g.fillText(s.name+' '+(last%1?last.toFixed(1):last),Math.min(px+6,x+w-70),py-6)});
+  label(C,'over time →',x+w-80,y+h-6);
+}
+
+/* ---------- app shell ---------- */
+const SIMS={fourier,pendulum,kinetics,selection,bach};
+const ORDER=['fourier','pendulum','kinetics','selection','bach'];
+for(const s of Object.values(SIMS)){s.p={};s.controls.forEach(c=>s.p[c.id]=c.value)}
+
+const rail=document.getElementById('rail');
+rail.innerHTML=LIB.map(gp=>`<div class="group"><h2><i style="background:var(${SUBJ[gp.s].c})"></i>${SUBJ[gp.s].name}</h2>${gp.items.map(([id,n])=>id?
+  `<button class="item" data-id="${id}" type="button"><span>${n}</span><small>${ORDER.indexOf(id)+1}</small></button>`:
+  `<button class="item" disabled type="button"><span>${n}</span><small>soon</small></button>`).join('')}</div>`).join('')+
+  `<div class="group later"><h2>Later shelves</h2>${LATER.map(n=>`<button class="item" disabled type="button"><span>${n}</span><small>soon</small></button>`).join('')}</div>`;
+rail.addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)select(b.dataset.id)});
+
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let cur=null,curId=null,running=!reduced;
+const bPlay=document.getElementById('bPlay');
+function setRunning(v){if(cur&&!v&&cur.pause)cur.pause();running=v;bPlay.innerHTML=(v?'Pause':'Play')+' <kbd>Space</kbd>'}
+function toggle(){if(!running&&curId==='bach')ensureAudio();setRunning(!running)}
+
+function select(id){
+  if(!SIMS[id])id='fourier';
+  if(cur&&cur.pause)cur.pause();
+  curId=id;cur=SIMS[id];
+  app.style.setProperty('--cur',`var(${SUBJ[cur.subj].c})`);
+  rail.querySelectorAll('[data-id]').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+  document.getElementById('sTitle').textContent=cur.title;
+  document.getElementById('sSubj').textContent=SUBJ[cur.subj].name;
+  document.getElementById('hint').textContent=cur.hint;
+  document.getElementById('nBody').innerHTML=cur.notes;
+  const ct=document.getElementById('ctrls');
+  ct.innerHTML=cur.controls.map(c=>`<div class="ctl"><label for="c_${id}_${c.id}">${c.label}<output id="o_${id}_${c.id}"></output></label><input type="range" id="c_${id}_${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${cur.p[c.id]}"></div>`).join('');
+  cur.controls.forEach(c=>{const inp=document.getElementById(`c_${id}_${c.id}`),out=document.getElementById(`o_${id}_${c.id}`);
+    const show=()=>{const v=+inp.value;cur.p[c.id]=v;out.textContent=c.pct?Math.round(v*100)+'%':(c.step<1?v.toFixed(c.step<.1?2:1):v)+(c.unit||'')};show();inp.addEventListener('input',show)});
+  if(!cur.ready){cur.init();cur.ready=1}
+  setRunning(id==='bach'?false:!reduced);
+  try{localStorage.setItem('lumen.sim',id)}catch(_){}
+  if(location.hash.slice(1)!==id)history.replaceState(null,'','#'+id);
+}
+
+function resize(){const r=cv.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);W=Math.max(1,r.width);H=Math.max(1,r.height);cv.width=W*d;cv.height=H*d;g.setTransform(d,0,0,d,0,0)}
+new ResizeObserver(resize).observe(cv);resize();
+
+const ro=document.getElementById('readout');let rAcc=1;
+function tokens(){const cs=getComputedStyle(app);const t=n=>cs.getPropertyValue(n).trim();return{ink:t('--ink'),paper:t('--paper'),rule:t('--rule'),muted:t('--muted'),wash:t('--wash'),cur:t('--cur')}}
+let last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(running)cur.step(dt,cur.p);
+  const C=tokens();g.fillStyle=C.paper;g.fillRect(0,0,W,H);cur.draw(C,cur.p);
+  rAcc+=dt;if(rAcc>.2){rAcc=0;ro.innerHTML=cur.readout(cur.p).map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
+  requestAnimationFrame(frame);
+}
+
+bPlay.addEventListener('click',toggle);
+document.getElementById('bReset').addEventListener('click',()=>{cur.init();if(curId==='bach')setRunning(false)});
+document.getElementById('bFocus').addEventListener('click',()=>app.classList.toggle('focus'));
+cv.addEventListener('click',()=>{if(cur.click)cur.click()});
+addEventListener('keydown',e=>{if(e.target.matches('input,textarea')&&e.key!==' ')return;if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(e.key===' '){e.preventDefault();toggle()}else if(e.key==='f'||e.key==='F')app.classList.toggle('focus');
+  else if(e.key==='Escape')app.classList.remove('focus');else if(e.key==='r'||e.key==='R')document.getElementById('bReset').click();
+  else if(/^[1-5]$/.test(e.key))select(ORDER[+e.key-1])});
+
+let start=location.hash.slice(1);if(!SIMS[start]){try{start=localStorage.getItem('lumen.sim')||'fourier'}catch(_){start='fourier'}}
+select(start);requestAnimationFrame(frame);
+})();
+</script>
