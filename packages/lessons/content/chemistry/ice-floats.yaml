@@ -1,0 +1,263 @@
+id: chem.ice-floats
+number: 1
+title: Why does ice float?
+subject: chemistry
+object: kitchen/glass
+threads: [particles]
+needs: []
+concepts: [density, states-of-matter]
+card: "Ice floats because freezing water spreads out."
+summary:
+  play: "Frozen water holds hands in rings, with gaps in the middle. Same pieces, more space."
+  explain: "Freezing water spreads into six-sided rings, so ice is less dense than water."
+  deep: "Hydrogen bonding locks water into an open hexagonal lattice. Ice is about 0.92 g/cm³, water 1.00 g/cm³."
+blurb: Drop things into water, then zoom in on freezing molecules.
+
+# The accuracy reference. Lumi and the AI tutor must stay consistent with these.
+facts:
+  - text: "Ice has a density of about 0.92 g/cm³ at 0 °C (0.9167 g/cm³)."
+    source: "CRC Handbook of Chemistry and Physics, density of ice"
+  - text: "Liquid water is densest at about 4 °C, where it is 1.00 g/cm³."
+    source: "CRC Handbook of Chemistry and Physics, density of water"
+  - text: "Water expands by about 9% when it freezes."
+    source: "USGS Water Science School, Ice, Snow, and Glaciers and the Water Cycle"
+  - text: "A floating object sinks until it displaces its own weight of water, so the fraction under water equals its density divided by the density of water."
+    source: "Archimedes' principle, any introductory physics text"
+  - text: "In a water molecule the H–O–H angle is about 104.5°."
+    source: "CRC Handbook of Chemistry and Physics, molecular structure of water"
+  - text: "In ordinary ice (ice Ih) each molecule hydrogen-bonds to its neighbours in an open hexagonal lattice."
+    source: "Petrenko and Whitworth, Physics of Ice (Oxford University Press)"
+  - text: "Typical densities in g/cm³: copper coin 8.9, cork 0.24, apple about 0.8, granite stone about 2.6, dry wood about 0.7, steel 7.8, cooking oil about 0.92, honey about 1.42."
+    source: "Engineering reference density tables; values for natural materials vary"
+  - text: "About 90% of an iceberg is below the sea surface, because sea water is slightly denser than fresh water."
+    source: "US National Snow and Ice Data Center, iceberg facts"
+  - text: "Most substances are denser as solids than as liquids. Water is one of a few exceptions."
+    source: "Any general chemistry text, anomalous properties of water"
+
+questions:
+  - ask:
+      play: "Why is some of the ice under the water?"
+      explain: "Why does most of the ice sit under the water?"
+    answer:
+      play: "Ice is only a tiny bit lighter than water, so most of it sinks in and a little pokes out."
+      explain: "Ice is about 92% as dense as water, so it sinks in until 92% of it is under."
+      deep: "A floater displaces its own weight of water. At 0.92 g/cm³ against 1.00 g/cm³, 92% of the ice is submerged."
+  - ask:
+      play: "Do other things get bigger when they freeze?"
+      explain: "Do other liquids expand when they freeze?"
+    answer:
+      play: "Almost nothing else does. Most things shrink a little when they freeze. Water is special."
+      explain: "Very few. Most liquids shrink when they freeze, so their solid sinks. Water is a rare exception."
+      deep: "Most substances contract on freezing. Water, and a few others such as silicon and bismuth, expand."
+  - ask:
+      play: "Why does a bottle crack in the freezer?"
+      explain: "Why can a full bottle burst in the freezer?"
+    answer:
+      play: "The water spreads out as it freezes and pushes on the bottle from the inside."
+      explain: "Water takes up about 9% more room as ice, and the bottle has no room to spare."
+      deep: "Freezing water expands by about 9%. In a closed, full container that expansion builds enough pressure to split it."
+
+misconceptions:
+  - choice: smaller
+    text:
+      play: "Lots of things shrink when they get cold. Water does something different when it freezes."
+      explain: "Most things shrink as they cool, so this is a fair guess. Water is unusual: it expands when it freezes."
+      deep: "Thermal contraction is the usual rule, and water follows it down to 4 °C. Below that, and on freezing, it expands."
+    lesson: chem.kettle-boil
+  - choice: same
+    text:
+      play: "It is the same water, so it feels like it should fit the same. But the pieces line up with gaps."
+      explain: "The amount of water stays the same, but its volume does not. The molecules rearrange and take more room."
+      deep: "Mass is conserved, volume is not. The lattice of ice is more open than the liquid."
+
+steps:
+  - type: hook
+    title: Why does ice float?
+    sim: { kind: tank, items: [ice, stone] }
+    lumi:
+      mood: wow
+      play: "Look! The ice floats but the stone sinks. Ice is hard like a stone… so why doesn't it sink too?"
+      explain: "Ice is just solid water. Most solids sink in their own liquid. Ice doesn't. Let's work out why."
+      deep: "Most substances are denser as solids than as liquids. Water is a rare exception. In about five minutes you'll see the reason."
+
+  - type: poke
+    title: Sink or float?
+    sim: { kind: tank, labels: true }
+    tray:
+      - { id: coin, label: Coin, icon: coin }
+      - { id: cork, label: Cork, icon: cork }
+      - { id: ice, label: Ice cube, icon: ice }
+      - { id: apple, label: Apple, icon: apple }
+    lumi:
+      play: "Tap a thing to drop it in the water."
+      explain: "Drop each object in. Watch how high it floats, not just whether it floats."
+      deep: "Drop each object in. The labels show density and how much of each floater sits underwater."
+    done_when: "count(settled) >= 3 && has(settled, 'ice')"
+    reactions:
+      "settled:coin":
+        mood: wow
+        play: "Plop! The coin sinks straight to the bottom."
+        explain: "The coin sinks. Metal is packed very tightly."
+        deep: "A copper coin is about 8.9 g/cm³, nearly nine times denser than water."
+      "settled:cork":
+        play: "Boing! The cork floats right on top."
+        explain: "Cork is full of tiny air pockets, so it floats high."
+        deep: "Cork is about 0.24 g/cm³, so only about a quarter of it sits below the surface."
+      "settled:ice":
+        play: "The ice floats! But look: most of it is hiding underwater."
+        explain: "Ice floats, but about 92% of it stays underwater. It is only just lighter than water."
+        deep: "Ice is 0.92 g/cm³. A floating object sinks until it pushes aside its own weight of water, so 92% goes under."
+      "settled:apple":
+        play: "Apples float too! Bobbing for apples works because of this."
+        explain: "Apples float because about a quarter of an apple is air."
+        deep: "An apple is about 0.8 g/cm³, thanks to air spaces between its cells."
+    done_lumi:
+      play: "Tap Continue when you are ready."
+      explain: "Tap Continue."
+      deep: "Continue when ready."
+
+  - type: predict
+    title: We fill a bottle with water and freeze it. What happens?
+    lumi:
+      mood: thinking
+      play: "Guess first! Every guess helps you think."
+      explain: "Make a prediction before we look."
+      deep: "Predict first. A committed guess makes the answer stick."
+    choices:
+      - { id: smaller, label: The ice takes up less space, art: "bottle:small" }
+      - { id: same, label: It stays the same, art: "bottle:same" }
+      - { id: bigger, label: The ice takes up more space, art: "bottle:big" }
+    answer: bigger
+    hints:
+      - play: "Hmm, not quite. Think about the ice cube: it floated, so it's lighter than the same amount of water…"
+        explain: "Not quite. The ice floated, so a cube of ice is lighter than a cube of water the same size."
+        deep: "Not quite. Ice floated, so per cubic centimetre it has less mass than water."
+      - highlight: bigger
+        play: "Here is a clue: same water, but lighter for its size… so it must be spread out over more space."
+        explain: "Clue: the same amount of water, but less mass per space. So it must take up more room."
+        deep: "Same mass, lower density. Since ρ = m/V, the volume must go up."
+      - demo: { kind: tank, items: [ice], labels: true }
+        play: "Watch the ice cube. A little bit pokes out of the water. It is just a bit lighter for its size."
+        explain: "Watch the ice cube float. Lighter for its size means the same water is spread over more room."
+        deep: "Worked example: ice at 0.92 g/cm³ floats 92% under. Lower density at the same mass means a larger volume."
+    reveal:
+      play: "The ice takes up more space. When water freezes it spreads out."
+      explain: "The ice takes up more space. Freezing water expands, which is why frozen bottles bulge."
+      deep: "The ice takes up more space: water expands by about 9% when it freezes."
+    correct:
+      mood: proud
+      play: "Yes! When water freezes it spreads out. A frozen bottle bulges and can even crack!"
+      explain: "Correct. Freezing water expands, which is why frozen pipes and bottles burst."
+      deep: "Correct. Water expands by about 9% when it freezes."
+
+  - type: zoom
+    title: Zoom in. Way in.
+    sim: { kind: molecules }
+    controls:
+      - { type: slider, param: temperature, label: Temperature, min: -10, max: 20, step: 1, start: 20, unit: "°C" }
+    lumi:
+      play: "These are tiny pieces of water, much too small to see. Slide the temperature down to freeze them."
+      explain: "Each red-and-white shape is one water molecule: H₂O. Cool them below 0 °C and watch the box."
+      deep: "Liquid water molecules tumble past each other. Cool below 0 °C and watch the container width."
+    done_when: "event('froze')"
+    reactions:
+      froze:
+        mood: wow
+        play: "Frozen! See how the tiny pieces hold hands in rings, with gaps in the middle? Same pieces, more space!"
+        explain: "Frozen. Each molecule locks onto its neighbours in six-sided rings held by hydrogen bonds. The rings leave open gaps, so ice takes more room."
+        deep: "Below 0 °C each molecule hydrogen-bonds to its neighbours in a hexagonal lattice (ice Ih). That open structure takes about 9% more volume than the liquid."
+      melted:
+        play: "Melted again! The rings let go and the pieces tumble close together."
+        explain: "Melted. The hydrogen bonds keep breaking and re-forming, so the molecules pack closer."
+        deep: "Above 0 °C the lattice collapses. Molecules still hydrogen-bond, but in a shifting, denser arrangement."
+
+  - type: name_it
+    title: Ice is less *dense* than water.
+    term: density
+    body:
+      play: "Same water, more space. So ice is lighter for its size, and it floats."
+      explain: "Dense means how much stuff is packed into a space. Same water, more space. So ice is lighter for its size, and it floats."
+      deep: "Density is mass per unit volume. Freezing keeps the mass and raises the volume, so the density falls and the ice floats."
+    formula:
+      lines: ["density ρ = mass m ÷ volume V"]
+      table:
+        - ["Liquid water (4 °C)", "1.00 g/cm³"]
+        - ["Ice (0 °C)", "0.92 g/cm³"]
+      note: "Most solids are denser than their liquid. Water is one of very few exceptions, thanks to hydrogen bonding."
+    lumi:
+      mood: proud
+      play: "Now you know a real science word: dense! A tight squeeze is dense. A loose spread-out pattern is less dense."
+      explain: "That one word explains everything you saw: floating depends on density, not on how hard or heavy something is."
+      deep: "Floating condition: an object floats when its average density is below the fluid's."
+
+  - type: challenge
+    title: "Your turn: float or sink?"
+    lumi:
+      play: "Tap Floats or Sinks for each one."
+      explain: "Use what you learned: is each one more or less dense than water?"
+      deep: "Compare each density with water at 1.00 g/cm³."
+    sort:
+      bins:
+        - { id: floats, label: Floats }
+        - { id: sinks, label: Sinks }
+      items:
+        - { id: log, name: Wooden log, detail: "0.7 g/cm³", icon: log, bin: floats }
+        - { id: stone, name: Stone, detail: "2.6 g/cm³", icon: stone, bin: sinks }
+        - { id: iceberg, name: Iceberg, detail: "0.92 g/cm³", icon: iceberg, bin: floats }
+        - { id: bolt, name: Steel bolt, detail: "7.8 g/cm³", icon: bolt, bin: sinks }
+        - { id: oil, name: Drop of cooking oil, detail: "0.92 g/cm³", icon: oil, bin: floats }
+        - { id: honey, name: Spoon of honey, detail: "1.42 g/cm³", icon: honey, bin: sinks }
+      not_quite:
+        mood: thinking
+        play: "Not quite! Is the {name} packed tighter than water, or more spread out?"
+        explain: "Not quite. Try again: is the {name} denser than water, or less dense?"
+        deep: "Not quite. Check again: {detail} against 1.00 g/cm³."
+      done:
+        mood: proud
+        play: "All correct! Now the big one. Because ice floats, lakes freeze on top and fish stay safe underneath. Tap “What if ice sank?”"
+        explain: "All correct. Here is why it matters: floating ice forms a lid that keeps the water below liquid. Try the pretend world."
+        deep: "All correct. Floating ice insulates the water beneath it, which keeps lakes habitable in winter. Compare with the counterfactual."
+    then:
+      title: What if ice sank?
+      sim: { kind: lake }
+      toggle:
+        param: mode
+        on:
+          value: sank
+          label: What if ice sank?
+          lumi:
+            mood: wow
+            play: "Oh no! If ice sank, lakes would freeze from the bottom up and the fish would get stuck."
+            explain: "If ice sank, lakes would fill with ice from the bottom up. Much less life could survive winter."
+            deep: "Sinking ice would accumulate at the bottom each winter, and many lakes would freeze solid."
+        off:
+          value: real
+          label: Back to the real world
+          lumi:
+            play: "Phew. Real ice floats, so the fish are safe."
+            explain: "Back to reality: a floating lid of ice protects the life below."
+            deep: "Restored: the ice layer stays thin and insulates the liquid beneath."
+
+  - type: keep
+    lumi:
+      mood: proud
+      play: "You did it! This card goes in your collection. Tap the button to light up the glass in your town."
+      explain: "Lesson complete. Your card is saved, and the next thread stop is the kettle."
+      deep: "Complete. This concept links forward to evaporation (kettle) and reactions (baking soda)."
+    where_else:
+      - title: The kettle
+        lesson: chem.kettle-boil
+        text:
+          play: "Heat makes the same tiny pieces move so fast they fly off as steam."
+          explain: "Heat makes the same molecules move fast enough to escape as steam."
+          deep: "Add enough energy and molecules leave the liquid altogether: evaporation and boiling."
+      - title: Icebergs
+        text:
+          play: "Most of an iceberg hides below the sea, just like your ice cube."
+          explain: "About 90% of an iceberg hides below the sea, just like your ice cube."
+          deep: "About 90% of an iceberg is submerged: ice at 0.92 g/cm³ in sea water at about 1.03 g/cm³."
+      - title: Burst pipes
+        text:
+          play: "Water spreads out when it freezes, so a full pipe can split in a cold winter."
+          explain: "Water expands when it freezes, which is why pipes burst in winter."
+          deep: "A 9% volume increase in a closed pipe builds enough pressure to split metal."

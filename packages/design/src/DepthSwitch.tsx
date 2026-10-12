@@ -43,7 +43,7 @@ export function DepthSwitch({ value, onChange, labels, compact = false }: DepthS
           onClick={() => onChange(depth)}
           onKeyDown={(event) => move(event, depth)}
         >
-          {labels[depth]}
+          <span className={styles.thumb}>{labels[depth]}</span>
         </button>
       ))}
     </div>

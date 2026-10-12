@@ -1,5 +1,5 @@
 import LakeSim from './lake';
-import { rendersEverywhere, run, testEnv } from './testkit';
+import { expectTextFits, rendersEverywhere, run, testEnv } from './testkit';
 
 function make() {
   const env = testEnv();
@@ -74,5 +74,15 @@ describe('lake', () => {
     run(sim, 1);
     expect(() => rendersEverywhere(sim)).not.toThrow();
     expect(sim.describe()).toContain('sim.lake.describeReal');
+  });
+
+  it.each([320, 358, 560, 1200])('keeps all its text inside a %ipx wide canvas', (width) => {
+    for (const depth of ['play', 'explain', 'deep'] as const) {
+      const sim = new LakeSim();
+      sim.init({}, testEnv({ depth, english: true }));
+      sim.setParam('temperature', -5);
+      run(sim, 6);
+      expect(() => expectTextFits(sim, width, 260)).not.toThrow();
+    }
   });
 });

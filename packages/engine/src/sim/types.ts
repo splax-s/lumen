@@ -110,3 +110,35 @@ export function pill(
 
 export const FONT_BODY = '"Atkinson Hyperlegible", Verdana, sans-serif';
 export const FONT_MONO = '"IBM Plex Mono", ui-monospace, monospace';
+
+/** Splits text into lines no wider than maxWidth, using the context's current font. */
+export function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+  const lines: string[] = [];
+  let line = '';
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(candidate).width > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+/** Draws left-aligned text that wraps upward from a bottom edge, so captions never run off the canvas. */
+export function caption(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  bottom: number,
+  maxWidth: number,
+  lineHeight: number,
+): void {
+  const lines = wrapText(ctx, text, Math.max(40, maxWidth));
+  lines.forEach((line, index) => {
+    ctx.fillText(line, x, bottom - (lines.length - 1 - index) * lineHeight);
+  });
+}

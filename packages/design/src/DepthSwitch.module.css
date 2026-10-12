@@ -1,14 +1,18 @@
+/* The track is 48 px tall and each option fills it, so every option is a full-size touch target.
+   The visible thumb sits 4 px inside. */
 .track {
   display: inline-flex;
   flex: 0 0 auto;
-  padding: 4px;
+  padding: 0 4px;
   background: var(--lm-mist);
   border-radius: var(--lm-radius-pill);
 }
 
 .option {
-  min-height: 40px;
-  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--lm-target);
+  padding: 0;
   border: 0;
   border-radius: var(--lm-radius-pill);
   background: transparent;
@@ -19,7 +23,15 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.compact .option {
+.thumb {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--lm-radius-pill);
+}
+
+.compact .thumb {
   padding: 0 10px;
   font-size: 14px;
 }
@@ -29,10 +41,11 @@
 }
 
 .selected {
-  background: var(--lm-white);
   color: var(--lm-ink);
   font-weight: 700;
-  box-shadow: var(--lm-shadow-thumb);
 }
 
-/* Each option is 40 px tall inside a 48 px track, so the whole control meets the target size. */
+.selected .thumb {
+  background: var(--lm-white);
+  box-shadow: var(--lm-shadow-thumb);
+}

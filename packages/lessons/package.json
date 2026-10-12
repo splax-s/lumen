@@ -3,7 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts", "./dist/*": "./dist/*" },
-  "scripts": { "typecheck": "tsc --noEmit -p .", "test": "vitest run", "build": "tsx scripts/build.ts" },
-  "dependencies": { "@lumen/engine": "workspace:*" }
+  "exports": {
+    ".": "./src/index.ts",
+    "./dist/*": "./dist/*"
+  },
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lumen/engine": "workspace:*"
+  }
 }

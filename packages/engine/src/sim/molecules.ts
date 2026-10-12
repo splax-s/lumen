@@ -1,4 +1,4 @@
-import { BaseSim, FONT_MONO, TAU, type SimState, type SimValue, type SimView } from './types';
+import { BaseSim, FONT_MONO, TAU, caption, type SimState, type SimValue, type SimView } from './types';
 
 /**
  * Water molecules cooling into ice. As a liquid they sit close together with no pattern.
@@ -151,9 +151,9 @@ export default class MoleculesSim extends BaseSim {
     const f = this.frozen;
     const fullW = this.spanX + PAD * 2;
     const fullH = this.spanY + PAD * 2;
-    const scale = Math.max(0.05, Math.min((W - 32) / fullW, (H - 72) / fullH));
+    const scale = Math.max(0.05, Math.min((W - 32) / fullW, (H - 86) / fullH));
     const cx = W / 2;
-    const cy = H / 2 + 6;
+    const cy = H / 2;
 
     ctx.fillStyle = colors.paper;
     ctx.fillRect(0, 0, W, H);
@@ -201,7 +201,7 @@ export default class MoleculesSim extends BaseSim {
       ctx.globalAlpha = 1;
     }
 
-    const r = Math.max(3.5, BOND * 0.27 * scale);
+    const r = Math.max(3, BOND * 0.24 * scale);
     const hr = r * 0.55;
     const hd = r * 1.15;
     const half = ((HOH_ANGLE / 2) * Math.PI) / 180;
@@ -229,6 +229,6 @@ export default class MoleculesSim extends BaseSim {
     ctx.textAlign = 'left';
     ctx.font = `500 12px ${FONT_MONO}`;
     ctx.fillStyle = colors.graphite;
-    ctx.fillText(this.env.t(`sim.molecules.legend.${this.env.depth()}`), 12, H - 10);
+    caption(ctx, this.env.t(`sim.molecules.legend.${this.env.depth()}`), 12, H - 10, W - 24, 15);
   }
 }

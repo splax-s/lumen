@@ -1,5 +1,5 @@
 import MoleculesSim from './molecules';
-import { fakeContext, rendersEverywhere, run, testEnv, view } from './testkit';
+import { expectTextFits, fakeContext, rendersEverywhere, run, testEnv, view } from './testkit';
 
 function make(config: Record<string, unknown> = {}, depth: 'play' | 'explain' | 'deep' = 'play') {
   const env = testEnv({ depth });
@@ -83,5 +83,15 @@ describe('molecules', () => {
     run(sim, 1);
     expect(() => rendersEverywhere(sim)).not.toThrow();
     expect(sim.describe()).toContain('sim.molecules.describeLiquid');
+  });
+
+  it.each([320, 358, 560, 1200])('keeps all its text inside a %ipx wide canvas', (width) => {
+    for (const depth of ['play', 'explain', 'deep'] as const) {
+      const sim = new MoleculesSim();
+      sim.init({}, testEnv({ depth, english: true }));
+      sim.setParam('temperature', -5);
+      run(sim, 6);
+      expect(() => expectTextFits(sim, width, 260)).not.toThrow();
+    }
   });
 });

@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "Lumen",
+    "loading": "Loading…",
+    "skip": "Skip to content"
+  },
+  "depth": {
+    "group": "Depth",
+    "play": "Play",
+    "explain": "Explain",
+    "deep": "Deep"
+  },
+  "subject": {
+    "maths": "Maths",
+    "physics": "Physics",
+    "chemistry": "Chemistry",
+    "biology": "Biology",
+    "music": "Music"
+  },
+  "lumi": {
+    "name": "Lumi",
+    "speak": "Read aloud"
+  },
+  "lesson": {
+    "backToTown": "Back to town",
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Light up the town",
+    "step": "Step {current} of {total}",
+    "hint": "Give me a hint",
+    "demoLabel": "A worked example",
+    "newCard": "{subject} · New card",
+    "whereElse": "Where else does this show up?",
+    "sortGroup": "Sort each one",
+    "sorted": "{name}: {bin}",
+    "choices": "Choose one",
+    "notFoundTitle": "We can't find that lesson",
+    "notFoundBody": "It may have moved. Your town has every lesson you can play.",
+    "errorTitle": "This lesson did not load",
+    "errorBody": "Check your connection and try again.",
+    "retry": "Try again",
+    "waiting": {
+      "hook": "Continue",
+      "poke": "Keep playing",
+      "predict": "Pick an answer",
+      "zoom": "Keep going",
+      "name_it": "Continue",
+      "challenge": "Finish the challenge",
+      "keep": "Continue"
+    },
+    "keepTitle": "Your new card"
+  },
+  "item": {
+    "coin": "coin",
+    "cork": "cork",
+    "ice": "ice cube",
+    "apple": "apple",
+    "stone": "stone"
+  },
+  "sim": {
+    "loading": "Loading the simulation",
+    "failed": "The simulation could not start. Try reloading the page.",
+    "tank": {
+      "floats": "Floats!",
+      "sinks": "Sinks",
+      "floatsUnder": "Floats · {percent}% under",
+      "densityUnder": "ρ {rho} g/cm³ · {percent}% under",
+      "density": "ρ {rho} g/cm³",
+      "describe": "A tank of water. {list}",
+      "describeEmpty": "A tank of water with nothing in it yet.",
+      "describeFloats": "The {item} floats with {percent}% of it under water.",
+      "describeSinks": "The {item} has sunk to the bottom."
+    },
+    "molecules": {
+      "space": "Space taken: {percent}%",
+      "legend": {
+        "play": "each red ball with two white ones is one tiny piece of water",
+        "explain": "red: oxygen · white: hydrogen",
+        "deep": "● O  ○ H  - - hydrogen bond"
+      },
+      "describeLiquid": "Water molecules at {temperature} °C, close together with no pattern. Space taken: {percent}%.",
+      "describeIce": "Water molecules at {temperature} °C, locked into six-sided rings with gaps. Space taken: {percent}%."
+    },
+    "lake": {
+      "real": "Real world: ice floats",
+      "pretend": "Pretend world: ice sinks",
+      "fish": "Fish swimming: {swimming} of {total}",
+      "describeReal": "A lake in winter with a thin lid of ice on top. {swimming} of {total} fish are swimming underneath.",
+      "describeSank": "A lake where ice sinks and piles up from the bottom. {swimming} of {total} fish are still swimming."
+    }
+  },
+  "town": {
+    "placeholder": "The town arrives in the next phase.",
+    "startIce": "Play the ice lesson"
+  }
+}

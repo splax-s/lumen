@@ -16,3 +16,4 @@ Choices made during the build that the brief or the design spec did not fix. New
 - Shared test tooling (Vitest, jsdom, Testing Library) is installed once at the workspace root.
 - Docker was not running on the build machine, so development and tests used the local Postgres 14 and a local Redis. `docker-compose.yml` and CI target Postgres 16 and Redis 7. Nothing in the schema needs a Postgres 16 feature.
 - Python 3.12 is installed through `uv`; the machine's system Python is 3.13.
+- `exactOptionalPropertyTypes` is off. With CSS modules and `noUncheckedIndexedAccess` every class name is `string | undefined`, and the flag turned each `className` prop into an error without catching real bugs. `strict` and `noUncheckedIndexedAccess` stay on.

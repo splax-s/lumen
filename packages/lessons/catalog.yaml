@@ -1,0 +1,228 @@
+# The town: every object, the lesson that lives in it, and the threads that link them.
+# Lesson files must agree with this file; the build fails if they do not.
+
+places:
+  kitchen: Kitchen
+  music-room: Music room
+  rooftop: Rooftop
+  garden: Garden
+  playground: Playground
+  sky: Sky
+
+subjects:
+  maths: Maths
+  physics: Physics
+  chemistry: Chemistry
+  biology: Biology
+  music: Music
+
+threads:
+  - id: particles
+    name: Tiny particles
+    objects: [glass, kettle, baking-soda, gate]
+  - id: waves
+    name: Waves
+    objects: [guitar, djembe, dish, telescope]
+  - id: energy
+    name: Energy
+    objects: [kettle, swing, slide]
+  - id: patterns
+    name: Patterns
+    objects: [sunflower, piano, djembe, moon, record-player]
+  - id: living
+    name: Living things
+    objects: [onion, seedling, bee, beetles, sunflower]
+  - id: measuring
+    name: Measuring
+    objects: [scale, seesaw, slide, dice]
+
+objects:
+  - id: glass
+    name: Glass of ice water
+    lesson: chem.ice-floats
+    number: 1
+    subject: chemistry
+    place: kitchen
+    question: Why does ice float?
+    blurb: Drop things into water, then zoom in on freezing molecules.
+    needs: []
+  - id: kettle
+    name: Kettle
+    lesson: chem.kettle-boil
+    number: 2
+    subject: chemistry
+    place: kitchen
+    question: Where does boiling water go?
+    blurb: Heat water and watch its particles escape as steam.
+    needs: [chem.ice-floats]
+  - id: baking-soda
+    name: Baking soda and vinegar
+    lesson: chem.baking-soda
+    number: 3
+    subject: chemistry
+    place: kitchen
+    question: Why does baking soda fizz?
+    blurb: Mix two things, warm them up, and count the bubbles.
+    needs: [chem.kettle-boil]
+  - id: gate
+    name: Rusty garden gate
+    lesson: chem.rust
+    number: 4
+    subject: chemistry
+    place: garden
+    question: Why does iron rust?
+    blurb: Give iron air and water, and see what it turns into.
+    needs: [chem.baking-soda]
+  - id: swing
+    name: Swing
+    lesson: phys.swing
+    number: 5
+    subject: physics
+    place: playground
+    question: Why does a swing keep its rhythm?
+    blurb: Change the length of a swing and time its beat.
+    needs: []
+  - id: seesaw
+    name: Seesaw
+    lesson: phys.seesaw
+    number: 6
+    subject: physics
+    place: playground
+    question: How can a child lift a grown-up?
+    blurb: Slide two people along a plank until it balances.
+    needs: []
+  - id: telescope
+    name: Telescope
+    lesson: phys.telescope
+    number: 7
+    subject: physics
+    place: rooftop
+    question: How do lenses make things look bigger?
+    blurb: Bend light rays through a lens and find the focus.
+    needs: []
+  - id: moon
+    name: Moon
+    lesson: phys.moon
+    number: 8
+    subject: physics
+    place: sky
+    question: Why does the Moon change shape?
+    blurb: Send the Moon around the Earth and watch its phases.
+    needs: [phys.telescope]
+  - id: scale
+    name: Kitchen scale
+    lesson: math.scale
+    number: 9
+    subject: maths
+    place: kitchen
+    question: How heavy is a cup of flour?
+    blurb: Weigh kitchen things, guess first, and learn the units.
+    needs: []
+  - id: sunflower
+    name: Sunflower
+    lesson: math.sunflower
+    number: 10
+    subject: maths
+    place: garden
+    question: Why are sunflower seeds in spirals?
+    blurb: Turn the angle between seeds and find the golden one.
+    needs: []
+  - id: slide
+    name: Slide
+    lesson: math.slide
+    number: 11
+    subject: maths
+    place: playground
+    question: Which slide is fastest?
+    blurb: Change the slope and race a ball down it.
+    needs: [math.scale]
+  - id: dice
+    name: Dice
+    lesson: math.dice
+    number: 12
+    subject: maths
+    place: garden
+    question: Can you predict a dice roll?
+    blurb: Roll dice hundreds of times and watch a pattern appear.
+    needs: []
+  - id: onion
+    name: Onion
+    lesson: bio.onion
+    number: 13
+    subject: biology
+    place: kitchen
+    question: What is an onion made of?
+    blurb: Peel a layer and zoom in until you see the cells.
+    needs: []
+  - id: seedling
+    name: Seedling in a pot
+    lesson: bio.seedling
+    number: 14
+    subject: biology
+    place: garden
+    question: What does a seed need to grow?
+    blurb: Give a seed light, water and warmth, and speed up time.
+    needs: [bio.onion]
+  - id: bee
+    name: Bee
+    lesson: bio.bee
+    number: 15
+    subject: biology
+    place: garden
+    question: Why do flowers need bees?
+    blurb: Fly a bee between flowers and grow a fruit.
+    needs: [bio.seedling]
+  - id: beetles
+    name: Beetles under a leaf
+    lesson: bio.beetles
+    number: 16
+    subject: biology
+    place: garden
+    question: How do living things change over time?
+    blurb: Watch beetles compete for food over many generations.
+    needs: [bio.bee]
+  - id: guitar
+    name: Guitar
+    lesson: music.guitar
+    number: 17
+    subject: music
+    place: music-room
+    question: Where does a guitar's sound come from?
+    blurb: Pluck a string in slow motion and change its pitch.
+    needs: []
+  - id: djembe
+    name: Djembe
+    lesson: music.djembe
+    number: 18
+    subject: music
+    place: music-room
+    question: How does a drum keep a beat?
+    blurb: Tap a pattern onto a beat circle and loop it.
+    needs: []
+  - id: piano
+    name: Piano
+    lesson: music.piano
+    number: 19
+    subject: music
+    place: music-room
+    question: Why do some notes sound good together?
+    blurb: Build chords on coloured keys and hear what fits.
+    needs: [music.guitar]
+  - id: record-player
+    name: Record player
+    lesson: music.bach-prelude
+    number: 20
+    subject: music
+    place: music-room
+    question: "Inside a masterpiece: Bach's Prelude in C"
+    blurb: Slow down a famous piece and see one chord per bar.
+    needs: [music.piano]
+  - id: dish
+    name: Radio dish
+    lesson: null
+    number: null
+    subject: physics
+    place: rooftop
+    question: How does a signal fly through the air?
+    blurb: Send a wave from a tower and catch it in the dish.
+    needs: []

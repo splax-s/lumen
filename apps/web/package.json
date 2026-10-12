@@ -1,0 +1,22 @@
+{
+  "name": "@lumen/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lumen/design": "workspace:*",
+    "@lumen/engine": "workspace:*",
+    "@lumen/lessons": "workspace:*",
+    "@lumen/town": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.6"
+  }
+}

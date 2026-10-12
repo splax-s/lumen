@@ -1,5 +1,5 @@
 import TankSim from './tank';
-import { fakeContext, rendersEverywhere, run, testEnv, view } from './testkit';
+import { expectTextFits, fakeContext, rendersEverywhere, run, testEnv, view } from './testkit';
 
 function make(config: Record<string, unknown> = {}, depth: 'play' | 'explain' | 'deep' = 'play') {
   const env = testEnv({ depth });
@@ -102,5 +102,15 @@ describe('tank', () => {
     run(sim, 8);
     expect(Number.isFinite(sim.snapshot()[0]!.submerged)).toBe(true);
     expect(sim.snapshot()[0]!.submerged).toBeCloseTo(0.92, 1);
+  });
+
+  it.each([320, 358, 560, 1200])('keeps all its text inside a %ipx wide canvas', (width) => {
+    for (const depth of ['play', 'explain', 'deep'] as const) {
+      const sim = new TankSim();
+      sim.init({ items: ['ice', 'stone', 'coin', 'cork'], labels: true }, testEnv({ depth, english: true }));
+      sim.setParam('temperature', -5);
+      run(sim, 6);
+      expect(() => expectTextFits(sim, width, 260)).not.toThrow();
+    }
   });
 });

@@ -1,0 +1,27 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  overflow: hidden;
+  border-radius: var(--lm-radius-lg);
+  background: var(--lm-white);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+}
+
+.failed {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  color: var(--lm-graphite);
+}
