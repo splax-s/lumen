@@ -2,8 +2,7 @@ import { evaluate, parseCondition, type Condition } from './condition';
 import { DEPTHS, resolveText, type Depth, type DepthText, type Mood } from './depth';
 import { EventBus, type SimEvent } from './events';
 import type { Lesson, LumiLine, SimSpec, Step, ThenStage } from './schema';
-
-export type SimState = Record<string, number | string | boolean>;
+import type { SimState } from './sim/types';
 
 export type RuntimeState = {
   stepIndex: number;
