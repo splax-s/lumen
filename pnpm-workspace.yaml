@@ -4,3 +4,6 @@ packages:
   - e2e
 allowBuilds:
   esbuild: true
+overrides:
+  react: ^18.3.1
+  react-dom: ^18.3.1

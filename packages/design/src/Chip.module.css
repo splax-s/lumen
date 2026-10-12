@@ -1,0 +1,26 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--lm-target);
+  padding: 0 16px;
+  border: 1px solid var(--lm-line-strong);
+  border-radius: var(--lm-radius-pill);
+  background: var(--lm-white);
+  color: var(--lm-ink);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chip:hover {
+  background: var(--lm-mist);
+}
+
+.pressed,
+.pressed:hover {
+  background: var(--lm-ink);
+  border-color: var(--lm-ink);
+  color: var(--lm-on-ink);
+}

@@ -1,0 +1,36 @@
+.dots {
+  display: flex;
+  gap: 6px;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.dots i {
+  display: block;
+  width: 36px;
+  min-width: 10px;
+  height: 10px;
+  flex: 0 1 36px;
+  border-radius: 10px;
+  background: var(--lm-line);
+}
+
+.dots i[data-state='done'] {
+  background: var(--lm-ink);
+}
+
+.dots i[data-state='current'] {
+  background: var(--lm-lumi);
+}
+
+@media (max-width: 720px) {
+  .dots {
+    gap: 4px;
+  }
+
+  .dots i {
+    width: 24px;
+    flex-basis: 24px;
+    height: 8px;
+  }
+}

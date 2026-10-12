@@ -1,0 +1,100 @@
+/*
+ * Lumen design tokens (brief section 9). Every colour in the product is one of these
+ * custom properties. Simulations and illustrations may add scientifically conventional colours.
+ */
+:root {
+  color-scheme: light;
+
+  /* Neutrals */
+  --lm-white: #ffffff;
+  --lm-mist: #f6f6f8;
+  --lm-line: #e6e6ec;
+  --lm-line-strong: #d6d6de;
+  --lm-graphite: #55555f;
+  --lm-ink: #16161d;
+  --lm-on-ink: #ffffff;
+  --lm-sketch: #b7b7c2; /* unlit town objects, drawn as pencil lines */
+
+  /* Accents, used small */
+  --lm-lumi: #ffc21a;
+  --lm-lumi-tint: #fff4d6;
+  --lm-on-lumi: #16161d;
+  --lm-maths: #2f80ed;
+  --lm-maths-tint: #e6f0fd;
+  --lm-maths-text: #1b5fbf;
+  --lm-physics: #f2683c;
+  --lm-physics-tint: #fdebe4;
+  --lm-physics-text: #b23f18;
+  --lm-chemistry: #14a37f;
+  --lm-chemistry-tint: #e1f5ef;
+  --lm-chemistry-text: #0b6b53;
+  --lm-biology: #5aa62d;
+  --lm-biology-tint: #e9f4e1;
+  --lm-biology-text: #3a7019;
+  --lm-music: #e0457b;
+  --lm-music-tint: #fbe4ee;
+  --lm-music-text: #b3285a;
+  --lm-danger: #c62f2f;
+  --lm-danger-tint: #fbe9e9;
+
+  /* Illustration and simulation grounds */
+  --lm-sim-water: #8fcff2;
+  --lm-sim-sky: #eef5fc;
+  --lm-sim-ground: #e3f1d9;
+  --lm-room-a: #f3f0ff;
+  --lm-room-b: #eaf8f3;
+
+  /* Type */
+  --lm-font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', sans-serif;
+  --lm-font-body: 'Atkinson Hyperlegible', Verdana, 'Segoe UI', sans-serif;
+  --lm-font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* Shape */
+  --lm-radius-sm: 10px;
+  --lm-radius-md: 16px;
+  --lm-radius-lg: 20px;
+  --lm-radius-xl: 24px;
+  --lm-radius-pill: 999px;
+  --lm-shadow-float: 0 1px 2px rgb(22 22 29 / 6%), 0 16px 40px rgb(22 22 29 / 8%);
+  --lm-shadow-thumb: 0 1px 3px rgb(22 22 29 / 12%);
+  --lm-target: 48px;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --lm-white: #121217;
+  --lm-mist: #1b1b22;
+  --lm-line: #2c2c36;
+  --lm-line-strong: #40404d;
+  --lm-graphite: #b4b4c0;
+  --lm-ink: #f2f2f5;
+  --lm-on-ink: #121217;
+  --lm-sketch: #5a5a68;
+  --lm-lumi: #ffc21a;
+  --lm-lumi-tint: #3a2f0d;
+  --lm-on-lumi: #16161d;
+  --lm-maths: #5b9df2;
+  --lm-maths-tint: #152742;
+  --lm-maths-text: #9cc4f8;
+  --lm-physics: #f58560;
+  --lm-physics-tint: #40201a;
+  --lm-physics-text: #f9b29b;
+  --lm-chemistry: #2fc09b;
+  --lm-chemistry-tint: #0f3229;
+  --lm-chemistry-text: #7fdcc3;
+  --lm-biology: #7cc24f;
+  --lm-biology-tint: #1f3312;
+  --lm-biology-text: #add98f;
+  --lm-music: #ea6d98;
+  --lm-music-tint: #3f1626;
+  --lm-music-text: #f3a5c0;
+  --lm-danger: #f07070;
+  --lm-danger-tint: #3d1717;
+  --lm-sim-water: #2f7aa8;
+  --lm-sim-sky: #151c2b;
+  --lm-sim-ground: #1c2a18;
+  --lm-room-a: #1d1b2b;
+  --lm-room-b: #152620;
+  --lm-shadow-float: 0 1px 2px rgb(0 0 0 / 40%), 0 16px 40px rgb(0 0 0 / 45%);
+  --lm-shadow-thumb: 0 1px 3px rgb(0 0 0 / 50%);
+}

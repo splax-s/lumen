@@ -1,0 +1,80 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--lm-target);
+  padding: 0 24px;
+  border: 1.5px solid transparent;
+  border-radius: var(--lm-radius-pill);
+  font-family: var(--lm-font-body);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sm {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 15px;
+}
+
+.lg {
+  min-height: 56px;
+  padding: 0 30px;
+  font-size: 18px;
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.primary {
+  background: var(--lm-ink);
+  color: var(--lm-on-ink);
+}
+
+.primary:hover:not(:disabled) {
+  opacity: 0.86;
+}
+
+.secondary {
+  background: var(--lm-white);
+  color: var(--lm-ink);
+  border-color: var(--lm-line-strong);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--lm-mist);
+}
+
+.quiet {
+  background: transparent;
+  color: var(--lm-ink);
+  padding-inline: 12px;
+}
+
+.quiet:hover:not(:disabled) {
+  background: var(--lm-mist);
+}
+
+.danger {
+  background: var(--lm-danger);
+  color: #ffffff;
+}
+
+.button:disabled {
+  background: var(--lm-line);
+  color: var(--lm-graphite);
+  border-color: transparent;
+  cursor: not-allowed;
+}

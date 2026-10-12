@@ -1,0 +1,44 @@
+.lumi,
+.still {
+  display: block;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.lumi {
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+.eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 5s infinite;
+}
+
+.still .eye {
+  animation: none;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lumi,
+  .eye {
+    animation: none;
+  }
+}

@@ -1,0 +1,88 @@
+.strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.speaker {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.bubble {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 12px 12px 12px 18px;
+  background: var(--lm-mist);
+  border-radius: 18px;
+}
+
+.text {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-block: 4px;
+  font-size: 18px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.name {
+  font-family: var(--lm-font-display);
+  font-weight: 800;
+}
+
+.speak {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--lm-target);
+  height: var(--lm-target);
+  margin: -6px -4px -6px 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--lm-ink);
+  cursor: pointer;
+}
+
+.speak:hover {
+  background: var(--lm-line);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.small .text {
+  font-size: 16px;
+}
+
+.small .bubble {
+  padding: 8px 8px 8px 14px;
+  border-radius: 16px;
+}
+
+@media (max-width: 720px) {
+  .strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .actions > * {
+    flex: 1 1 0;
+  }
+}
