@@ -23,6 +23,8 @@ The run is successful when:
 | Visual conflicts | Mockups are the visual source of truth | Section 9 tokens win | Section 9 colours, type and component rules everywhere. Town, Lesson, Phone and Lumi mockups are used for layout and content only. |
 | AI provider | Anthropic only | Use Claude; support other AI if there is no key | Pluggable provider, Anthropic first (section 7 below). |
 | Execution | Not mentioned | Single session | No subagents. |
+| Ops console | Not in the brief | Add a proper, fully integrated console | A staff-only operations console (section 8). This is a feature beyond the brief, added at the owner's request. |
+| Quality bar | Acceptance lines per phase | No bugs, no view issues | The verification standard in section 9 applies to every screen, and anything that fails it is fixed before the phase is committed. |
 
 ## 3. Repository layout
 
@@ -73,7 +75,7 @@ The engine has no React dependency. The web app binds to it with a thin hook lay
 
 ## 6. Web app (`apps/web`)
 
-**Routes.** `/` landing, `/town`, `/lesson/:id`, `/signup`, `/login`, `/parent`, `/teacher`, `/privacy`, `/safety`. The landing page is its own entry chunk with no engine or town code, so it can meet the 200 KB JavaScript budget.
+**Routes.** `/` landing, `/town`, `/lesson/:id`, `/signup`, `/login`, `/parent`, `/teacher`, `/ops` (section 8), `/privacy`, `/safety`. The landing page is its own entry chunk with no engine or town code, so it can meet the 200 KB JavaScript budget.
 
 **Design system (`packages/design`).** `tokens.css` defines every colour, radius, shadow and font as a CSS custom property, with a dark set under `[data-theme="dark"]` and `prefers-color-scheme`. Fonts are self-hosted through `@fontsource` packages. Components: Button (primary and secondary pills), DepthSwitch (mist track, white thumb), Card, Chip, ProgressDots, BottomSheet, LumiStrip, and Lumi with four moods as one SVG component per mood, taken from `Lumi.dc.html`.
 
@@ -109,19 +111,53 @@ The engine has no React dependency. The web app binds to it with a thin hook lay
 
 **Schools (Phase 4).** `school`, `class` and `assignment` tables, a teacher role on the adult account, class join codes so pupils join with a nickname only, a teacher dashboard with per-lesson completion and the most common wrong answers, and assignments that mark town objects as assigned.
 
-## 8. Phase plan
+## 8. Ops console
+
+A staff-only console for running the product, served by the same web app at `/ops` as its own lazily loaded chunk, and backed by `/ops/*` endpoints on the same API. It uses the same design system as the rest of the product. It is desktop first and still usable at 390 px, with tables that scroll inside their own box.
+
+**Access.** A `staff` role on the adult account, with two levels: `support` (read, plus data-rights actions) and `admin` (everything). Staff accounts cannot be created by sign-up. They are created with a command, `uv run lumen-api create-staff`. Every `/ops` endpoint checks the role on the server, staff sessions expire after 8 hours, and every staff action that reads personal data or changes anything is written to an `ops_audit_log` table (who, what, which record, when).
+
+**Screens.**
+
+| Screen | What it shows | Actions |
+|---|---|---|
+| Overview | Health of the API, Postgres, Redis and the tutor provider; counts for accounts, profiles, lessons finished today and this week; tutor replies and the share that failed the safety check | None |
+| Accounts | Search by email; an account's profiles, plan, consent records and recent activity | Grant or remove a plan, unlock or lock chat for a profile, export a profile's data, delete a profile or an account (typed confirmation) |
+| Lessons | Every synced lesson with version, subject, object, prerequisites and fact sheet; starts, completions, average hints used and the step where most learners stop | Re-sync lessons from the compiled files |
+| Tutor log | Every tutor message with its safety result, filterable by result, lesson and date; failed replies first | Mark a message reviewed, with a note |
+| Schools | Schools, classes, teachers, pupil counts and assignments | Create a school, attach a teacher account |
+| Analytics | First-party events only: daily and weekly active learners, lessons by subject, the step-by-step funnel per lesson | Date range |
+| System | Non-secret configuration (tutor provider and model, rate limits, retention period), feature flags, last run of the retention purge | Toggle a flag, run the purge now |
+| Audit log | The staff action log | Filter by staff member, action and date |
+
+**Privacy.** The console shows child profiles by nickname and profile ID only, because that is all that is stored. Tutor messages are visible to staff for safety review, and each view is audited. Secrets such as API keys are never returned by any endpoint, only whether they are set.
+
+**Build order.** The console grows with the phases so each part is wired to real data when it appears: access control, audit log, Overview, Accounts, Tutor log and System in Phase 3; Lessons and Schools in Phase 4; Analytics in Phase 5.
+
+## 9. Verification standard
+
+I cannot promise software with zero bugs. What I can do is check every screen the same way before each phase commit, fix what the checks find, and list anything still open in `BUILD_REPORT.md`. The checks are:
+
+- **Layout.** Playwright loads every route and every lesson step at 390, 768, 1280 and 1440 px wide and fails on horizontal page overflow, on text clipped by its container, and on interactive elements smaller than 48 px on learner screens. The town is the one deliberate horizontal scroller, inside its own frame.
+- **Looking at it.** I take screenshots of every screen at phone and desktop width, in light and dark mode, and read them myself. Automated checks do not catch things that merely look off.
+- **Accessibility.** `axe` runs on every route with no serious or critical violations allowed, plus keyboard-only runs of the ice lesson, the town and the console.
+- **Behaviour.** Unit tests for the engine and each simulation's physics, a Playwright test that plays each lesson to its card, and pytest for every API endpoint including the permission failures.
+- **Console errors.** Every Playwright test fails if the browser logs an error or an unhandled rejection.
+- **Static checks.** TypeScript strict, ESLint, Ruff and mypy with no errors.
+
+## 10. Phase plan
 
 | Phase | Built | Proof |
 |---|---|---|
 | 1 | Monorepo, tooling, CI file, tokens, fonts, Lumi, engine core, `tank`, `molecules`, `lake`, the ice lesson | Unit tests for the runtime and `done_when`; Playwright plays the whole lesson at 1280 px and 390 px, by keyboard, at all three depths; a frame-time check under 4x CPU throttling |
 | 2 | Town, bottom sheet, threads, Lumi strip, cards, streaks, local progress | Playwright: finishing the ice lesson paints the glass and marks the kettle next; thread toggles; horizontal scroll at 390 px |
-| 3 | API, accounts, profiles, attempts, mastery, weekly report, Lumi service, sync | pytest: under-13 cannot reach free text; every reply is logged with a safety result; profile deletion leaves no rows |
-| 4 | Nineteen simulations and lessons in round-robin subject order, landing page, schools | Each lesson validates and has a Playwright smoke test that plays it to the card; simulation unit tests for the physics (pendulum period, lever balance, lens equation, golden angle, and so on) |
-| 5 | Offline caching, performance budget script, first-party analytics, dark mode, audio and narration hooks | Bundle-size script enforces the landing budget; offline test loads a cached lesson; dark-mode contrast check |
+| 3 | API, accounts, profiles, attempts, mastery, weekly report, Lumi service, sync; ops console access control, audit log, Overview, Accounts, Tutor log, System | pytest: under-13 cannot reach free text; every reply is logged with a safety result; profile deletion leaves no rows; non-staff are refused on every `/ops` endpoint; staff actions appear in the audit log |
+| 4 | Nineteen simulations and lessons in round-robin subject order, landing page, schools; ops Lessons and Schools screens | Each lesson validates and has a Playwright smoke test that plays it to the card; simulation unit tests for the physics (pendulum period, lever balance, lens equation, golden angle, and so on) |
+| 5 | Offline caching, performance budget script, first-party analytics, dark mode, audio and narration hooks; ops Analytics screen | Bundle-size script enforces the landing budget; offline test loads a cached lesson; dark-mode contrast check |
 
 Lesson order in Phase 4, so no subject runs ahead: kettle, swing, scale, onion, guitar; then baking soda, seesaw, sunflower, seedling, djembe; then rusty gate, telescope, slide, bee, piano; then Moon, dice, beetles, record player.
 
-## 9. What will be stubbed or left unverified
+## 11. What will be stubbed or left unverified
 
 | Item | Why | What ships instead |
 |---|---|---|
@@ -133,7 +169,7 @@ Lesson order in Phase 4, so no subject runs ahead: kettle, swing, scale, onion, 
 | Deployment, cloud region, payments | Open decisions or later phase | Docker Compose for local use; entitlement checks; placeholders for prices |
 | Curriculum mapping, other languages | Open decisions | Tags and i18n files ready |
 
-## 10. Risks
+## 12. Risks
 
 - **Size.** Twenty simulations and twenty lessons at three depths is a large amount of content for one run. Each lesson will have the full seven-step skeleton and correct science, but the simulations will be compact, and the town art is hand-written SVG of prototype quality rather than illustrator quality.
 - **Scientific accuracy.** Lesson facts come from my own knowledge of standard reference values. A subject expert should review the `facts` lists before launch. The report will list them in one place.
