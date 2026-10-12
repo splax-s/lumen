@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: lumen
+      POSTGRES_PASSWORD: lumen
+      POSTGRES_DB: lumen
+    ports: ["5432:5432"]
+    volumes: ["lumen-db:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lumen"]
+      interval: 5s
+      retries: 10
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+  api:
+    build: ./apps/api
+    env_file: ./apps/api/.env.example
+    environment:
+      DATABASE_URL: postgresql+asyncpg://lumen:lumen@db:5432/lumen
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_started }
+    ports: ["8000:8000"]
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on: [api]
+    ports: ["8080:80"]
+volumes:
+  lumen-db:

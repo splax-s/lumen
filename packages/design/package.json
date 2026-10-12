@@ -1,0 +1,9 @@
+{
+  "name": "@lumen/design",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./tokens.css": "./src/tokens.css", "./fonts.css": "./src/fonts.css", "./base.css": "./src/base.css" },
+  "scripts": { "typecheck": "tsc --noEmit -p .", "test": "vitest run" },
+  "dependencies": { "@lumen/engine": "workspace:*", "react": "^18.3.1", "react-dom": "^18.3.1" }
+}
